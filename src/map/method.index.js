@@ -1,0 +1,1 @@
+export default {"onClick":"function (value) {\n    console.info(value);\n}"}

@@ -1,0 +1,1 @@
+export default {".container":"text-align: center; font-size: 20px; color: red;"}
