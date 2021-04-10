@@ -1,6 +1,9 @@
 const path = require("path");
 
 module.exports = {
+
+  lintOnSave: true,
+  
   chainWebpack: (config) => {
     const vueRule = config.module.rule("vue");
 

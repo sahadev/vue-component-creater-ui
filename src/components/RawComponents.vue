@@ -59,7 +59,6 @@
 // import vant from "../rawComponents/vant";
 // import iview from "../rawComponents/iview";
 // import quasar from "../rawComponents/quasar";
-const { generateColor } = require('random-color-generator2');
 
 export default {
   data() {
@@ -170,7 +169,6 @@ export default {
     surprise() {
       const that = this;
       function color() {
-        that.$refs.help.style = `color:${that.colorPointer.next().value};font-size: 24px;`;
         window.requestAnimationFrame(color);
       }
 
@@ -178,7 +176,7 @@ export default {
     }
   },
 
-  created() { this.colorPointer = generateColor(true, 2); },
+  created() {  },
 
   mounted() {
     this.init();

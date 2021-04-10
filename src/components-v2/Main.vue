@@ -50,22 +50,22 @@
 </template>
 
 <script>
-import ElementUI from "element-ui";
-import Vue from "vue";
-import AntdUI from "ant-design-vue";
-
-Vue.use(AntdUI);
-Vue.use(ElementUI);
-
-import('element-ui/lib/theme-chalk/index.css');
-import('ant-design-vue/dist/antd.css');
-
 import RawComponents from "../components/RawComponents";
 import { splitInit } from "../libs/split-init";
 import { MainPanelProvider } from "../libs/main-panel";
 import ToolsBar from "./ToolsBar";
 import { initContainerForLine } from "@/utils/lineHelper";
 const keymaster = require('keymaster');
+
+import styleData from "../map/style.index.js";
+import methodData from "../map/method.index.js";
+import dataData from "../map/data.index.js";
+import templateData from "../map/template.index.js";
+
+window.templateSourceMap = templateData;
+window.dataSourceMap = dataData;
+window.methodSourceMap = methodData;
+window.styleSourceMap = styleData;
 
 export default {
   name: "vcc_ui",
@@ -105,7 +105,6 @@ export default {
   },
   beforeCreate() { },
   created() {
-    this.appInit();
     this.mainPanelProvider = new MainPanelProvider();
     // 方便调试追踪
     window.mainPanelProvider = this.mainPanelProvider;
@@ -120,13 +119,6 @@ export default {
   updated() { },
   destoryed() { },
   methods: {
-
-    async appInit() {
-      window.templateSourceMap = await(await import("../map/template.index.js")).default;
-      window.dataSourceMap = await(await import("../map/data.index.js")).default;
-      window.methodSourceMap = await(await import("../map/method.index.js")).default;
-      window.styleSourceMap = await(await import("../map/style.index.js")).default;
-    },
 
     initShortcut() {
       keymaster('⌘+z, ctrl+z', () => {
@@ -233,8 +225,7 @@ export default {
 /* =============== 以下结果追加于: 2020/3/23 上午10:03:02 =============== */
 .main-main {
   width: 100%;
-  height: 0;
-  flex-grow: 1;
+  height: 100%;
   display: flex;
   background-color: #f0f0f0;
 }
@@ -356,5 +347,52 @@ export default {
     color: #d6d6d6;
     pointer-events: none;
   }
+}
+
+.mark-element-unit {
+  opacity: 0.5;
+}
+</style>
+
+<style lang="scss">
+.in-element {
+  outline: 2px solid #4dba87 !important;
+  position: relative;
+}
+
+.mark-element {
+  outline: 2px solid #4dba87 !important;
+  position: relative;
+}
+
+.mark-element::before {
+  content: attr(lc-component-name) !important;
+  background: #4dba87;
+  color: white;
+  left: 0 !important;
+  top: 0 !important;
+  position: absolute;
+  font-size: 12px;
+  line-height: 12px;
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+.light-mark {
+  outline: 2px solid #4dba87;
+  position: relative;
+}
+
+.light-mark::before {
+  content: attr(lc-component-name) !important;
+  background: #4dba87;
+  color: white;
+  left: 0 !important;
+  top: 0 !important;
+  position: absolute;
+  font-size: 12px;
+  line-height: 12px;
+  padding: 1px 2px;
+  border-radius: 2px;
 }
 </style>
