@@ -72,7 +72,7 @@ window.methodSourceMap = methodData;
 window.styleSourceMap = styleData;
 
 export default {
-  name: "vcc_ui",
+  name: "vcc",
   props: [],
   components: {
     RawComponents,

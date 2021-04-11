@@ -8,7 +8,7 @@ module.exports = {
           entry: "./index.js",
           output: {
             filename: "build.js",
-            library: "vccui",
+            library: "vcc",
             libraryTarget: "umd",
             umdNamedDefine: true,
           },
