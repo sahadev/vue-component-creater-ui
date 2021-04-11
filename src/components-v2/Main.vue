@@ -57,6 +57,10 @@ import ToolsBar from "./ToolsBar";
 import { initContainerForLine } from "@/utils/lineHelper";
 const keymaster = require('keymaster');
 
+import AttributeInput from "../components/AttributeInput";
+import CodeStructure from "../components/CodeStructure";
+import Code from "../components/Code";
+
 import styleData from "../map/style.index.js";
 import methodData from "../map/method.index.js";
 import dataData from "../map/data.index.js";
@@ -73,9 +77,9 @@ export default {
   components: {
     RawComponents,
     ToolsBar,
-    AttributeInput: resolve => { require(["../components/AttributeInput"], resolve) },
-    CodeStructure: resolve => { require(["../components/CodeStructure"], resolve) },
-    "lc-code": resolve => { require(["../components/Code"], resolve) },
+    AttributeInput,
+    CodeStructure,
+    "lc-code": Code,
   },
   data() {
     return {

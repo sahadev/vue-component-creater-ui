@@ -59,6 +59,8 @@
 // import vant from "../rawComponents/vant";
 // import iview from "../rawComponents/iview";
 // import quasar from "../rawComponents/quasar";
+import raw from "../rawComponents/raw";
+import ele from "../rawComponents/element";
 
 export default {
   data() {
@@ -176,7 +178,7 @@ export default {
     }
   },
 
-  created() {  },
+  created() { },
 
   mounted() {
     this.init();
@@ -202,11 +204,11 @@ export default {
   },
 
   components: {
-    raw: () => import("../rawComponents/raw"),
+    raw,
     // vant,
     // iview,
     // quasar,
-    ele: () => import("../rawComponents/element"),
+    ele,
   },
 
 };

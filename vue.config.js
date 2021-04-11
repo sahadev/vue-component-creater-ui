@@ -1,9 +1,24 @@
 const path = require("path");
 
 module.exports = {
+  css: { extract: false },
+  configureWebpack:
+    process.env.NODE_ENV === "production"
+      ? {
+          entry: "./index.js",
+          output: {
+            filename: "build.js",
+            library: "vccui",
+            libraryTarget: "umd",
+            umdNamedDefine: true,
+          },
+        }
+      : {
+        entry: "./main.js"
+      },
 
   lintOnSave: true,
-  
+
   chainWebpack: (config) => {
     const vueRule = config.module.rule("vue");
 
@@ -17,7 +32,7 @@ module.exports = {
         };
       });
 
-    config.resolve.alias.set("vue$", "vue/dist/vue.esm.js")
+    config.resolve.alias.set("vue$", "vue/dist/vue.esm.js");
   },
 
   publicPath: process.env.PUBLIC_PATH,
@@ -25,12 +40,10 @@ module.exports = {
 
   pluginOptions: {
     quasar: {
-      importStrategy: 'kebab',
-      rtlSupport: false
-    }
+      importStrategy: "kebab",
+      rtlSupport: false,
+    },
   },
 
-  transpileDependencies: [
-    'quasar'
-  ],
+  transpileDependencies: ["quasar"],
 };
