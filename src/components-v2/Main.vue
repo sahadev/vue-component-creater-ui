@@ -87,8 +87,8 @@ export default {
       code: "",
       codeDialogVisible: false,
       structureVisible: false,
-      iconCode: require("@/assets/icon/code-working-outline.svg"),
-      iconClear: require("@/assets/icon/trash-outline.svg"),
+      iconCode: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-working-outline.svg"),
+      iconClear: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/trash-outline.svg"),
 
       viewMode: false
     };

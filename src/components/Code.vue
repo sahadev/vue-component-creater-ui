@@ -36,8 +36,8 @@ export default {
     return {
       // 在此自动生成
 
-      iconCopy: require("@/assets/icon/copy-outline.svg"),
-      iconDownload: require("@/assets/icon/code-download-outline.svg"),
+      iconCopy: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/copy-outline.svg"),
+      iconDownload: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-download-outline.svg"),
     };
   },
   beforeCreate() { },

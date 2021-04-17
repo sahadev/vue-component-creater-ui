@@ -68,14 +68,14 @@ export default {
       activeName: "0",
       componentSearch: '',
       iconArray: [{
-        icon: require('@/assets/logo/html-n.png'),
+        icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/html-n.png'),
         clickCallback: this.onSelectElement,
         className: "demonstration-raw",
         enable: true,
         componentName: 'raw',
         titleArray: [],
       }, {
-        icon: require('@/assets/logo/element-n.png'),
+        icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/element-n.png'),
         clickCallback: this.onSelectElement,
         className: "demonstration-element",
         selectIndex: 0,
@@ -83,13 +83,13 @@ export default {
         enable: true,
         titleArray: [],
       }, {
-        icon: require('@/assets/logo/vant-n.png'),
+        icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/vant-n.png'),
         enable: false
       }, {
-        icon: require('@/assets/logo/iview-n.png'),
+        icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/iview-n.png'),
         enable: false
       }, {
-        icon: require('@/assets/logo/quasar-n.png'),
+        icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/quasar-n.png'),
         enable: false
       },],
 

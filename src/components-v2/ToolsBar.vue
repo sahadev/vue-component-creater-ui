@@ -36,7 +36,7 @@ export default {
     return {
       previewMode: false,
       editMode: true,
-      iconTreeStructure: require("@/assets/icon/tree-structure.png"),
+      iconTreeStructure: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/tree-structure.png"),
     };
   },
   watch: {},
