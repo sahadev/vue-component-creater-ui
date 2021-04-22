@@ -1,8 +1,9 @@
 {
-  "name": "@lcg/vcc",
+  "name": "lcg-vcc",
   "description": "Low Code Generator -> Vue Component Creater",
-  "version": "0.1.0",
+  "version": "0.5.2",
   "private": false,
+  "keywords": ["low-code", "editor"],
   "main": "./dist/vcc.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve --open --port 8008",
