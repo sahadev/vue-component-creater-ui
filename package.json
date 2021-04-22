@@ -1,8 +1,9 @@
 {
-  "name": "vue-component-creater-ui",
+  "name": "@lcg/vcc",
+  "description": "Low Code Generator -> Vue Component Creater",
   "version": "0.1.0",
-  "private": true,
-  "main": "./src/main.js",
+  "private": false,
+  "main": "./dist/vcc.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve --open --port 8008",
     "build": "vue-cli-service build --target lib --name vcc ./src/components-v2/VCC.vue",

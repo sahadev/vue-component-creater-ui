@@ -1,204 +1,415 @@
-# vue-component-creater
+# @lcg/vcc介绍
 
-拖拽式的组件生成平台
+vcc是Low Code Generator中独立的Vue组件代码编辑器。可以独立运行。
 
-正式环境地址：https://lc.100tal.com/#/
+使用示例：
+```vue
+<template>
+  <vcc :initCodeEntity="codeStructure" @updateCodeEntity="onCodeUpdate"></vcc>
+</template>
 
-## Project setup
+<script>
+// 以这样一段结构初始化VCC组件
+const initCodeStr = '{"template":{"lc_id":"root","__children":[{"div":{"class":"container","style":"min-height: 100%; padding-bottom: 100px;","lc_id":"container","__text__":"Hello，欢迎使用LCG，请往此区域拖拽组件","__children":[{"el-button":{"lc-mark":"","type":"danger","lc_id":"COAAYXizyI","__children":[],"__text__":"危险按钮","@click":"onButtonClick","size":"small"}}]}}]}}'
 
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
-
-```
-yarn run build
-```
-
-### Lints and fixes files
-
-```
-yarn run lint
-```
-
-### 优势：
-
-- 搭建速度快。
-- 效果可视化。
-- 代码实时生成。
-- 提供主流预制模板。
-- 无需每次查找组件源代码，节省查找时间。
-- 提供主流预制属性。
-- 支持属性、模板自行扩展。
-
-### 规划：
-
-目前仅集成了部分市面上流行的组件库。组件库的集成希望可以通过开源的方式让大家自助添加。
-
-添加的流程为：
-在 src/rawComponents 目录下建立以组件名为名称的文件夹(例如:element)，并在该文件夹内提供一个 index.vue 文件，然后再将此文件引入到 src/components/RawComponents.vue 文件中。
-
-\*.vue 文件建议以组件类型划分，例如 Botton 类的组件就可以都放在 button.vue 文件中，然后由 index.vue 文件引用。这样 Botton 的路径为:src/rawComponents/element/button.vue
-
-当组件添加完毕后，需要给组件内的元素添加 lc-mark 的标志，这样这个组件才可以被**拖拽**。例如 element 的 Button:
-
-```html
-<el-button lc-mark>默认按钮</el-button>
+export default {
+  components: {
+    vcc: () => import('@lcg/vcc')
+  },
+  data() {
+    return {
+      codeStructure: JSON.parse(initCodeStr),
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    onCodeUpdate(newCodeEntity) {
+      // 编辑后新的代码结构
+    }
+  }
+}
+</script>
 ```
 
-当一切就就绪后，需要对所有的组件进行重新编译才可以正常使用，需执行 npm run compileComponent 命令。此命令会对 src/rawComponents 下所有的组件进行重新编译。如果有不希望编译的，请在 src/script/compile.js 中修改 ignore 属性。
+# 拖拽式Vue组件代码生成平台(LCG)介绍
 
-> **需要注意的是:** 一类组件的 index.vue 文件最好不要编译，因为对这个文件内容的顺序是有要求的，比如**分割线**。而编译会使组件内元素的顺序重新排布(2020年12月28日已经将此问题修复)。
+## 它是什么
+拖拽式Vue组件代码生成平台是一款小猴自研的Vue代码生成工具，英文全称：Low Code Generator，简称LCG。它也是一种LowCode解决方案。通过它可以快速完成Vue组件的代码骨架搭建，通过减少不必要的重复工作从而带来开发效率的提升。
 
-### TODO:
+> 体验地址：https://lc.100tal.com/
 
-- 常用模板
-- 预制常用属性
-- 高亮当前属性编辑元素-跑马灯效果 -> 左下箭头高亮展示(2020 年 09 月 21 日效果不好，2020年12月28日已通过outline实现)✔️
-- 尝试从 vue 运行时入手，获取更多原始信息(2020 年 09 月 21 日开始已经废弃，通过迂回方式获得更多信息)✔️
-- 提供调试控制台，输出当前代码结构关系图，类似 vue-tools(2020 年 10 月 02 日 已实现基本的文本形式的结构输出，需要树形的可折叠结构)。✔️
-- 将组件库、预制属性、属性解析规则挪至单独的项目中。
-- 支持生成预制的 data,methods。✔️
-- 我的常用：组件元素、整个组件。
-- 接入自有的数据统计工具：神策。✔️
+## 出现的背景
+做前端久了就难免会发现有一些工作其实是繁复的，它们有一些共同的特点：
 
----
+ - 频率高
+ - 非常基础
+ - 花费时间
 
-使用过程中发现的问题：
+而有一部分工作是可以通过技术手段解决的，例如在写Vue时会发现：
 
-- 1.不支持删除某个元素。 ✔️
-- 2.编辑 input 会造成高亮框混乱。 ✔️
-- 3.没有下拉组件。✔️
-- 4.删除外框内容子元素会一同被清空(两个 div 嵌套)。✔️
-- 5.input 标签无法生成代码。 ✔️
-- 6.提供一部分常用的组合组件。key:input ✔️
-- 7.取消对 Html 元素的排序。需要更改 json2xml 的数据结构。Json 数据生成规则也需要变动。 ✔️
-- 8.提供一些常见的模板。✔️
-- 9.对复合组件还不支持 ✔️
-- 10.针对某些组件预设样式。例如分页组件一定是在最下面且宽度为 100%的。
-- 11.要对大型表单的搭建良好支持(例如课程管理页面的搭建https://wiki.zhiyinlou.com/pages/viewpage.action?pageId=60305227)。
-- 12.预制更多常用的复合组件:{ key: value }。
-- 13.更改父组件的属性，子组件被删除。✔️
-- 14.对于:inline="true"的解析与生成需要完整支持，目前只能输出:inline。✔️
+ - class的名称需要分别在template和style中定义。
+ - v-on，v-bind，v-model，v-for等指令的值需要分别在template和script中定义。
+ - 强烈依赖第三方组件库的需要打开官网拷贝某个组件所对应的代码。
 
----
+上面三种场景占用了开发一个组件所需要使用的相当一部分时间。尤其是第三条，经常就是打开官网 -> 找到组件 -> 拷贝template -> 拷贝data -> 拷贝method -> 验证效果。如果遇到复杂组件时就不知不觉花了不少时间进去。而第一条也需要我们来回在上下文中定义class-name。而这些常见的基本操作如果可以将它们的共性提取出来，那么我们就有办法通过技术手段大幅缩短这部分时间。这就为LCG的出现提供了需求背景。
 
-2020 年 09 月 16 日 目前的进展： 
- - 1.当下已支持通过更改 Vue-loader 实现在运行时拿到组件源代码。具体可以查看 CommitID:c66593ff87c07c60670e634f50f49e030f68b63b,该次提交已可以在控制台看到源代码输出。 
- - 2.重新定义源代码的获取方式: 通过将源代码解析为 Json 结构, 然后在编辑时通过对对象的操作实现代码的生成。所以这里涉及到对 html 的解析与生成。解析部分需要重写，生成逻辑之前已完成。
+作者之前是写Android的，对Android的拖拽式布局印象很深刻。因为拖拽本身所需要花费的时间是所有编码操作中最少的。
 
-2020 年 09 月 17 日 目前进展：
-嵌套结构基本稳定，可进行各种组合
-输出代码已移除 ID 属性
-TODO: 稳固属性编辑，输出代码值类型默认为字符串
+所以想法一结合，诞生了LCG。
+## 使用它可以完成什么
+目前LCG集成了HTML5的基本元素以及Element UI常见的平面组件，所以目前可以通过LCG完成常见的表格与表单。这里列举一些具有代表性的页面：
 
-2020 年 09 月 19 日
-编辑的基本单位应当以最小组件，即不能再拆分的单位
+> LCG同样支持搭建移动端的页面，只需要将相应的组件库集成即可。
 
-2020 年 09 月 22 日
-右上角上显示的统计：
+快速生成一个这样的查询表格：
 
-- 1.累计访问次数(PV)。
-- 2.生成的组件数(点击复制的统计)。
-- 3.基础组件数(统计可拖拽的基础组件)。
+![](https://static.imonkey.xueersi.com/vue-creater-platform/resource/table.png)
 
-2020 年 09 月 23 日
-开始规划组件库，分设常用、组件厂商，下设组件类型
-需要彻底修改 xml 解析库，保证原始顺序不出错，或者不要编译 index.vue
+<details>
+<summary>查看表格代码</summary>
 
-2020 年 10 月 16 日 1.支持拖入时位置确认，可以在前、在中、在后，目前只能追加最后。 2.支持已拖入的拖动调整。
+```vue
+<template>
+  <div>
+    <el-form inline :model="formInline" class="demo-form-inline">
+      <el-form-item label="审批人">
+        <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+      </el-form-item>
+      <el-form-item label="活动区域">
+        <el-select v-model="formInline.region" placeholder="活动区域">
+          <el-option label="区域一" value="shanghai"></el-option>
+          <el-option label="区域二" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-button type="primary" @click="onQueryButtonClick" size="small">查询</el-button>
+      <el-button @click="onResetButtonClick" size="small">重置</el-button>
+    </el-form>
+    <el-button type="primary" @click="onCreateButtonClick" size="small">新增</el-button>
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="date" label="日期" width="180"></el-table-column>
+      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+      <el-table-column prop="address" label="地址"></el-table-column>
+    </el-table>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+      :page-sizes="[10, 20, 50, 100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="234">
+    </el-pagination>
+  </div>
+</template>
 
-2020年11月10日
+<script>
+export default {
+  props: [],
+  components: {},
+  data() {
+    return {
+      // 在此自动生成
+      currentPage: 1,
+      formInline: {
+        user: "",
+        region: ""
+      },
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄"
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄"
+        }
+      ]
+    };
+  },
+  watch: {},
+  computed: {},
+  beforeCreate() { },
+  created() { },
+  beforeMount() { },
+  mounted() { },
+  beforeUpdate() { },
+  updated() { },
+  destoryed() { },
+  methods: {
+    // 在此自动生成
+    request() {
+      // 网络请求，可选
+    },
+    handleCurrentChange() { },
+    handleSizeChange() { },
+    onButtonClick() { },
+    onCreateButtonClick() { },
+    onQueryButtonClick() { },
+    onResetButtonClick() { }
+  },
+  fillter: {},
+};
+</script>
 
-- 需要在成熟的组件库下添加超链接，方便直接去该网站获得具体的属性说明。
-- 完善iView组件库
-- 集成Quasar组件库:http://www.quasarchs.com/
-- 这个东西是主要针对什么人群，要解决什么痛点？
+<style scoped>
+/*  在此自动生成 */
+.demo-form-inline {
+}
+</style>
+```
+</details>
 
-2020年11月17日
+也可以快速搭建一个这样的数据提交表单：
 
-- 属性编辑增加按钮需要调整：因为最后一个属性是无法删除的。
-- 元素的删除支持快捷键.
-- Form表单增加内容为按钮的。
-- 属性的输入要全部为字符串，不能为boolean。
-- 无法在div内部的后面再追加。:center中
-- 快速搜索输入框已有内容无法再次弹出
-- 复制代码有问题，内容复制不上 ✔️
+![](https://static.imonkey.xueersi.com/vue-creater-platform/resource/form.png)
 
-2020年12月04日
-在编译form-base文件时，发现html与js都出了问题，问题发生在没有闭合标签的img以及下面这段JS代码上：
-```js
+<details>
+<summary>查看表单代码</summary>
 
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+```vue
+<template>
+  <div>
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-border">
+      <el-form-item label="活动名称" prop="name">
+        <el-input v-model="ruleForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="活动区域" prop="region">
+        <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
+          <el-option label="区域一" value="shanghai"></el-option>
+          <el-option label="区域二" value="beijing"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="文件上传" prop="delivery">
+        <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或 <em> 点击上传 </em>
+          </div>
+          <div class="el-upload__tip" slot="tip">
+            只能上传jpg/png文件，且不超过500kb
+          </div>
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="特殊资源" prop="resource">
+        <el-radio-group v-model="ruleForm.resource">
+          <el-radio label="线上品牌商赞助"></el-radio>
+          <el-radio label="线下场地免费"></el-radio>
+          <el-radio label="线上推广"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="活动形式" prop="desc">
+        <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm">立即创建</el-button>
+        <el-button @click="resetForm">重置</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
 
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+<script>
+export default {
+  props: [],
+  components: {},
+  data() {
+    return {
+      // 在此自动生成
+      ruleForm: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: ""
+      },
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "请输入活动名称",
+            trigger: "blur"
+          },
+          {
+            min: 3,
+            max: 5,
+            message: "长度在 3 到 5 个字符",
+            trigger: "blur"
+          }
+        ],
+        region: [
+          {
+            required: true,
+            message: "请选择活动区域",
+            trigger: "change"
+          }
+        ],
+        date1: [
+          {
+            type: "date",
+            required: true,
+            message: "请选择日期",
+            trigger: "change"
+          }
+        ],
+        date2: [
+          {
+            type: "date",
+            required: true,
+            message: "请选择时间",
+            trigger: "change"
+          }
+        ],
+        type: [
+          {
+            type: "array",
+            required: true,
+            message: "请至少选择一个活动性质",
+            trigger: "change"
+          }
+        ],
+        resource: [
+          {
+            required: true,
+            message: "请选择活动资源",
+            trigger: "change"
+          }
+        ],
+        desc: [
+          {
+            required: true,
+            message: "请填写活动形式",
+            trigger: "blur"
+          }
+        ]
       }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
+    };
+  },
+  watch: {},
+  computed: {},
+  beforeCreate() { },
+  created() { },
+  beforeMount() { },
+  mounted() { },
+  beforeUpdate() { },
+  updated() { },
+  destoryed() { },
+  methods: {
+    // 在此自动生成
+    request() {
+      // 网络请求，可选
+    },
+    goBack() { },
+    resetForm() { },
+    submitForm() { }
+  },
+  fillter: {},
+};
+</script>
 
+<style scoped>
+/*  在此自动生成 */
+.demo-border {
+}
+.el-icon--right {
+}
+.el-icon-upload {
+}
+.el-upload__text {
+}
+.el-upload__tip {
+}
+.line {
+}
+.upload-demo {
+}
+</style>
 ```
 
-**注意：** 在编辑组件库时，在script标签内部慎用大于小于号，会导致预编译阶段文本内容解析出错!
+</details>
 
-2021年01月08日10:27:25
-在组件的css中不能使用scss的写法，否则编译Vue文件会不通过
+当然，搭建成为什么样的页面完全取决于开发者，上面两张图只是一个效果示意。LCG的主要能力在于它所生成的代码。
 
-2021年01月11日
-今天支持重新命名文件中重复声明的变量，但**在文件中不能声明与prop相同的声明**
+> 通过图片下方的**展开按钮**可以看到代码。
 
----
+LCG会自动将各个组件按照SFC文件的结构拼接在一起，并且会把data、method、class的声明也创建好。有了这样一个骨架结构，开发者便可以将代码下载至项目目录，在此基础上进行二次开发。
 
-### 下一步重点工作
+这个骨架创建过程完全不需要打开Element UI官网进行一个个组件代码拷贝这样繁复的过程，只需拖拽几下就搞定了。
 
-1.做大量实践，探索组件单元最合适的组成。✔️
-2.hover 方式标记组件的区域范围。✔️
-3.增加沟通群二维码。❎
-4.增加UI库vuetifyjs：https://vuetifyjs.com/zh-Hans/
-5.增加UI库kendo：https://www.telerik.com/kendo-vue-ui
+## 使用它可以带来的收益
+虽然带来了很明显的效率提升效果，但还是需要一个数据来表达一下究竟可以节约多少时间。
 
----
+还是以上面的查询表格为例。作者分别通过常规的方式和通过LCG的方式做一下数据比对。
 
-### 核心原理介绍
+常规方式：
 
-我们知道，在编写后的 vue 代码在运行时会生成实际的 Html 代码，而组件生成平台的职责是将这些 Html 再转换为 vue 代码。
+<video src="https://static.imonkey.xueersi.com/vue-creater-platform/resource/raw.mp4" width="640px" height="360px" controls="controls"></video>
 
-为了达到这样的目的，我们目前可行的思路是：将原始的代码文件进行预编译：对指定的 vue 组件分配一个随机 ID，并将这个 vue 文件的代码结构转换为 Json，以 map 的形式存储于 map.js 文件中。在运行时，将 map.js 文件加载进内存。当拖动某个被 lc-mark 标记的元素时，我们可获得这个元素相应的 ID，再通过这个 ID 到 map 中查找，于是获得了对应的原始代码结构。当拖入到某个元素中时，也通过相同的方式获得目标元素的原始代码，再将这两部分原始代码合并，并建立上下级关系。随后，通过新的代码结构，分析对应的@click、v-model、class 等我们所关注的属性，然后再将其生成对应的代码插入到将要生成的 Vue 组件中。如此，便形成了一个较为完整的 Vue 组件代码。
+LCG：
 
-为了实现以上思路，有几项关键技术：
+<video src="https://static.imonkey.xueersi.com/vue-creater-platform/resource/lcg.mp4" width="640px" height="360px" controls="controls"></video>
 
-- 对 Vue 组件的解析与生成
-- 上下级组件之间的数据结构关系
-- html 元素与 Vue 代码之间吻合的对应关系
-- Vue 代码的关键字解析，如@click
-- 将代码转换为对象，将对象转换为代码
-- 辅助线的定位与绘制
+通过以上两个视频可以看到，LCG总共用时99秒，而常规方式总共用时205秒。因此LCG相比较常规方式提效至少在100%以上，因为LCG不要起本地服务就可以看到实时效果。两者的时间差值随着组件的复杂度增加而增加。
+## 视频介绍
+下面是一个基本版的视频介绍：
 
-### 标准
+<video src="https://static.imonkey.xueersi.com/vue-creater-platform/lcg_introduction.mp4" width="640px" height="360px" controls="controls"></video>
 
-本项目中所使用的标准色为：
+## 基本原理
 
-- 蓝色：#435466;
-- 绿色：#4dba87;
-- 红色：#ff6159;
+我们知道，在编写后的 vue 代码在运行时会生成实际的 Html 代码，而组件生成平台的职责是将这些 Html 再转换为 vue 代码，并组合在一起。
 
----
+为了达到这样的目的，我们目前采用的思路是：将原始的代码文件进行预编译：对指定的vue组件分配一个随机 ID，并将这个vue文件的代码结构转换为以JavaScript对象表示的结构，以ID: Structure的形式存储于 JS文件中。在运行时，将此JS文件加载进内存。当拖动某个被lc-mark标记的元素时，我们可获得这个元素相应的ID，再通过这个ID查找对应的Structure。当拖入到某个元素中时，也通过相同的方式获得目标元素的原始代码，再将这两部分原始代码合并，并建立上下级关系。随后，通过新的代码结构，分析对应的@click、v-model、class等我们所关注的属性，然后再将其生成对应的代码插入到将要生成的Vue组件模板中。至此，便形成了一个较为完整的Vue组件代码。
+## 现有的能力
+可以从以下几个点来描述LCG现有的能力：
+ - 组件库：目前LCG集成了常用的Html5元素以及Element UI大部分组件。
+ - 组合形式：目前支持将一个组件插入到另一个组件的前面、里面、后面。
+ - 生成结果：目前除了支持自动提取class之外还支持自动生成template中通过以下指令所声明的data以及method（包括但不限于）：
+    - v-bind或:
+    - v-for
+    - v-if
+    - v-model
+    - v-on或@
+    - {{ Mustache }}
 
-#### 不能接入到本平台的或者会出现不符合预期的元素
+- 属性预置：由于每个组件的属性繁多，无法将每种组合的组件都预置完全，所以有一部分组件预置了属性。比如el-pagination，它在组件库中是通过基础用法表示的，而当被拖入到操作区域后，它在预览区域展示的是完整功能。这是因为它被拖入后增加了一些预置属性。如果你不要它，则可以在属性编辑时将这些预置属性删除。
+- 兄弟组件快速复制：有一些组件在使用时的个数是不确定的，比如el-radio、el-checkbox等，所以LCG提供了兄弟组件快速复制的能力。当把鼠标移动至这类组件上时，就会出现一个小加号(➕)，然后点击这个加号边可以快速复制一个兄弟组件。支持复制兄弟组件的组件有：
+    - el-checkbox
+    - el-radio
+    - el-option (在检视图中复制)
+    - el-table-column (在检视图中复制)
 
-- el-dialog 无法直接显示在左侧组件栏中（2020年12月28日已通过一个按钮代表解决）
-- el-input-number 拖拽时会抢占焦点，无法拖拽 ✔️
-- el-select lc-mark标记的元素与实际运行时的元素不是同一个，无法找到其原始代码 ✔️
-- el-switch 原因与el-select一致 ✔️ 通过检视图解决
-- el-time-select 原因与el-select一致 ✔️
-- el-image 因为某种原因，没有正常完成初始化工作 ✔️
+- 代码结构检视：有一些脱离文档流的组件是无法直接在操作区域看到的，比如el-option这种下拉选项。所以LCG提供了**结构检视图**的能力。通过结构检视图可以看到template中各个组件结构的层级关系。并且也可以对el-option这种看不到的组件进行属性编辑。在结构检视图中除了可以编辑组件的基本属性外，还可以对el-option、el-table-column这些组件进行兄弟组件复制。但需要注意的是：**在这种模式下不支持删除组件**。
+
+### 特点
+可以说LCG的特点是：
+
+ - 组件库强大，支持各类Vue组件库。
+ - 组合形式多样，支持各种组合。
+ - 生成结果丰富，支持无限扩展各种指令以及v-bind、v-on。
+
+## 做不到哪些以及需要注意的
+
+因为实现机制的原因，有一些是目前LCG无法做到的：
+ - 操作区域效果同步更新。这里是指如果编辑的是一个Html5元素的话，那么操作区域以及实时预览区域的效果都会更新。但如果是复杂的组件（实现层级超过两级），则只能在预览区域看到效果。
+ - 无法组合非平面组件的结构。以Dialog举例，因为Dialog本身不是文档流的一部分，所以在对Dialog进行结构表示时获取不到本身的DOM结构，所以无法直接将内部的内容放入到Dialog中。而是需要将内容放置到Dialog前面或者后面，然后再在本地编辑器中调整其正确的结构。
+ - 某些组件无法选中。部分组件因为实现逻辑的原因，没有将id属性挂载到组件的根节点上，所以会导致在操作区域点击这个组件出现无法选中的现象。这种情况可通过组件检视图更新该组件的属性。目前已知有这种现象的组件有：el-switch、el-time-select。
+
+### 没有集成的ElementUI组件
+
+ - Divider 分割线
+ - InfiniteScroll 无限滚动
+ - Notification 通知
+ - MessageBox 弹框
+ - Message 消息提示
+ - Loading 加载
+ - Backtop 回到顶部

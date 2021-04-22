@@ -1,0 +1,9 @@
+demo
+src
+.env.*
+vue.config.js
+.DS_Store
+.editorconfig
+.vscode/launch.json
+dist/vcc.umd.js
+dist/vcc.common.js
