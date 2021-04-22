@@ -4,7 +4,7 @@ import "element-ui/lib/theme-chalk/index.css";
 
 import AntdUI from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
-import APP from "./src/App.vue";
+import APP from "./App.vue";
 
 Vue.use(ElementUI);
 Vue.use(AntdUI);

@@ -2,23 +2,6 @@ const path = require("path");
 
 module.exports = {
   css: { extract: false },
-  configureWebpack:
-    process.env.NODE_ENV === "production"
-      ? {
-          entry: "./index.js",
-          output: {
-            filename: "build.js",
-            library: "vcc",
-            libraryTarget: "umd",
-            umdNamedDefine: true,
-          },
-        }
-      : {
-        entry: "./main.js"
-      },
-
-  lintOnSave: true,
-
   chainWebpack: (config) => {
     const vueRule = config.module.rule("vue");
 
