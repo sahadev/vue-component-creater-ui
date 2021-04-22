@@ -66,7 +66,6 @@ export default {
       }
     },
     download() {
-      window.trackManager.track("lc_on_code_download");
       let blob = new Blob([this.prettyCode], {
         type: "text/plain;charset=utf-8",
       });

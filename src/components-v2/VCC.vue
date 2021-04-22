@@ -73,7 +73,7 @@ window.styleSourceMap = styleData;
 
 export default {
   name: "vcc",
-  props: [],
+  props: ['initCodeEntity'],
   components: {
     RawComponents,
     ToolsBar,
@@ -103,15 +103,13 @@ export default {
         attributeContainter.style = "right: calc(-300px - 20px); display:none;";
         this.$refs['attributeInput'].onHide();
       }
-    }
+    },
   },
   computed: {
   },
   beforeCreate() { },
   created() {
     this.mainPanelProvider = new MainPanelProvider();
-    // 方便调试追踪
-    window.mainPanelProvider = this.mainPanelProvider;
   },
   beforeMount() { },
   mounted() {
@@ -151,11 +149,12 @@ export default {
         if (this.$refs.codeStructure) {
           this.$refs.codeStructure.updateCode(codeRawVueInfo);
         }
+        this.$emit('updateCodeEntity', codeRawVueInfo);
       }).onNodeDeleted(() => {
         this.currentEditRawInfo = null;
       }).onSelectElement(rawInfo => {
         this.currentEditRawInfo = rawInfo;
-      }).render(this.getFakeData());
+      }).render(this.initCodeEntity ? this.initCodeEntity : this.getFakeData());
     },
 
     // 指向将要插入哪个元素之前

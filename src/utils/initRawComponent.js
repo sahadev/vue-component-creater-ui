@@ -35,12 +35,6 @@ export function initElement(element) {
             }${getSplitTag()}${JSON.stringify(raw)}`;
         event.dataTransfer.setData("text/plain", str);
 
-        try {
-            const tag = getRawComponentKey(raw);
-            window.trackManager.track("lc_on_start_drag", {
-                tag,
-            });
-        } catch (error) { }
         event.stopPropagation();
     });
 

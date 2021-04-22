@@ -156,11 +156,9 @@ export default {
     },
 
     createNew() {
-      window.trackManager.track("lc_on_attribute_add");
       this.localAttributes.push({ key: "", value: "" });
     },
     save() {
-      window.trackManager.track("lc_on_attribute_save");
 
       try {
 
@@ -193,11 +191,9 @@ export default {
       }
     },
     remove() {
-      window.trackManager.track("lc_on_attribute_remove");
       this.$emit("remove", { lc_id: this.rawInfoID });
     },
     deleteItem(index) {
-      window.trackManager.track("lc_on_element_delete");
       this.localAttributes.splice(index, 1);
     },
     copyBro() {
