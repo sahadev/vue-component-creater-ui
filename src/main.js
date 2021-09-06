@@ -6,6 +6,8 @@ import AntdUI from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import APP from "./App.vue";
 
+import "./assets/nestable.css"
+
 Vue.use(ElementUI);
 Vue.use(AntdUI);
 

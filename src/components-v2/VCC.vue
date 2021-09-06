@@ -38,7 +38,7 @@
       <lc-code :rawCode="code" :codeDialogVisible.sync="codeDialogVisible">
       </lc-code>
       <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" :visible.sync="structureVisible"
-        @codeRefresh="generateVueCode">
+        @codeRefresh="generateVueCode" @onLevelChange="onLevelChange">
       </code-structure>
     </div>
 
@@ -55,6 +55,7 @@ import { splitInit } from "../libs/split-init";
 import { MainPanelProvider } from "../libs/main-panel";
 import ToolsBar from "./ToolsBar";
 import { initContainerForLine } from "@/utils/lineHelper";
+
 const keymaster = require('keymaster');
 
 import AttributeInput from "../components/AttributeInput";
@@ -207,6 +208,11 @@ export default {
     onSaveAttr({ resultList, lc_id }) {
       this.mainPanelProvider.saveAttribute(resultList, lc_id);
     },
+
+    onLevelChange(removeID, movePath){
+      this.mainPanelProvider.onLevelChange(removeID, movePath);
+    },
+
     generateVueCode() { },
     onRemove({ lc_id }) {
       this.mainPanelProvider.remove(lc_id);

@@ -11,8 +11,21 @@
       <el-row :gutter="20" style="height:0px;flex-grow:1;">
         <el-col :span="16" style="height: 100%;">
           <div style="overflow: scroll;height:100%; margin: 0 20px;padding: 10px;">
-            <v-tree :radio="true" :canDeleteRoot="false" :data='treeData' :draggable='false' :halfcheck='false'
-              :multiple="false" @node-click="onNodeClick" />
+
+            <vue-nestable v-model="treeData" @change="onLevelChange">
+              <template slot-scope="{ item }">
+                <vue-nestable-handle :item="item">
+                  拖
+                </vue-nestable-handle>
+
+                <span @click="onNodeClick(item)">{{ item.text }}</span>
+              </template>
+
+              <div slot="placeholder">
+                <b>The editor is empty.</b>
+              </div>
+            </vue-nestable>
+
           </div>
         </el-col>
         <el-col :span="8">
@@ -29,14 +42,15 @@
 
 <script>
 import "./halower-tree.min.css";
-import { VTree } from '@/libs/v2-tree'
-import { isObject } from "@/utils/common";
+import { isObject, getRawComponentKey, getRawComponentContent } from "@/utils/common";
+import { VueNestable, VueNestableHandle } from 'vue-nestable';
 
 export default {
   props: ['visible'],
   components: {
-    VTree,
     AttributeInput: resolve => { require(["./AttributeInput"], resolve) },
+    VueNestable,
+    VueNestableHandle
   },
 
   data() {
@@ -61,14 +75,12 @@ export default {
     codeRefresh() {
       this.$emit('codeRefresh');
     },
-
-    // 获取这个节点的key
-    getRawComponentKey(__rawVueInfo__) {
-      return Object.keys(__rawVueInfo__)[0];
+    onLevelChange(value, options) {
+      this.$emit('onLevelChange', value.id, options.pathTo);
     },
 
     convertStructure(rawInfo) {
-      const title = this.getRawComponentKey(rawInfo);
+      const title = getRawComponentKey(rawInfo);
       const object = rawInfo[title];
       const children = [];
       if (isObject(object)) {
@@ -92,10 +104,11 @@ export default {
         }
 
         return {
-          title: title,
+          text: title,
           expanded: true,
           children: children,
           rawInfo: rawInfo,
+          id: getRawComponentContent(rawInfo).lc_id
         }
       } else {
         return null;

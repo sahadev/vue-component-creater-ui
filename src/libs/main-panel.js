@@ -211,7 +211,7 @@ export class MainPanelProvider {
 
         // 拖入预览容器释放时的处理
         renderControlPanel.addEventListener("drop", (event) => {
-            if(!this.currentPointDropInfo.target){
+            if (!this.currentPointDropInfo.target) {
                 return;
             }
 
@@ -357,10 +357,38 @@ export class MainPanelProvider {
     }
 
     /**
+     * 移动一个节点到另一个节点
+     * @param {*} removeID 被移动的节点
+     * @param {*} movePath 移动的路径
+     */
+    onLevelChange(removeID, movePath) {
+        this.backup();
+
+        const removedNodeArray = this.remove(removeID, false);
+        // 去除根节点路径，以便完全匹配
+        movePath.splice(0, 1)
+
+        let rootNode = this._rawDataStructure;
+        let lastIndex = -1;
+        for (let i = 0; i < movePath.length - 1; i++) {
+            rootNode = getRawComponentContent(rootNode).__children[movePath[i]];
+            lastIndex = movePath[i + 1];
+        }
+
+        if (rootNode && removedNodeArray.length > 0) {
+            getRawComponentContent(rootNode).__children.splice(lastIndex, 0, removedNodeArray[0]);
+        }
+
+        // 渲染当前的变更
+        this.render(this._rawDataStructure);
+    }
+
+    /**
      * 移除一个节点
      * @param {*} lc_id 
      */
-    remove(lc_id) {
+    remove(lc_id, backup = true) {
+        let removeNodes = null;
         const readyForDeleteElement = document.querySelector(`[lc_id="${lc_id}"]`);
         if (readyForDeleteElement) {
             const parentElementNode = findCodeElemNode(readyForDeleteElement.parentElement);
@@ -376,8 +404,8 @@ export class MainPanelProvider {
                         return getRawComponentContent(item).lc_id == lc_id;
                     });
 
-                    this.backup();
-                    childrenArray.splice(index, 1);
+                    backup && this.backup();
+                    removeNodes = childrenArray.splice(index, 1);
                     this.eventEmitter.emit("onNodeDeleted");
 
                     // 渲染当前的变更
@@ -391,6 +419,8 @@ export class MainPanelProvider {
         } else {
             console.warn(`没有发现lc_id: ${lc_id}所对应的Dom节点`);
         }
+
+        return removeNodes;
     }
 
     /**
