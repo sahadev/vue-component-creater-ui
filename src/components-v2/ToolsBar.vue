@@ -1,30 +1,31 @@
 <template>
   <div class="top-tools-bar">
 
-    <div class="edit">
-      <el-tooltip class="item" effect="dark" content="ctrl + z" placement="bottom-start">
-        <el-link type="primary" @click="$emit('undo')">撤销(Undo)</el-link>
-      </el-tooltip>
-      <el-link type="primary" @click="$emit('redo')">重做(Redo)</el-link>
-    </div>
+    <el-row :gutter="20">
+      <el-col :span="3">
+        <div class="edit">
+          <el-tooltip class="item" effect="dark" content="ctrl + z" placement="bottom-start">
+            <el-link type="primary" @click="$emit('undo')" style="margin-right: 3px;">Undo</el-link>
+          </el-tooltip>
+          <el-link type="primary" @click="$emit('redo')">Redo</el-link>
+        </div>
+      </el-col>
+      <el-col :span="3">
+        <el-link type="primary" @click="onPreviewModeChange">{{previewMode ? 'Desktop' : 'Mobile'}}
+          Mode</el-link>
+      </el-col>
+      <el-col :span="3">
+        <div style="display:inline-block;">
+          <el-link type="primary" @click="onEditModeChange">{{editMode ? 'View' : 'Edit'}}
+            Mode</el-link>
+        </div>
+      </el-col>
+      <el-col :span="10">
+        <el-link type="primary" @click="$emit('structureVisible')">Inspect Components
+          Structure</el-link>
+      </el-col>
+    </el-row>
 
-    <div style="display:inline-block;">
-      <span>View Mode: </span>
-      <el-switch v-model="previewMode" active-color="#13ce66" inactive-color="#13ce66"
-        active-icon-class="el-icon-mobile" inactive-icon-class="el-icon-monitor" name="预览模式"
-        @change="$emit('onPreviewModeChange', $event)">
-      </el-switch>
-    </div>
-
-    <div style="display:inline-block;">
-      <span>Edit Mode: </span>
-      <el-switch v-model="editMode" active-color="#13ce66" name="编辑模式" @change="$emit('onEditModeChange', $event)">
-      </el-switch>
-    </div>
-
-    <el-link :underline="false" style="margin-left: 10px;" @click="$emit('structureVisible')"><img
-        style="width: 20px;vertical-align: bottom;margin-right:5px;" :src="iconTreeStructure">Inspect Components
-      Structure</el-link>
   </div>
 </template>
 
@@ -36,7 +37,6 @@ export default {
     return {
       previewMode: false,
       editMode: true,
-      iconTreeStructure: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/tree-structure.png"),
     };
   },
   watch: {},
@@ -57,6 +57,16 @@ export default {
     logout() {
       window.ssoLogin.logout()
     },
+
+    onPreviewModeChange() {
+      this.previewMode = !this.previewMode;
+      this.$emit('onPreviewModeChange', this.previewMode);
+    },
+
+    onEditModeChange() {
+      this.editMode = !this.editMode;
+      this.$emit('onEditModeChange', this.editMode);
+    }
   },
   fillter: {},
 };

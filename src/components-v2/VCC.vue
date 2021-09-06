@@ -364,6 +364,13 @@ export default {
 </style>
 
 <style lang="scss">
+
+.icon-s {
+  font-size: 14px;
+  color: #000;
+  margin: 0 2px;
+}
+
 .in-element {
   outline: 2px solid #4dba87 !important;
   position: relative;

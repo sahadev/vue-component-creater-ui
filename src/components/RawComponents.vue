@@ -274,12 +274,13 @@ nav {
   font-size: 32px;
   font-weight: 700;
   color: #4dba87;
-  transform: rotate(-90deg);
+  transform: rotate(-90deg) translateY(29px);
   white-space: nowrap;
   position: absolute;
-  bottom: 11px;
   left: 0;
-  transform-origin: -2% 10%;
+  height: 80px;
+  line-height: 80px;
+  transform-origin: 0% 50%;
 }
 
 .subtitle {
@@ -290,7 +291,6 @@ nav {
 
 .bottom-toolbar {
   flex-grow: 1;
-  position: relative;
   display: flex;
   flex-direction: column-reverse;
   padding: 20px 0;
