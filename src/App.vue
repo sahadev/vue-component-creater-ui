@@ -8,7 +8,7 @@ const initCodeStr = '{"template":{"lc_id":"root","__children":[{"div":{"class":"
 
 export default {
   components: {
-    vcc: () => import('./components-v2/VCC.vue')
+    vcc: () => import('./components/CodeEditor.vue')
   },
   data() {
     return {
