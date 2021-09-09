@@ -66,10 +66,7 @@ export default {
   data() {
     return {
       code: dedent`
-  // 以下代码中的方法会被注入到最终的代码中，如果命名与源代码有相同的，则会替换源代码
-  // 内部集成了axios，开发者可以直接通过axios发起网络请求，不过接口需要允许跨域。
-  // axios官方文档：https://www.npmjs.com/package/axios
-  export default {
+  {
       props: [],
       components: {},
 
