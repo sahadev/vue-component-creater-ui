@@ -138,6 +138,10 @@ export default {
     onCmFocus(codemirror) {
     },
     onCmBlur(codemirror) {
+    },
+
+    getEditorCode(){
+      return this.code;
     }
   }
 }
@@ -146,7 +150,6 @@ export default {
 <style lang="scss" scoped>
 .codemirror,
 .pre {
-  width: 50%;
   height: 100%;
   margin: 0;
   overflow: auto;

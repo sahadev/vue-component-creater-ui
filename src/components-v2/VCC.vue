@@ -23,6 +23,9 @@
     </div>
 
     <div class="copy">
+      <el-tooltip effect="dark" content="编辑JS逻辑" placement="top-start">
+        <div class="round-icon icon-js" alt="" @click="jsDialogVisible = true">JS</div>
+      </el-tooltip>
       <el-tooltip effect="dark" content="查看实时代码" placement="top-start">
         <img class="round-icon" :src="iconCode" alt="" @click="codeDialogVisible = true">
       </el-tooltip>
@@ -40,6 +43,7 @@
       <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" :visible.sync="structureVisible"
         @codeRefresh="generateVueCode" @onLevelChange="onLevelChange">
       </code-structure>
+      <CodeEditor :codeDialogVisible.sync="jsDialogVisible"></CodeEditor>
     </div>
 
     <!-- 辅助定位线 -->
@@ -50,17 +54,11 @@
 </template>
 
 <script>
-import RawComponents from "../components/RawComponents";
 import { splitInit } from "../libs/split-init";
 import { MainPanelProvider } from "../libs/main-panel";
-import ToolsBar from "./ToolsBar";
 import { initContainerForLine } from "@/utils/lineHelper";
 
 const keymaster = require('keymaster');
-
-import AttributeInput from "../components/AttributeInput";
-import CodeStructure from "../components/CodeStructure";
-import Code from "../components/Code";
 
 import styleData from "../map/style.index.js";
 import methodData from "../map/method.index.js";
@@ -76,11 +74,12 @@ export default {
   name: "vcc",
   props: ['initCodeEntity'],
   components: {
-    RawComponents,
-    ToolsBar,
-    AttributeInput,
-    CodeStructure,
-    "lc-code": Code,
+    RawComponents: () => import("../components/RawComponents"),
+    ToolsBar: () => import("./ToolsBar"),
+    AttributeInput: () => import("../components/AttributeInput"),
+    CodeStructure: () => import("../components/CodeStructure"),
+    "lc-code": () => import("../components/Code"),
+    CodeEditor: () => import('../components/JSCodeEditorDialog.vue')
   },
   data() {
     return {
@@ -88,6 +87,7 @@ export default {
       code: "",
       codeDialogVisible: false,
       structureVisible: false,
+      jsDialogVisible: false,
       iconCode: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-working-outline.svg"),
       iconClear: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/trash-outline.svg"),
 
@@ -209,7 +209,7 @@ export default {
       this.mainPanelProvider.saveAttribute(resultList, lc_id);
     },
 
-    onLevelChange(removeID, movePath){
+    onLevelChange(removeID, movePath) {
       this.mainPanelProvider.onLevelChange(removeID, movePath);
     },
 
@@ -299,7 +299,14 @@ export default {
   border-radius: 20px;
   padding: 10px;
   margin-left: 10px;
+  border: 0px;
   box-sizing: border-box;
+}
+
+.icon-js {
+  line-height: 20px;
+  color: white;
+  text-align: center;
 }
 
 .cross-flag {
@@ -364,7 +371,6 @@ export default {
 </style>
 
 <style lang="scss">
-
 .icon-s {
   font-size: 14px;
   color: #000;
