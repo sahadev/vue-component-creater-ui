@@ -92,7 +92,6 @@ export default {
     },
 
     formatCode() {
-      // 代码格式化工具需要赓续为支持Vue的，当前prettier对js代码不够友好
       return Prism.highlight(this.prettyCode, Prism.languages.markup, "html");
     }
   },

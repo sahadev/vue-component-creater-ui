@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="JS逻辑编辑" :visible.sync="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
     :center=true>
-    <CodeEditor ref="codeEditor"></CodeEditor>
+    <CodeEditor style="max-height: 65vh;" ref="codeEditor"></CodeEditor>
 
     <div style="text-align:center;padding: 10px;">
       <el-button type="primary" @click="onSave">确认修改</el-button>
