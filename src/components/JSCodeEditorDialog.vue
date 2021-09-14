@@ -43,6 +43,7 @@ export default {
     onSave() {
       const code = this.$refs.codeEditor.getEditorCode();
       this.$emit("saveJSCode", code);
+      this.handleClose();
     }
   },
   watch: {
