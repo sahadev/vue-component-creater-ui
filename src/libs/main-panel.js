@@ -27,6 +27,8 @@ export class MainPanelProvider {
         // 存储所有的渲染记录, 保存副本
         this.renderStack = [];
         this.redoStack = [];
+
+        this.externalJS = {};
     }
 
     /**
@@ -41,18 +43,17 @@ export class MainPanelProvider {
 
         this.initCodeGenerator();
 
-        // 生成展示代码
-        const copyForShow = cloneDeep(rawDataStructure);
-        removeAllID(copyForShow);
-
         console.groupCollapsed('---> for code generator warn <---');
-        const codeForShow = this.codeGenerator.outputVueCodeWithJsonObj(copyForShow);
-        this.eventEmitter.emit("codeCreated", codeForShow);
 
         const readyForMoutedElement = this.createMountedElement();
 
         // 生成原始代码
         const code = this.codeGenerator.outputVueCodeWithJsonObj(rawDataStructure);
+
+        // 生成展示代码
+        const codeForShow = code.replace(/\s{1}lc_id=".+"/g, '');
+        this.eventEmitter.emit("codeCreated", codeForShow);
+
         console.groupEnd();
 
         const { template, script, styles, customBlocks } = parseComponent(code);
@@ -101,10 +102,19 @@ export class MainPanelProvider {
      */
     initCodeGenerator() {
         this.codeGenerator = createNewCodeGenerator();
+        this.codeGenerator.setExternalJS(this.externalJS);
     }
 
     getControlPanelRoot() {
         return document.getElementById('render-control-panel');
+    }
+
+    saveJSCode(code) {
+        const temp = code.replace(/.+\*\/\s*/gs, "");
+        const JSCodeInfo = eval(`(function(){return ${temp}})()`);
+        this.externalJS = JSCodeInfo;
+        this.codeGenerator.setExternalJS(JSCodeInfo);
+        this.reRender();
     }
 
     /**

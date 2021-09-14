@@ -43,7 +43,7 @@
       <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" :visible.sync="structureVisible"
         @codeRefresh="generateVueCode" @onLevelChange="onLevelChange">
       </code-structure>
-      <CodeEditor :codeDialogVisible.sync="jsDialogVisible"></CodeEditor>
+      <CodeEditor :codeDialogVisible.sync="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
     </div>
 
     <!-- 辅助定位线 -->
@@ -224,6 +224,10 @@ export default {
     undo() {
       this.mainPanelProvider.undo();
     },
+
+    saveJSCode(code){
+      this.mainPanelProvider.saveJSCode(code);
+    }
   },
   fillter: {},
 };

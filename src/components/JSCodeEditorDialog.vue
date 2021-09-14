@@ -42,9 +42,7 @@ export default {
     },
     onSave() {
       const code = this.$refs.codeEditor.getEditorCode();
-      const temp = code.replace(/.+\*\/\s*/gs, "");
-      const JSCodeInfo = eval(`(function(){return ${temp}})()`);
-      console.info(JSCodeInfo.methods.request.toString());
+      this.$emit("saveJSCode", code);
     }
   },
   watch: {
