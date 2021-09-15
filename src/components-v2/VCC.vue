@@ -225,7 +225,7 @@ export default {
       this.mainPanelProvider.undo();
     },
 
-    saveJSCode(code){
+    saveJSCode(code) {
       this.mainPanelProvider.saveJSCode(code);
     }
   },
@@ -371,6 +371,7 @@ export default {
 
 .mark-element-unit {
   opacity: 0.5;
+  outline: red 2px solid;
 }
 </style>
 
@@ -397,6 +398,7 @@ export default {
   color: white;
   left: 0 !important;
   top: 0 !important;
+  transform: translateY(-100%);
   position: absolute;
   font-size: 12px;
   line-height: 12px;
