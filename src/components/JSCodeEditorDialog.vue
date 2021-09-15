@@ -5,8 +5,8 @@
 
     <div style="text-align:center;padding: 10px;">
       <el-button type="primary" @click="onSave">确认修改</el-button>
-      <div style="color: #f5222d; font-size:12px; margin-top:5px;">Tips: 确认修改之后将会影响最终生成的代码逻辑</div>
-
+      <div style="color: #6c6c6c; font-size:12px; margin-top:5px;">Tips: 确认修改之后将会影响最终生成的代码逻辑</div>
+      <div v-if="error" style="color: red; font-size:12px; margin-top:5px;">请检查语法错误：{{error}}</div>
     </div>
   </el-dialog>
 
@@ -23,6 +23,7 @@ export default {
 
   data() {
     return {
+      error: ''
     };
   },
   beforeCreate() { },
@@ -42,8 +43,18 @@ export default {
     },
     onSave() {
       const code = this.$refs.codeEditor.getEditorCode();
-      this.$emit("saveJSCode", code);
-      this.handleClose();
+      // 去掉注释
+      const temp = code.replace(/.+\*\/\s*/gs, "");
+      try {
+        // 转换为对象
+        const JSCodeInfo = eval(`(function(){return ${temp}})()`);
+        this.$emit("saveJSCode", JSCodeInfo);
+        this.handleClose();
+        this.error = '';
+      } catch (error) {
+        console.warn(error);
+        this.error = error;
+      }
     }
   },
   watch: {

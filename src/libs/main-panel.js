@@ -110,10 +110,8 @@ export class MainPanelProvider {
     }
 
     saveJSCode(code) {
-        const temp = code.replace(/.+\*\/\s*/gs, "");
-        const JSCodeInfo = eval(`(function(){return ${temp}})()`);
-        this.externalJS = JSCodeInfo;
-        this.codeGenerator.setExternalJS(JSCodeInfo);
+        this.externalJS = code;
+        this.codeGenerator.setExternalJS(code);
         this.reRender();
     }
 
