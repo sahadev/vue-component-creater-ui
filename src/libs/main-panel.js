@@ -58,8 +58,10 @@ export class MainPanelProvider {
 
         const { template, script, styles, customBlocks } = parseComponent(code);
 
-        let newScript = script.content.replace("export default", "")
-        newScript = newScript.replace(/\s+/g, "");
+        let newScript = script.content.replace(/\s*export default\s*/, "")
+
+        // 将xxx: () => {} 转换为xxx(){}
+        newScript = newScript.replace(/:\s*\(([\w\s]*)\)\s*=>/g,"\($1\)");
 
         const componentOptions = (new Function(`return ${newScript}`))();
 
