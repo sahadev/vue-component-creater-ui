@@ -1,9 +1,9 @@
 <template lc_id="RBFHni4iTs">
   <div lc_id="v91WiYWqPM" class="element-class">
+    <lc-button lc_id="pclmcAeMlS"></lc-button>
     <lc-table lc_id="pclmcAeMlS"></lc-table>
     <lc-form lc_id="ZyKgG7bSXm"></lc-form>
     <lc-image></lc-image>
-    <lc-button lc_id="pclmcAeMlS"></lc-button>
     <lc-form-base></lc-form-base>
     <lc-dialog></lc-dialog>
     <lc-icon lc_id="v31NGzWvBh"></lc-icon>
