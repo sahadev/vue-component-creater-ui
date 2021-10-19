@@ -2,8 +2,8 @@ import qs from 'query-string';
 import deepmerge from 'deepmerge';
 
 const DEFAULT_PARAMS = {
-  pkgs: ['https://static.imonkey.xueersi.com/vue-creater-platform/resource/vue.js', 'https://static.imonkey.xueersi.com/vue-creater-platform/resource/element-ui/index.js'],
-  css: ['https://static.imonkey.xueersi.com/vue-creater-platform/resource/element-ui/index.css'],
+  pkgs: ['https://static.imonkey.xueersi.com/vue-code-creater/resource/vue.js', 'https://static.imonkey.xueersi.com/vue-code-creater/resource/element-ui/index.js'],
+  css: ['https://static.imonkey.xueersi.com/vue-code-creater/resource/element-ui/index.css'],
 };
 
 let params = DEFAULT_PARAMS;
