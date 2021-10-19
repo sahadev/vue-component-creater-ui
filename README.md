@@ -2,7 +2,10 @@
 
 vcc是Low Code Generator中独立的Vue组件代码编辑器。可以独立运行。
 
-**通过它可以通过拖拽快速完成Vue组件代码骨架的搭建。详见后文视频介绍链接。** 点击这里快速预览效果:[https://vcc.surge.sh/](https://vcc.surge.sh/)
+**通过它可以通过拖拽快速完成Vue组件代码骨架的搭建。详见后文视频介绍链接。** 
+
+点击这里快速预览效果:
+[https://vcc.sahadev.tech/](https://vcc.sahadev.tech/)
 
 使用示例：
 ```vue
