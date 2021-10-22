@@ -1,7 +1,7 @@
 {
   "name": "lcg-vcc",
   "description": "Low Code Generator -> Vue Component Creater",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "private": false,
   "keywords": [
     "low-code",
@@ -11,7 +11,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --open --port 8008",
     "build:release": "vue-cli-service build",
-    "build": "vue-cli-service build --target lib --name vcc ./src/components-v2/VCC.vue",
+    "build": "vue-cli-service build --report --target lib --name vcc './src/components-v2/VCC.vue' && node ./src/script/distClear.js",
     "compileAndbuild:dev": "npm run compileComponent && vue-cli-service build",
     "lint": "vue-cli-service lint",
     "build:prod": "vue-cli-service build --mode production",

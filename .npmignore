@@ -7,3 +7,5 @@ vue.config.js
 .vscode/launch.json
 dist/vcc.umd.js
 dist/vcc.common.js
+
+*.html

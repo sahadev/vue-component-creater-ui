@@ -55,20 +55,11 @@
 
 <script>
 import { splitInit } from "../libs/split-init";
+// 这个文件不可以进行懒加载，它会导致运行时不可点击的行为，具体原因未知
 import { MainPanelProvider } from "../libs/main-panel";
 import { initContainerForLine } from "@/utils/lineHelper";
 
 const keymaster = require('keymaster');
-
-import styleData from "../map/style.index.js";
-import methodData from "../map/method.index.js";
-import dataData from "../map/data.index.js";
-import templateData from "../map/template.index.js";
-
-window.templateSourceMap = templateData;
-window.dataSourceMap = dataData;
-window.methodSourceMap = methodData;
-window.styleSourceMap = styleData;
 
 export default {
   name: "vcc",
@@ -114,8 +105,11 @@ export default {
   },
   beforeMount() { },
   mounted() {
+    Promise.all([import("../map/load")])
+      .then(res => {
+        this.init();
+      });
     splitInit();
-    this.init();
     this.initShortcut();
   },
   beforeUpdate() { },

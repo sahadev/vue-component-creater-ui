@@ -11,10 +11,6 @@ import "./assets/nestable.css"
 Vue.use(ElementUI);
 Vue.use(AntdUI);
 
-Vue.config.errorHandler = function (err, vm, info) {
-  console.error(err);
-}
-
 new Vue({
   el: "#app",
   render: (h) => h(APP),
