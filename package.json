@@ -12,6 +12,7 @@
     "serve": "vue-cli-service serve --open --port 8008",
     "build:release": "vue-cli-service build",
     "build": "vue-cli-service build --report --target lib --name vcc './src/components-v2/VCC.vue' && node ./src/script/distClear.js",
+    "build:win": "vue-cli-service build --report --target lib --name vcc ./src/components-v2/VCC.vue && node ./src/script/distClear.js",
     "compileAndbuild:dev": "npm run compileComponent && vue-cli-service build",
     "lint": "vue-cli-service lint",
     "build:prod": "vue-cli-service build --mode production",

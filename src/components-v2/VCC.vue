@@ -96,6 +96,11 @@ export default {
         this.$refs['attributeInput'].onHide();
       }
     },
+    initCodeEntity(newVal) {
+      if (newVal) {
+        this.mainPanelProvider.render(newVal);
+      }
+    }
   },
   computed: {
   },

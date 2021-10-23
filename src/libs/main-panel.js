@@ -6,7 +6,6 @@
  * 
  */
 import { parseComponent } from 'vue-template-compiler/browser';
-import Vue from 'vue';
 import { merge, insertPresetAttribute, getSplitTag, replaceRowID, updateLinkTree, findCodeElemNode, findRawVueInfo, removeAllID } from "@/utils/forCode";
 import { getRawComponentContent, getRawComponentKey, isObject } from '@/utils/common';
 import { createNewCodeGenerator } from "@/libs/code-generator-factory";

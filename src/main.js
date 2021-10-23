@@ -11,6 +11,9 @@ import "./assets/nestable.css"
 Vue.use(ElementUI);
 Vue.use(AntdUI);
 
+// 内部需要同样配置的全局Vue
+self.Vue = Vue;
+
 new Vue({
   el: "#app",
   render: (h) => h(APP),
