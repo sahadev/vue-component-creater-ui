@@ -174,8 +174,8 @@ export default {
             div: {
               class: "container",
               "lc_id": "container",
-              "div-lc-mark": "",
-              __text__: "Hello，欢迎使用LCG，请往此区域拖拽组件",
+              "style":"min-height: 100%; padding-bottom: 100px;",
+              __text__: "Hello，欢迎使用VCC编辑器，请往此区域拖拽组件",
             }
           }]
         },

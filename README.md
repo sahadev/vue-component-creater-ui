@@ -1,13 +1,53 @@
-# lcg-vcc介绍
+# LCG-VCC
 
-vcc是Low Code Generator中独立的Vue组件代码编辑器。可以独立运行。
+VCC是Low Code Generator中独立的Vue组件代码编辑器。可以独立运行。
 
 **通过它可以通过拖拽快速完成Vue组件代码骨架的搭建。详见后文视频介绍链接。** 
 
-点击这里快速预览效果:
-[https://vcc.sahadev.tech/](https://vcc.sahadev.tech/)
+> 点击这里快速预览效果：[https://vcc.sahadev.tech/](https://vcc.sahadev.tech/)
 
-使用示例：
+#### 使用示例
+##### 示例1
+直接在html中引用：
+```html
+<meta charset="utf-8">
+<title>vcc demo</title>
+<script src="https://unpkg.com/vue"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!-- 必须通过这种方式引入 -->
+<script src="https://static.imonkey.xueersi.com/vcc/vcc.umd.min.js"></script>
+
+
+<div id="app">
+  <vcc :initCodeEntity="codeStructure" @updateCodeEntity="onCodeUpdate"></vcc>
+</div>
+
+<script>
+// 以这样一段结构初始化VCC组件
+const initCodeStr = '{"template":{"lc_id":"root","__children":[{"div":{"class":"container","style":"min-height: 100%; padding-bottom: 100px;","lc_id":"container","__text__":"Hello，欢迎使用LCG，请往此区域拖拽组件","__children":[{"el-button":{"lc-mark":"","type":"danger","lc_id":"COAAYXizyI","__children":[],"__text__":"危险按钮","@click":"onButtonClick","size":"small"}}]}}]}}'
+new Vue({
+  components: {
+    vcc: vcc
+  },
+  data() {
+    return {
+      codeStructure: JSON.parse(initCodeStr),
+    }
+  },
+  methods: {
+    onCodeUpdate(newCodeEntity) {
+      // 编辑后新的代码结构
+    }
+  }
+}).$mount('#app')
+</script>
+```
+
+##### 示例2
+在Vue文件中引用：
 ```vue
 <template>
   <vcc :initCodeEntity="codeStructure" @updateCodeEntity="onCodeUpdate"></vcc>
@@ -18,26 +58,43 @@ vcc是Low Code Generator中独立的Vue组件代码编辑器。可以独立运�
 const initCodeStr = '{"template":{"lc_id":"root","__children":[{"div":{"class":"container","style":"min-height: 100%; padding-bottom: 100px;","lc_id":"container","__text__":"Hello，欢迎使用LCG，请往此区域拖拽组件","__children":[{"el-button":{"lc-mark":"","type":"danger","lc_id":"COAAYXizyI","__children":[],"__text__":"危险按钮","@click":"onButtonClick","size":"small"}}]}}]}}'
 
 export default {
-  components: {
-    vcc: () => import('lcg-vcc')
-  },
   data() {
     return {
       codeStructure: JSON.parse(initCodeStr),
     }
   },
-  mounted() {
-  },
   methods: {
     onCodeUpdate(newCodeEntity) {
-      // 编辑后新的代码结构
+      // 编辑后新的代码结构，可以进行保存
     }
   }
 }
 </script>
 ```
+注意不需要专门在components引入，而需要在index.html通过script引入（像示例1的引入方式）。这是因为VCC里面的组件采用了分包加载策略，子包依赖主包的相对路径。
 
-## 本地如何运行
+另外还需要将Vue变为全局可访问的，例如：
+```js
+import Vue from "vue";
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
+
+import APP from "./App.vue";
+
+Vue.use(ElementUI);
+
+// 内部需要同样配置的全局Vue
+self.Vue = Vue;
+
+new Vue({
+  el: "#app",
+  render: (h) => h(APP),
+});
+ 
+```
+
+注意ElementUI组件也是需要项目中安装好的。
+## 本地如何运行此项目
 
 首先进行安装:
 ```sh
