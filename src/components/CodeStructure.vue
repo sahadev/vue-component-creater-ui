@@ -42,6 +42,7 @@
 
 <script>
 import "./halower-tree.min.css";
+import "@/assets/nestable.css"
 import { isObject, getRawComponentKey, getRawComponentContent } from "@/utils/common";
 import { VueNestable, VueNestableHandle } from 'vue-nestable';
 
