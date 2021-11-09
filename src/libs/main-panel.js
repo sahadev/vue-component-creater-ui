@@ -259,12 +259,15 @@ export class MainPanelProvider {
      */
     enableEditMode() {
         const renderControlPanel = this.getControlPanelRoot();
-        // 这种方式可以禁用原节点所有的事件
-        const elClone = renderControlPanel.cloneNode(true);
-        renderControlPanel.parentNode.replaceChild(elClone, renderControlPanel);
-        this.eventEmitter.emit("mounted", elClone);
-        // 事件初始化
-        this.initComonentsEvent();
+        // 加一个延迟的作用是：给el-table这种绘制需要时间的组件留出充足的时间，否则会造成el-table渲染不到页面上
+        setTimeout(() => {
+            // 这种方式可以禁用原节点所有的事件
+            const elClone = renderControlPanel.cloneNode(true);
+            renderControlPanel.parentNode.replaceChild(elClone, renderControlPanel);
+            this.eventEmitter.emit("mounted", elClone);
+            // 事件初始化
+            this.initComonentsEvent();
+        }, 500);
     }
 
     /**
