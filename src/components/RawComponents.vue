@@ -24,6 +24,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-circle-check">基础组件数: {{ componentUnitNum }}
               </el-dropdown-item>
+              <el-dropdown-item icon="el-icon-document" command="lcg">LCG平台</el-dropdown-item>
               <el-dropdown-item icon="el-icon-document" command="help">说明文档</el-dropdown-item>
               <el-dropdown-item icon="el-icon-chat-line-round" command="chat">在线沟通</el-dropdown-item>
             </el-dropdown-menu>
@@ -126,6 +127,8 @@ export default {
         window.open('/doc')
       } else if (command === 'chat') {
         window.open('https://gitter.im/low_code_generator/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link')
+      } else if (command == 'lcg') {
+        window.open('https://lcg.sahadev.tech')
       }
     },
 
@@ -294,5 +297,19 @@ nav {
   display: flex;
   flex-direction: column-reverse;
   padding: 20px 0;
+}
+
+@-webkit-keyframes twinkling {
+  /*透明度由0到1*/
+  0% {
+    opacity: 0; /*透明度为0*/
+  }
+  100% {
+    opacity: 1; /*透明度为1*/
+  }
+}
+
+.el-icon-question {
+  -webkit-animation: twinkling 1s infinite ease-in-out alternate;
 }
 </style>

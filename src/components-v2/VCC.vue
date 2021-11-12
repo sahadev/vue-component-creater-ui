@@ -23,6 +23,10 @@
     </div>
 
     <div class="copy">
+      <div style="display:inline-block; width:260px;">
+        <el-alert title="遇到问题请查阅页面左下角的帮助" type="info"></el-alert>
+      </div>
+
       <el-tooltip effect="dark" content="编辑JS逻辑" placement="top-start">
         <div class="round-icon icon-js" alt="" @click="jsDialogVisible = true">JS</div>
       </el-tooltip>
@@ -174,7 +178,7 @@ export default {
             div: {
               class: "container",
               "lc_id": "container",
-              "style":"min-height: 100%; padding-bottom: 100px;",
+              "style": "min-height: 100%; padding-bottom: 100px;",
               __text__: "Hello，欢迎使用VCC编辑器，请往此区域拖拽组件",
             }
           }]
