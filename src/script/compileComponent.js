@@ -178,7 +178,7 @@ function findAObject(array, propertyName) {
   return module ? module[propertyName] : null;
 }
 
-module.exports = async function (path) {
+async function compiler(path) {
   if (!_path.isAbsolute(path)) path = _path.join(process.cwd(), path);
   if (fse.pathExistsSync(path)) {
     const xmlData = fs.readFileSync(path, {
@@ -277,4 +277,9 @@ function outputToFile(sourceObject, path) {
   const outputPath = _path.join(process.cwd(), path);
   fse.ensureFileSync(outputPath);
   fs.writeFileSync(outputPath, `export default ${JSON.stringify(sourceObject)}`);
+}
+
+module.exports = {
+  compiler,
+  ergodic
 }

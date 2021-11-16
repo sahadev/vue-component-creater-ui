@@ -47,10 +47,14 @@ export class MainPanelProvider {
         const readyForMoutedElement = this.createMountedElement();
 
         // 生成原始代码
-        const code = this.codeGenerator.outputVueCodeWithJsonObj(rawDataStructure);
+        let code = this.codeGenerator.outputVueCodeWithJsonObj(rawDataStructure);
+
+        // 将xxx: () => {} 转换为xxx(){}
+        code = code.replace(/:\s*\(([\w\s]*)\)\s*=>/g,"\($1\)");
 
         // 生成展示代码
-        const codeForShow = code.replace(/\s{1}lc_id=".+"/g, '');
+        let codeForShow = code.replace(/\s{1}lc_id=".+"/g, '');
+        codeForShow = codeForShow.replace(/\s{1}lc-mark/g, "");
         this.eventEmitter.emit("codeCreated", codeForShow);
 
         console.groupEnd();
@@ -58,9 +62,6 @@ export class MainPanelProvider {
         const { template, script, styles, customBlocks } = parseComponent(code);
 
         let newScript = script.content.replace(/\s*export default\s*/, "")
-
-        // 将xxx: () => {} 转换为xxx(){}
-        newScript = newScript.replace(/:\s*\(([\w\s]*)\)\s*=>/g,"\($1\)");
 
         const componentOptions = (new Function(`return ${newScript}`))();
 
@@ -249,7 +250,7 @@ export class MainPanelProvider {
                     this.eventEmitter.emit('onMerged');
                 });
 
-                this.render(window.tree.root);
+                this.render(this._rawDataStructure);
             }
         });
     }

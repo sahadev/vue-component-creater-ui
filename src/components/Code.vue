@@ -84,11 +84,16 @@ export default {
   },
   computed: {
     prettyCode() {
-      return prettier.format(this.rawCode, {
-        parser: "html",
-        plugins: [parserHtml],
-        vueIndentScriptAndStyle: true,
-      });
+      try {
+        return prettier.format(this.rawCode, {
+          parser: "html",
+          plugins: [parserHtml],
+          vueIndentScriptAndStyle: true,
+        });
+      } catch (error) {
+        return this.rawCode;
+      }
+
     },
 
     formatCode() {

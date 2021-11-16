@@ -1,4 +1,4 @@
-const compiler = require("./compileComponent.js");
+const { compiler } = require("./compileComponent.js");
 
 const glob = require("glob");
 const path = require("path");
@@ -14,13 +14,13 @@ glob(
   {
     cwd: componentsPath,
     absolute: true,
-    ignore: ['**/element/index.vue', '**/vant/index.vue', '**/iview/index.vue']
+    ignore: ["**/element/index.vue", "**/vant/index.vue", "**/iview/index.vue"],
   },
   function (er, files) {
     console.info(`正在对${files.length}个文件进行编译...`);
     files.forEach((filePath) => {
       console.info(`正在编译${filePath}`);
-      
+      compiler(filePath);
     });
   }
 );

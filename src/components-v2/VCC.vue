@@ -24,7 +24,8 @@
 
     <div class="copy">
       <div style="display:inline-block; width:260px;">
-        <el-alert title="遇到问题请查阅页面左下角的帮助" type="info"></el-alert>
+        <el-alert title="遇到问题？点击我查看帮助文档" @click="help" type="info">
+        </el-alert>
       </div>
 
       <el-tooltip effect="dark" content="编辑JS逻辑" placement="top-start">
@@ -230,6 +231,10 @@ export default {
 
     saveJSCode(code) {
       this.mainPanelProvider.saveJSCode(code);
+    },
+
+    help() {
+      window.open('/doc')
     }
   },
   fillter: {},
