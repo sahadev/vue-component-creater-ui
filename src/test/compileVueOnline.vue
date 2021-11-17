@@ -13,15 +13,8 @@
 
 <script>
 import { html2Json } from '../libs/bundle-html2json-esm';
+import { ergodic, findAObject } from '../utils/common';
 import vcc from '../components-v2/VCC.vue';
-import { ergodic } from '../utils/common';
-
-function findAObject(array, propertyName) {
-  const module = array.find(function (ele) {
-    return ele[propertyName];
-  });
-  return module || null;
-}
 
 export default {
   props: [],

@@ -54,3 +54,18 @@ export function ergodic(jsonObj) {
    }
  }
 }
+
+/**
+ * 从解析后的Vue结构中找到关键的根节点
+ * 根节点分包是：template/script/style
+ * 
+ * @param {*} array 
+ * @param {*} propertyName 
+ * @returns 
+ */
+export function findAObject(array, propertyName) {
+  const module = array.find(function (ele) {
+    return ele[propertyName];
+  });
+  return module || null;
+}

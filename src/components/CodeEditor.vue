@@ -135,6 +135,7 @@ export default {
 <style>
 .CodeMirror {
   height: 100% !important;
+  min-height: 50vh;
 }
 
 .vue-codemirror {

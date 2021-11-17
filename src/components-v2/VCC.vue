@@ -23,11 +23,15 @@
     </div>
 
     <div class="copy">
-      <div style="display:inline-block; width:260px;">
-        <el-alert title="遇到问题？点击我查看帮助文档" @click="help" type="info">
+      <div>
+        <el-alert title="遇到问题？" type="info">
+          <el-link :underline="false" @click="help" style="font-size: 12px; margin-top: 5px;">点击我查看帮助文档</el-link>
         </el-alert>
       </div>
 
+      <el-tooltip effect="dark" content="二次编辑" placement="top-start">
+        <div class="round-icon icon-vue" alt="" @click="vueDialogVisible = true">Vue</div>
+      </el-tooltip>
       <el-tooltip effect="dark" content="编辑JS逻辑" placement="top-start">
         <div class="round-icon icon-js" alt="" @click="jsDialogVisible = true">JS</div>
       </el-tooltip>
@@ -49,6 +53,7 @@
         @codeRefresh="generateVueCode" @onLevelChange="onLevelChange">
       </code-structure>
       <CodeEditor :codeDialogVisible.sync="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
+      <VueEditor :vueDialogVisible.sync="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
     </div>
 
     <!-- 辅助定位线 -->
@@ -75,7 +80,8 @@ export default {
     AttributeInput: () => import("../components/AttributeInput"),
     CodeStructure: () => import("../components/CodeStructure"),
     "lc-code": () => import("../components/Code"),
-    CodeEditor: () => import('../components/JSCodeEditorDialog.vue')
+    CodeEditor: () => import('../components/JSCodeEditorDialog.vue'),
+    VueEditor: () => import('../components/VueCodeParseDialog.vue')
   },
   data() {
     return {
@@ -84,6 +90,7 @@ export default {
       codeDialogVisible: false,
       structureVisible: false,
       jsDialogVisible: false,
+      vueDialogVisible: false,
       iconCode: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-working-outline.svg"),
       iconClear: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/trash-outline.svg"),
 
@@ -233,6 +240,10 @@ export default {
       this.mainPanelProvider.saveJSCode(code);
     },
 
+    codeParseSucess(vueCodeEntity) {
+      this.mainPanelProvider.render(vueCodeEntity);
+    },
+
     help() {
       window.open('/doc')
     }
@@ -309,13 +320,19 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 20px;
-  padding: 10px;
+  padding: 10px 0;
   margin-left: 10px;
   border: 0px;
   box-sizing: border-box;
 }
 
 .icon-js {
+  line-height: 20px;
+  color: white;
+  text-align: center;
+}
+
+.icon-vue {
   line-height: 20px;
   color: white;
   text-align: center;
