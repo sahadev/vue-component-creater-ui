@@ -92,6 +92,27 @@
                   </el-form-item>
               </el-form>
           </div>
+          <div lc_id="dyK4shOTgK">
+              <div class="demonstration-element" lc_id="OPhwbT6T5C">Descriptions 描述列表</div>
+              <el-descriptions title="用户信息" lc-mark lc_id="UcepzqrI8T">
+                  <el-descriptions-item label="用户名"  lc-mark lc_id="61qM0Gdqq3">kooriookami</el-descriptions-item>
+                  <el-descriptions-item label="手机号" lc_id="p9NL7l0+yS">18100000000</el-descriptions-item>
+                  <el-descriptions-item label="居住地" lc_id="gA+SOSpqT1">苏州市</el-descriptions-item>
+                  <el-descriptions-item label="备注" lc_id="MpLSTs1V1a">
+                      <el-tag size="small" lc_id="x+3JGPZLjM">学校</el-tag>
+                  </el-descriptions-item>
+                  <el-descriptions-item label="联系地址" lc_id="OoN2WiOmV9">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
+              </el-descriptions>
+              <el-descriptions title="垂直带边框列表" direction="vertical" :column="4" border lc-mark lc_id="szloMrlo+J">
+>                  <el-descriptions-item label="用户名" lc_id="eiu+5s736W">kooriookami</el-descriptions-item>
+                  <el-descriptions-item label="手机号" lc_id="5jN1FMg0JM">18100000000</el-descriptions-item>
+                  <el-descriptions-item label="居住地" :span="2" lc_id="0kqZ2EOUJ/">苏州市</el-descriptions-item>
+                  <el-descriptions-item label="备注" lc_id="iSiDebVpZg">
+                      <el-tag size="small" lc_id="gy68yv4szb">学校</el-tag>
+                  </el-descriptions-item>
+                  <el-descriptions-item label="联系地址" lc_id="FOfDHeKGh6">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
+              </el-descriptions>
+          </div>
       </div>
   </template>
   <script>
