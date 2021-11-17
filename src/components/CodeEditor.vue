@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import dedent from 'dedent'
 import { codemirror } from 'vue-codemirror'
 
 // base style
@@ -59,61 +58,25 @@ require(['axios'], axios => {
 });
 
 export default {
+  props: ['initCode'],
   name: 'code-editor',
   title: 'Mode: text/x-vue & Theme: monokai',
   components: {
     codemirror
   },
+  computed: {
+    code: {
+      get() {
+        return this.codeStore;
+      },
+      set(newVal) {
+        this.codeStore = newVal;
+      }
+    }
+  },
   data() {
     return {
-      code: dedent`
-  /**
-   *  以下代码中的方法会被注入到最终的代码中，如果命名与源代码有相同的，则会替换源代码
-   *  内部集成了axios，开发者可以直接通过axios发起网络请求，不过接口需要允许跨域。
-   *  可以通过https://apis.sahadev.tech/exchange?url=的方式访问实际地址可以解决跨域问题。
-   *  axios官方文档：https://www.npmjs.com/package/axios
-   */
-  {
-      props: [],
-      components: {},
-
-      data() {
-        return {
-
-        };
-      },
-      watch: {
-
-      },
-
-      computed: {
-
-      },
-
-      methods: {
-        request(){
-          axios.get('https://apis.sahadev.tech/exchange?url=https://www.baidu.com').then(res => console.info(res), err => console.error(err));
-        }
-      },
-
-      // 生命周期 start
-      beforeCreate() {},
-      created() {},
-
-      beforeMount() {},
-      mounted() {},
-
-      beforeUpdate() {},
-      updated() {},
-
-      beforeDestory() {},
-      destoryed() {},
-      // 生命周期 end
-
-      fillter: {},
-  };
-      
-      `,
+      codeStore: this.initCode,
       cmOption: {
         tabSize: 4,
         foldGutter: true,
@@ -145,7 +108,7 @@ export default {
     },
 
     getEditorCode() {
-      return this.code;
+      return this.codeStore;
     }
   }
 }

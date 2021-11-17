@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="JS逻辑编辑" :visible.sync="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
     :center=true>
-    <CodeEditor style="max-height: 65vh;" ref="codeEditor"></CodeEditor>
+    <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code"></CodeEditor>
 
     <div style="text-align:center;padding: 10px;">
       <el-button type="primary" @click="onSave">确认修改</el-button>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import dedent from 'dedent'
 import CodeEditor from './CodeEditor.vue'
 
 export default {
@@ -23,7 +24,55 @@ export default {
 
   data() {
     return {
-      error: ''
+      error: '',
+      code: dedent`
+  /**
+   *  以下代码中的方法会被注入到最终的代码中，如果命名与源代码有相同的，则会替换源代码
+   *  内部集成了axios，开发者可以直接通过axios发起网络请求，不过接口需要允许跨域。
+   *  可以通过https://apis.sahadev.tech/exchange?url=的方式访问实际地址可以解决跨域问题。
+   *  axios官方文档：https://www.npmjs.com/package/axios
+   */
+  {
+      props: [],
+      components: {},
+
+      data() {
+        return {
+
+        };
+      },
+      watch: {
+
+      },
+
+      computed: {
+
+      },
+
+      methods: {
+        request(){
+          axios.get('https://apis.sahadev.tech/exchange?url=https://www.baidu.com').then(res => console.info(res), err => console.error(err));
+        }
+      },
+
+      // 生命周期 start
+      beforeCreate() {},
+      created() {},
+
+      beforeMount() {},
+      mounted() {},
+
+      beforeUpdate() {},
+      updated() {},
+
+      beforeDestory() {},
+      destoryed() {},
+      // 生命周期 end
+
+      fillter: {},
+  };
+      
+      `
     };
   },
   beforeCreate() { },
