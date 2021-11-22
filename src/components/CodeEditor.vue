@@ -58,7 +58,7 @@ require(['axios'], axios => {
 });
 
 export default {
-  props: ['initCode'],
+  props: ['initCode', 'mode'],
   name: 'code-editor',
   title: 'Mode: text/x-vue & Theme: monokai',
   components: {
@@ -84,7 +84,7 @@ export default {
         lineNumbers: true,
         line: true,
         keyMap: "sublime",
-        mode: 'text/javascript',
+        mode: this.mode,
         theme: 'monokai',
         extraKeys: {
           'F11'(cm) {

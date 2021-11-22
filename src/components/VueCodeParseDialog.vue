@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="Vue二次编辑" :visible.sync="vueDialogVisible" width="70%" top="10vh" :before-close="handleClose"
     :center=true>
-    <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code"></CodeEditor>
+    <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/html"></CodeEditor>
 
     <div style="text-align:center;padding: 10px;">
       <el-button type="primary" @click="compile">开始解析</el-button>
