@@ -114,6 +114,22 @@ npm run serve
 [【拖拽式Vue组件代码生成平台(LCG)介绍视频-哔哩哔哩】https://b23.tv/FInuZ8](https://b23.tv/FInuZ8)
 [【LCG近期功能更新介绍-哔哩哔哩】https://b23.tv/SAHwVq](https://b23.tv/SAHwVq)
 
+## 贡献
+
+1. Fork 仓库
+2. 创建分支 (`git checkout -b my-new-feature`)
+3. 提交修改 (`git commit -am 'Add some feature'`)
+4. 推送 (`git push origin my-new-feature`)
+5. 创建 PR
+
+## 欢迎 fork 和反馈
+
+如有建议或意见，欢迎在 github [issues](https://github.com/sahadev/vue-component-creater-ui/issues) 区提问
+
+## 协议
+
+本仓库遵循 [MIT 协议](http://www.opensource.org/licenses/MIT)
+
 ## 有疑问？
 
 可以通过sahadev@foxmail.com给我发送邮件，我会及时回复的。
