@@ -1,7 +1,7 @@
 <template>
   <div class="top-tools-bar">
 
-    <el-row :gutter="20">
+    <el-row :gutter="22">
       <el-col :span="3">
         <div class="edit">
           <el-tooltip class="item" effect="dark" content="ctrl + z" placement="bottom-start">
@@ -24,6 +24,9 @@
         <el-link type="primary" @click="$emit('structureVisible')">Inspect Components
           Structure</el-link>
       </el-col>
+      <el-col :span="3">
+        <github-button href="https://github.com/sahadev/vue-component-creater-ui" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star sahadev/vue-component-creater-ui on GitHub">Star</github-button>
+      </el-col>
     </el-row>
 
     <a href="https://github.com/sahadev/vue-component-creater-ui" class="github-corner" aria-label="View source on GitHub">
@@ -42,9 +45,11 @@
 </template>
 
 <script>
+import GithubButton from 'vue-github-button'
+
 export default {
   props: [],
-  components: {},
+  components: { GithubButton },
   data() {
     return {
       previewMode: false,
