@@ -10,7 +10,7 @@
                       <el-radio label="btt" lc_id="iP/9XjMVBe">从下往上开</el-radio>
                   </el-radio-group>
                   <el-button @click="drawer = true" type="primary" style="margin-left: 16px;" disabled lc_id="hrOAKkng+k">点我打开</el-button>
-                  <el-drawer title="我是标题" :visible.sync="drawer" :direction="direction" :before-close="handleDrawerClose" lc_id="rXvMMLyeYl">
+                  <el-drawer title="我是标题" v-model="drawer" :direction="direction" :before-close="handleDrawerClose" lc_id="rXvMMLyeYl">
                       <span lc_id="mc44ZyLRo7">我来啦!</span>
                   </el-drawer>
               </div>

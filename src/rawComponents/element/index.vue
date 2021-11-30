@@ -13,18 +13,18 @@
   </div>
 </template>
 <script>
-import button from "./button";
-import icon from "./icon";
-import layout from "./layout";
-import container from "./container";
-import form from "./form";
+import button from "./button.vue";
 import table from "./table";
-import formBase from "./form-base";
-import dialog from "./dialog";
-import image from "./image";
-import final from "./final";
+// import icon from "./icon";
+// import layout from "./layout";
+// import container from "./container";
+// import form from "./form";
+// import formBase from "./form-base";
+// import dialog from "./dialog";
+// import image from "./image";
+// import final from "./final";
 
-import { deepLCEle } from "@/utils/initRawComponent";
+// import { deepLCEle } from "@/utils/initRawComponent";
 
 export default {
   data() {
@@ -34,22 +34,22 @@ export default {
     this.$emit('mounted');
     // 对所有拥有lc-mark的元素进行初始化
     let countComponentCount = 0;
-    deepLCEle(document.querySelector('.element-class'), () => {
-      countComponentCount++;
-    });
+    // deepLCEle(document.querySelector('.element-class'), () => {
+    //   countComponentCount++;
+    // });
   },
   methods: {},
   components: {
     "lc-button": button,
-    "lc-icon": icon,
-    "lc-form": form,
-    "lc-layout": layout,
-    "lc-container": container,
     "lc-table": table,
-    "lc-form-base": formBase,
-    "lc-dialog": dialog,
-    "lc-image": image,
-    "lc-final": final,
+    // "lc-icon": icon,
+    // "lc-form": form,
+    // "lc-layout": layout,
+    // "lc-container": container,
+    // "lc-form-base": formBase,
+    // "lc-dialog": dialog,
+    // "lc-image": image,
+    // "lc-final": final,
   },
 };
 </script>

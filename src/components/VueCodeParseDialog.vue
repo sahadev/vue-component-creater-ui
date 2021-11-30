@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="Vue二次编辑" :visible.sync="vueDialogVisible" width="70%" top="10vh" :before-close="handleClose"
+  <el-dialog title="Vue二次编辑" v-model="vueDialogVisible" width="70%" top="10vh" :before-close="handleClose"
     :center=true>
     <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/html"></CodeEditor>
 

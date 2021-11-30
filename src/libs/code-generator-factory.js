@@ -1,8 +1,7 @@
 // 代码生成对象工厂，每次初始化需要获取一个新的实例，所以工厂方法模式最为适用
 import { CodeGenerator } from "./bundle-core-esm";
 import { checkIsDataDirectives, checkIsMethodDirectives } from '@/libs/directiveCheck';
-
-const stringifyObject = require("stringify-object");
+import stringifyObject from '@/libs/stringify-object'
 
 export function createNewCodeGenerator() {
     return new CodeGenerator({

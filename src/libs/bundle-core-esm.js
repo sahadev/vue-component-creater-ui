@@ -1,7 +1,7 @@
 //该文件会遍历Object，获取关键的class,事件,data, 最终拼装为一个完整的SFC文件
-
-import stringifyObject from 'stringify-object';
-import _ from 'lodash';
+import stringifyObject from '@/libs/stringify-object'
+import merge from 'lodash-es/merge';
+import cloneDeep from 'lodash-es/cloneDeep';
 import prettier from 'prettier/standalone.js';
 import parserBabel from 'prettier/parser-babel.js';
 
@@ -422,14 +422,6 @@ const scriptTemplate = `{
     fillter: {},
   };`;
 
-const { merge, cloneDeep } = _;
-
-const rawAdd = Set.prototype.add;
-Set.prototype.add = function (value) {
-  if (typeof value === "string" && checkKeyword(value))
-    rawAdd.apply(this, arguments);
-};
-
 function checkKeyword(value) {
   return value != "true" && value != "false";
 }
@@ -499,7 +491,7 @@ function findVarFormExpression(expression) {
   }
 }
 
-class CodeGenerator {
+export class CodeGenerator {
 
   constructor(options = {}) {
     this.options = options;
@@ -629,23 +621,23 @@ class CodeGenerator {
       classes.forEach((item) => {
         // 处理多个空字符串
         if (!item) return;
-        this.classSet.add(item);
+        this.classSet.addeee(item);
       });
     } else if (/^v-on/g.test(key) || /^@/g.test(key)) {
       // 匹配@,v-on
       if (getVarName(value)) {
-        this.methodSet.add(value);
+        this.methodSet.addeee(value);
       }
     } else if (/^v-/g.test(key) || /^:+/g.test(key)) {
       // 优先使Method消费，因为有的:也是method
       if (this.options.checkIsMethodDirectives && this.options.checkIsMethodDirectives(key)) {
         value = getVarName(value);
-        value && this.methodSet.add(value);
+        value && this.methodSet.addeee(value);
       } else
         // 业务侧可能会全部消费/^:+/g.test(key)
         if (this.options.checkIsDataDirectives && this.options.checkIsDataDirectives(key)) {
           value = getVarName(value);
-          value && this.dataSet.add(value);
+          value && this.dataSet.addeee(value);
         } else {
           this.options.unSupportedKey && this.options.unSupportedKey(key, value);
         }
@@ -655,7 +647,7 @@ class CodeGenerator {
         // 用于匹配v-text {{}}
         const temp = findVarFormExpression(value);
         temp.forEach((element) => {
-          this.dataSet.add(element);
+          this.dataSet.addeee(element);
         });
       }
     } else {
@@ -693,4 +685,15 @@ class CodeGenerator {
   }
 }
 
-export { CodeGenerator };
+
+const rawAdd = Set.prototype.add;
+try {
+  //为何不能给add赋值？且没有报错？
+  Set.prototype.addeee = function (value) {
+    if (typeof value === "string" && checkKeyword(value))
+      rawAdd.apply(this, arguments);
+  };
+  // 经验证可以赋值，而代码会直接跳转至最后一行
+} catch (error) {
+  console.error(error);
+}

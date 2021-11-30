@@ -1,5 +1,5 @@
-import isEqual from "lodash/isEqual";
-import cryptoRandomString from "crypto-random-string";
+import isEqual from "lodash-es/isEqual";
+// import cryptoRandomString from "crypto-random-string";
 
 export function getRawComponentKey(__rawVueInfo__) {
     return Object.keys(__rawVueInfo__)[0];
@@ -50,7 +50,7 @@ export function ergodic(jsonObj) {
 
    // 添加ID
    if (!jsonObj["lc_id"]) {
-     jsonObj["lc_id"] = cryptoRandomString({ length: 10, type: "base64" });
+    //  jsonObj["lc_id"] = cryptoRandomString({ length: 10, type: "base64" });
    }
  }
 }

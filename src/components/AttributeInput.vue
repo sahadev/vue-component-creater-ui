@@ -1,11 +1,11 @@
 <template>
   <el-card class="attribute-container">
 
-    <center>
+    <div style="text-algin: center;">
       <el-switch v-model="editMode" active-text="自由编辑" inactive-text="约束编辑" active-color="#13ce66"
         inactive-color="#13ce66">
       </el-switch>
-    </center>
+    </div>
 
     <div style="margin-top: 20px;">
       <div name="1" v-show="!editMode">
@@ -44,8 +44,8 @@
       </div>
     </div>
 
-    <center style="margin-top: 10px;">
-      <el-tooltip class="item" effect="dark" content="新增属性 ctrl+a" placement="bottom">
+    <div style="margin-top: 10px;text-align:center;">
+      <!-- <el-tooltip class="item" effect="dark" content="新增属性 ctrl+a" placement="bottom">
         <el-button type="primary" class="center" @click="createNew" icon="el-icon-circle-plus-outline" circle>
         </el-button>
       </el-tooltip>
@@ -60,12 +60,11 @@
         <el-button v-if="enableBroButton" type="primary" class="center" icon="el-icon-copy-document" @click="copyBro"
           circle>
         </el-button>
-      </el-tooltip>
-
-      <center>
+      </el-tooltip> -->
+    <div style="text-algin: center;">
         <span class="shortcut-tip">支持快捷键操作</span>
-      </center>
-    </center>
+      </div>
+    </div>
 
   </el-card>
 </template>
@@ -73,7 +72,7 @@
 <script>
 import { getRawComponentKey, getRawComponentContent } from "@/utils/common";
 import { brotherEleEnum, copyBroCode } from "@/libs/bro-ele-config";
-const keymaster = require('keymaster');
+import keymaster from "keymaster"
 
 export default {
   props: ['__rawVueInfo__', 'enableRemoveButton', 'shortcutInitMode'],// __rawVueInfo__为当前编辑的原始代码对象, shortcutInitMode快捷键的初始化方式
@@ -117,8 +116,6 @@ export default {
 
     initShortcut() {
       console.log(`init by mode: ${this.shortcutInitMode}`)
-
-
       keymaster('⌘+a, ctrl+a', () => {
         if (this.enable) {
           this.createNew();

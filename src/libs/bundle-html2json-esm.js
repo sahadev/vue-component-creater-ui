@@ -1,6 +1,5 @@
 //该文件用于解析HTML，输出为Object对象
-
-const htmlparser2 = require("htmlparser2");
+import htmlparser2 from "htmlparser2"
 
 function getNodeContent(node) {
   return node[Object.keys(node)[0]];

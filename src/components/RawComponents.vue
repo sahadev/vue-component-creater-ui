@@ -34,11 +34,11 @@
     </nav>
 
     <nav v-if="currentSelectBrand.titleArray && currentSelectBrand.titleArray.length > 0">
-      <center style="margin-bottom:10px;">
+      <div style="margin-bottom:10px;text-align:center;">
         <div style="padding:5px;font-size:12px;color:grey;">快速查找需要的</div>
         <el-autocomplete class="inline-input" v-model="componentSearch" :fetch-suggestions="querySearch" size="mini"
           placeholder="请输入..." @select="handleSelect"></el-autocomplete>
-      </center>
+      </div>
       <div class="dismiss-scroll">
         <div v-for="(item, index) in currentSelectBrand.titleArray" :key="item.title" class="second-nav"
           :class="{'active':currentSelectBrand.selectIndex === index}" @click="selectSubnav(currentSelectBrand, index)">
@@ -60,8 +60,8 @@
 // import vant from "../rawComponents/vant";
 // import iview from "../rawComponents/iview";
 // import quasar from "../rawComponents/quasar";
-import raw from "../rawComponents/raw";
-import ele from "../rawComponents/element";
+import raw from "../rawComponents/raw/index.vue";
+import ele from "../rawComponents/element/index.vue";
 
 export default {
   data() {
@@ -94,7 +94,7 @@ export default {
         enable: false
       },],
 
-      currentIndex: 1
+      currentIndex: 0
     };
   },
   methods: {

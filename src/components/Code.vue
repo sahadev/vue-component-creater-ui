@@ -1,22 +1,21 @@
 <template>
-  <el-dialog title="代码预览" :visible.sync="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
-    :center=true>
+  <el-dialog title="代码预览" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
     <pre style="max-height: 60vh;">
     <code v-html="formatCode"></code>
     </pre>
     <div>
-      <center style="color: #666; font-size: 12px;">使用代码前请确认相应的组件库已集成至项目</center>
+      <div style="color: #666; font-size: 12px;text-align">使用代码前请确认相应的组件库已集成至项目</div>
     </div>
-    <span slot="footer">
-
-      <el-tooltip effect="dark" content="拷贝" placement="left">
-        <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
-      </el-tooltip>
-      <el-tooltip effect="dark" content="下载" placement="right">
-        <img class="round-icon" :src="iconDownload" alt="" @click="download">
-      </el-tooltip>
-
-    </span>
+    <template v-slot:footer>
+      <span>
+        <el-tooltip effect="dark" content="拷贝" placement="left">
+          <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
+        </el-tooltip>
+        <el-tooltip effect="dark" content="下载" placement="right">
+          <img class="round-icon" :src="iconDownload" alt="" @click="download">
+        </el-tooltip>
+      </span>
+    </template>
   </el-dialog>
 
 </template>

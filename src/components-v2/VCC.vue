@@ -16,7 +16,7 @@
           </div>
         </div>
         <attribute-input :enableRemoveButton="true" class="attribute" @save="onSaveAttr" @remove="onRemove"
-          ref="attributeInput" shortcutInitMode="hand" @codeRefresh="generateVueCode" style="display:none;"
+          ref="attributeInput" shortcutInitMode="hand" @codeRefresh="generateVueCode"
           :__rawVueInfo__="currentEditRawInfo">
         </attribute-input>
       </div>
@@ -41,19 +41,21 @@
       <el-tooltip effect="dark" content="清空当前编辑内容" placement="top-start">
         <el-popconfirm confirmButtonText="确认" cancelButtonText="点错了" icon="el-icon-info" iconColor="red"
           title="点我将清空所有编辑的内容, 确认吗?" @onConfirm="clear">
-          <img slot="reference" class="round-icon" :src="iconClear" alt="">
+          <template #reference>
+            <img class="round-icon" :src="iconClear" alt="">
+          </template>
         </el-popconfirm>
       </el-tooltip>
     </div>
 
     <div>
-      <lc-code :rawCode="code" :codeDialogVisible.sync="codeDialogVisible">
+      <lc-code :rawCode="code" v-model:codeDialogVisible="codeDialogVisible">
       </lc-code>
-      <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" :visible.sync="structureVisible"
+      <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" v-model="structureVisible"
         @codeRefresh="generateVueCode" @onLevelChange="onLevelChange">
       </code-structure>
-      <CodeEditor :codeDialogVisible.sync="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
-      <VueEditor :vueDialogVisible.sync="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
+      <CodeEditor v-model:codeDialogVisible="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
+      <VueEditor v-model:vueDialogVisible="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
     </div>
 
     <!-- 辅助定位线 -->
@@ -64,24 +66,24 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { splitInit } from "../libs/split-init";
-// 这个文件不可以进行懒加载，它会导致运行时不可点击的行为，具体原因未知
+// // 这个文件不可以进行懒加载，它会导致运行时不可点击的行为，具体原因未知
 import { MainPanelProvider } from "../libs/main-panel";
 import { initContainerForLine } from "@/utils/lineHelper";
-
-const keymaster = require('keymaster');
+import keymaster from "keymaster"
 
 export default {
   name: "vcc",
   props: ['initCodeEntity'],
   components: {
-    RawComponents: () => import("../components/RawComponents"),
-    ToolsBar: () => import("./ToolsBar"),
-    AttributeInput: () => import("../components/AttributeInput"),
-    CodeStructure: () => import("../components/CodeStructure"),
-    "lc-code": () => import("../components/Code"),
-    CodeEditor: () => import('../components/JSCodeEditorDialog.vue'),
-    VueEditor: () => import('../components/VueCodeParseDialog.vue')
+    RawComponents: defineAsyncComponent(() => import("@/components/RawComponents.vue")),
+    ToolsBar: defineAsyncComponent(() => import("./ToolsBar")),
+    AttributeInput: defineAsyncComponent(() => import("../components/AttributeInput")),
+    CodeStructure: defineAsyncComponent(() => import("../components/CodeStructure")),
+    "lc-code": defineAsyncComponent(() => import("../components/Code")),
+    CodeEditor: defineAsyncComponent(() => import('../components/JSCodeEditorDialog.vue')),
+    VueEditor: defineAsyncComponent(() => import('../components/VueCodeParseDialog.vue'))
   },
   data() {
     return {
@@ -101,7 +103,7 @@ export default {
     currentEditRawInfo(newValue) {
       const attributeContainter = document.querySelector(".attribute");
       if (newValue) {
-        attributeContainter.style = "right:10px;";
+        attributeContainter.style = "right:10px; display:block;";
         this.$refs['attributeInput'].onShow();
       } else {
         attributeContainter.style = "right: calc(-300px - 20px); display:none;";

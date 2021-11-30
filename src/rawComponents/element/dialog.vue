@@ -4,9 +4,9 @@
               <div class="demonstration-element" lc_id="tr6tZHyaax" @click="dialogVisible = true">Dialog 对话框</div>
               <div lc-mark lc_id="KqRoagSJYH">
                   <el-button type="text" lc_id="IbBWKHUvQx">直接拖我看结果</el-button>
-                  <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose" lc_id="kl38EP183o">
+                  <el-dialog title="提示" v-model="dialogVisible" width="30%" :before-close="handleClose" lc_id="kl38EP183o">
                       <span lc_id="o7tyPWHtXQ">这是一段信息</span>
-                      <span slot="footer" class="dialog-footer" lc_id="4xYQZAAk6B">
+                      <span footer class="dialog-footer" lc_id="4xYQZAAk6B">
                           <el-button @click="dialogVisible = false" lc_id="nlc9K6Rhcp">取 消</el-button>
                           <el-button type="primary" @click="dialogVisible = false" lc_id="mgZZJ553WQ">确 定</el-button>
                       </span>

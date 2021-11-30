@@ -1,19 +1,19 @@
 <template>
-  <el-drawer :visible.sync="drawer" :with-header="false" size="70%" direction="btt">
+  <el-drawer v-model="drawer" :with-header="false" size="70%" direction="btt">
     <div class="container">
 
-      <center>组件结构检视图
+      <div style="text-algin: center;">组件结构检视图
         <br>
         <span style="font-size:12px;">Components
           Structure</span>
-      </center>
+      </div>
 
       <el-row :gutter="20" style="height:0px;flex-grow:1;">
         <el-col :span="16" style="height: 100%;">
           <div style="overflow: scroll;height:100%; margin: 0 20px;padding: 10px;">
 
             <vue-nestable v-model="treeData" @change="onLevelChange">
-              <template slot-scope="{ item }">
+              <template v-slot="{ item }">
                 <vue-nestable-handle :item="item">
                   <i class="el-icon-rank icon-s"></i>
                 </vue-nestable-handle>
@@ -21,9 +21,9 @@
                 <span @click="onNodeClick(item)">{{ item.text }}</span>
               </template>
 
-              <div slot="placeholder">
-                <b>The editor is empty.</b>
-              </div>
+              <template v-slot:placeholder>
+                <div><b>The editor is empty.</b></div>
+              </template>
             </vue-nestable>
 
           </div>

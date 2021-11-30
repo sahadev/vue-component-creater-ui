@@ -9,8 +9,8 @@ import { parseComponent } from 'vue-template-compiler/browser';
 import { merge, insertPresetAttribute, getSplitTag, replaceRowID, updateLinkTree, findCodeElemNode, findRawVueInfo, removeAllID } from "@/utils/forCode";
 import { getRawComponentContent, getRawComponentKey, isObject } from '@/utils/common';
 import { createNewCodeGenerator } from "@/libs/code-generator-factory";
-const EventEmitter = require('eventemitter3');
-const { cloneDeep } = require('lodash');
+import EventEmitter from 'eventemitter3'
+import { cloneDeep } from 'lodash-es';
 
 /**
  * 主控制面板辅助类，用于代码的生成与绘制
@@ -64,17 +64,16 @@ export class MainPanelProvider {
         let newScript = script.content.replace(/\s*export default\s*/, "")
 
         const componentOptions = (new Function(`return ${newScript}`))();
-
-        const res = Vue.compile(template.content);
+        const render = compile(template.content);
 
         componentOptions.render = function () {
-            const rootVNode = res.render.apply(this, arguments);
+            const rootVNode = render.apply(this, arguments);
             return rootVNode;
         };
-        componentOptions.staticRenderFns = res.staticRenderFns;
+        // componentOptions.staticRenderFns = render.staticRenderFns;
 
         // 渲染当前代码
-        new Vue(componentOptions).$mount(readyForMoutedElement);
+        createBaseApp(componentOptions).mount(readyForMoutedElement);
 
         // 拍平数据结构
         this.editMode && this.flatDataStructure(rawDataStructure);

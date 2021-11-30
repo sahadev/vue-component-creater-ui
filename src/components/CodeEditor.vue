@@ -50,12 +50,12 @@ import 'codemirror/addon/fold/indent-fold.js'
 import 'codemirror/addon/fold/markdown-fold.js'
 import 'codemirror/addon/fold/xml-fold.js'
 
-require(['axios'], axios => {
-  self.axios = axios.create({
-    baseURL: '',
-    timeout: 1000,
-  });
-});
+// require(['axios'], axios => {
+//   self.axios = axios.create({
+//     baseURL: '',
+//     timeout: 1000,
+//   });
+// });
 
 export default {
   props: ['initCode', 'mode'],

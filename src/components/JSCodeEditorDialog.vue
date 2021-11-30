@@ -1,7 +1,7 @@
 <template>
-  <el-dialog title="JS逻辑编辑" :visible.sync="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
+  <el-dialog title="JS逻辑编辑" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
     :center=true>
-    <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/javascript"></CodeEditor>
+    <!-- <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/javascript"></CodeEditor> -->
 
     <div style="text-align:center;padding: 10px;">
       <el-button type="primary" @click="onSave">确认修改</el-button>
@@ -14,12 +14,12 @@
 
 <script>
 import dedent from 'dedent'
-import CodeEditor from './CodeEditor.vue'
+// import CodeEditor from './CodeEditor.vue'
 
 export default {
   props: ['codeDialogVisible'],
   components: {
-    CodeEditor
+    // CodeEditor
   },
 
   data() {
@@ -88,7 +88,7 @@ export default {
       // 网络请求，可选
     },
     handleClose() {
-      this.$emit("update:codeDialogVisible", false);
+      // this.$emit("update:codeDialogVisible", false);
     },
     onSave() {
       const code = this.$refs.codeEditor.getEditorCode();
