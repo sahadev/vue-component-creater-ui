@@ -138,4 +138,6 @@ npm run serve
 
 <img width="300" src="https://static.imonkey.xueersi.com/vcc/wechat_group.jpg">
 
+如果遇到群二维码过期的情况，可以加我微信：SAHADEV-smile，我拉你入群。加我微信时请备注VCC。
+
 另外我也特别希望可以和大家一起做这个项目。这个项目目前主要面对的是前端开发者。后期可以面向后端开发者与产品与UE。
