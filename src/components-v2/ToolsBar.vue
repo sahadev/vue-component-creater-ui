@@ -25,11 +25,13 @@
           Structure</el-link>
       </el-col>
       <el-col :span="3">
-        <github-button href="https://github.com/sahadev/vue-component-creater-ui" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star sahadev/vue-component-creater-ui on GitHub">Star</github-button>
+        <github-button href="https://github.com/sahadev/vue-component-creater-ui" data-icon="octicon-star"
+          data-show-count="true" aria-label="Star sahadev/vue-component-creater-ui on GitHub">Star</github-button>
       </el-col>
     </el-row>
 
-    <a href="https://github.com/sahadev/vue-component-creater-ui" class="github-corner" aria-label="View source on GitHub">
+    <a href="https://github.com/sahadev/vue-component-creater-ui" class="github-corner"
+      aria-label="View source on GitHub">
       <svg width="40" height="40" viewBox="0 0 250 250"
         style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
         <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
