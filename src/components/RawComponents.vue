@@ -160,6 +160,9 @@ export default {
       this.initOnly(this.iconArray[0]);
     },
 
+    /**
+     * 初始化组件导航栏，只有2个及以上的组件类才会出现
+     */
     initOnly(mountedObject) {
       const titles = document.getElementsByClassName(mountedObject.className);
 
