@@ -9,7 +9,9 @@ import parserBabel from 'prettier/parser-babel.js';
 
 function vueTemplate () {
   return `
-  <template> <!--在此自动生成--> </template>
+<template> 
+  <!--在此自动生成--> 
+</template>
 
 <script>
 export default // $script
