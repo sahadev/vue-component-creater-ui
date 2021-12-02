@@ -50,7 +50,7 @@
 
     <div style="overflow:scroll;padding:0 10px;">
       <keep-alive>
-        <component :is="currentSelectBrand.componentName" @mounted='onMouted'></component>
+        <component :is="currentSelectBrand.componentName" @mounted='onMouted(currentIndex)'></component>
       </keep-alive>
     </div>
 
@@ -62,6 +62,7 @@
 // import quasar from "../rawComponents/quasar";
 import raw from "../rawComponents/raw";
 import ele from "../rawComponents/element";
+import antd from "../rawComponents/antd";
 
 export default {
   data() {
@@ -92,6 +93,14 @@ export default {
       }, {
         icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/quasar-n.png'),
         enable: false
+      }, {
+        icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/antd-n.svg'), // 组件库导航图标
+        clickCallback: this.onSelectElement, // 图标点击回调
+        className: "demonstration-antd", // 组件索引标题class。用来搜集标题供快速导航
+        selectIndex: 0, // 默认选中基础组件索引
+        componentName: 'antd', // 动态组件名称
+        enable: true, // 是否可用
+        titleArray: [], // 快速索引标题，默认为空，VCC会自动按照className搜集快速索引标题。
       },],
 
       currentIndex: 1
@@ -138,9 +147,8 @@ export default {
       }
     },
 
-    onMouted() {
-      // 这里目前只支持ele，所以只写了1
-      this.initOnly(this.iconArray[1]);
+    onMouted(index) {
+      this.initOnly(this.iconArray[index]);
     },
 
     selectSubnav(obj, index) {
@@ -212,6 +220,7 @@ export default {
     // iview,
     // quasar,
     ele,
+    antd
   },
 
 };

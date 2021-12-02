@@ -95,7 +95,7 @@
           <div lc_id="dyK4shOTgK">
               <div class="demonstration-element" lc_id="OPhwbT6T5C">Descriptions 描述列表</div>
               <el-descriptions title="用户信息" lc-mark lc_id="UcepzqrI8T">
-                  <el-descriptions-item label="用户名"  lc-mark lc_id="61qM0Gdqq3">kooriookami</el-descriptions-item>
+                  <el-descriptions-item label="用户名" lc-mark lc_id="61qM0Gdqq3">kooriookami</el-descriptions-item>
                   <el-descriptions-item label="手机号" lc_id="p9NL7l0+yS">18100000000</el-descriptions-item>
                   <el-descriptions-item label="居住地" lc_id="gA+SOSpqT1">苏州市</el-descriptions-item>
                   <el-descriptions-item label="备注" lc_id="MpLSTs1V1a">
