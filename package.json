@@ -28,6 +28,7 @@
     "core-js": "^3.6.4",
     "crypto-random-string": "^3.3.0",
     "css": "^3.0.0",
+    "css-scoped": "^1.0.0",
     "element-ui": "^2.15.6",
     "escodegen": "^2.0.0",
     "espree": "^7.3.0",

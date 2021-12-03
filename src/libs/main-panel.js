@@ -11,6 +11,7 @@ import { getRawComponentContent, getRawComponentKey, isObject } from '@/utils/co
 import { createNewCodeGenerator } from "@/libs/code-generator-factory";
 const EventEmitter = require('eventemitter3');
 const { cloneDeep } = require('lodash');
+import scope from 'css-scoped';
 
 /**
  * 主控制面板辅助类，用于代码的生成与绘制
@@ -44,8 +45,6 @@ export class MainPanelProvider {
 
         console.groupCollapsed('---> for code generator warn <---');
 
-        const readyForMoutedElement = this.createMountedElement();
-
         // 生成原始代码
         let code = this.codeGenerator.outputVueCodeWithJsonObj(rawDataStructure);
 
@@ -61,6 +60,8 @@ export class MainPanelProvider {
 
         const { template, script, styles, customBlocks } = parseComponent(code);
 
+        this.loadStyle(styles);
+
         let newScript = script.content.replace(/\s*export default\s*/, "")
 
         const componentOptions = (new Function(`return ${newScript}`))();
@@ -73,6 +74,7 @@ export class MainPanelProvider {
         };
         componentOptions.staticRenderFns = res.staticRenderFns;
 
+        const readyForMoutedElement = this.createMountedElement();
         // 渲染当前代码
         new Vue(componentOptions).$mount(readyForMoutedElement);
 
@@ -99,6 +101,21 @@ export class MainPanelProvider {
         this.reRender();
     }
 
+    loadStyle(styles) {
+        if (styles.length > 0) {
+            const scopedStyle = styles[0];
+
+            this.styleNodeName = `cssScoped${Date.now()}`;
+
+            const scopedCss = scope(scopedStyle.content.replace(/::v-deep/g, ''), this.styleNodeName);
+            const styleNode = document.createElement('style');
+            styleNode.innerText = scopedCss;
+
+            // 这个会导致越来越卡
+            document.head.appendChild(styleNode);
+        }
+    }
+
     /**
      * 初始化代码编译
      */
@@ -122,6 +139,10 @@ export class MainPanelProvider {
      */
     createMountedElement() {
         const renderControlPanel = this.getControlPanelRoot();
+        if(this.styleNodeName) {
+            renderControlPanel.setAttribute('class', this.styleNodeName);
+        }
+
         const child = document.createElement('div');
 
         // 清空子节点
