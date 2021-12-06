@@ -1,5 +1,5 @@
 //该文件用于解析HTML，输出为Object对象
-import htmlparser2 from "htmlparser2"
+import { Parser } from "htmlparser2"
 
 function getNodeContent(node) {
   return node[Object.keys(node)[0]];
@@ -35,7 +35,7 @@ function parseHtml(htmlData) {
     let lastAccessStack = [root];
 
     // options docment: https://github.com/fb55/htmlparser2/wiki/Parser-options
-    const parser = new htmlparser2.Parser({
+    const parser = new Parser({
       onopentag(tagname, attributes) {
         const newNode = generateNewNode(tagname, attributes);
         lastAccessStack.push(newNode);
