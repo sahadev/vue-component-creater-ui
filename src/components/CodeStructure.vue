@@ -12,7 +12,7 @@
         <el-col :span="16" style="height: 100%;">
           <div style="overflow: scroll;height:100%; margin: 0 20px;padding: 10px;">
 
-            <vue-nestable v-model="treeData" @change="onLevelChange">
+            <!-- <vue-nestable v-model="treeData" @change="onLevelChange">
               <template v-slot="{ item }">
                 <vue-nestable-handle :item="item">
                   <i class="el-icon-rank icon-s"></i>
@@ -24,7 +24,7 @@
               <template v-slot:placeholder>
                 <div><b>The editor is empty.</b></div>
               </template>
-            </vue-nestable>
+            </vue-nestable> -->
 
           </div>
         </el-col>
@@ -44,14 +44,15 @@
 import "./halower-tree.min.css";
 import "@/assets/nestable.css"
 import { isObject, getRawComponentKey, getRawComponentContent } from "@/utils/common";
-import { VueNestable, VueNestableHandle } from 'vue-nestable';
+// import { VueNestable, VueNestableHandle } from 'vue-nestable';
 
 export default {
   props: ['visible'],
+  emits: ['codeRefresh', 'onLevelChange', 'remove', 'save', 'update:visible'],
   components: {
     AttributeInput: resolve => { require(["./AttributeInput"], resolve) },
-    VueNestable,
-    VueNestableHandle
+    // VueNestable,
+    // VueNestableHandle
   },
 
   data() {

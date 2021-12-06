@@ -64,13 +64,8 @@ export class MainPanelProvider {
         let newScript = script.content.replace(/\s*export default\s*/, "")
 
         const componentOptions = (new Function(`return ${newScript}`))();
-        const render = compile(template.content);
 
-        componentOptions.render = function () {
-            const rootVNode = render.apply(this, arguments);
-            return rootVNode;
-        };
-        // componentOptions.staticRenderFns = render.staticRenderFns;
+        componentOptions.template = template.content;
 
         // 渲染当前代码
         createBaseApp(componentOptions).mount(readyForMoutedElement);

@@ -20,6 +20,7 @@ import { ergodic, findAObject } from '../utils/common';
 
 export default {
   props: ['vueDialogVisible'],
+  emits: ['codeParseSucess', 'update:vueDialogVisible'],
   components: {
     CodeEditor
   },

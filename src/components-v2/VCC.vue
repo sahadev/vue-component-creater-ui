@@ -38,14 +38,12 @@
       <el-tooltip effect="dark" content="查看实时代码" placement="top-start">
         <img class="round-icon" :src="iconCode" alt="" @click="codeDialogVisible = true">
       </el-tooltip>
-      <el-tooltip effect="dark" content="清空当前编辑内容" placement="top-start">
-        <el-popconfirm confirmButtonText="确认" cancelButtonText="点错了" icon="el-icon-info" iconColor="red"
-          title="点我将清空所有编辑的内容, 确认吗?" @onConfirm="clear">
-          <template #reference>
-            <img class="round-icon" :src="iconClear" alt="">
-          </template>
-        </el-popconfirm>
-      </el-tooltip>
+      <el-popconfirm confirmButtonText="确认" cancelButtonText="点错了" icon="el-icon-info" iconColor="red"
+        title="点我将清空所有编辑的内容, 确认吗?" @confirm="clear">
+        <template #reference>
+          <img class="round-icon" :src="iconClear" alt="">
+        </template>
+      </el-popconfirm>
     </div>
 
     <div>

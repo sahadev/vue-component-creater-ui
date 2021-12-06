@@ -18,6 +18,7 @@ import dedent from 'dedent'
 
 export default {
   props: ['codeDialogVisible'],
+  emits: ['saveJSCode'],
   components: {
     // CodeEditor
   },
