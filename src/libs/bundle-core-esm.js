@@ -8,8 +8,9 @@ import parserBabel from 'prettier/parser-babel.js';
 // 导出组件模板文件
 
 function vueTemplate () {
-  return `
-  <template> <!--在此自动生成--> </template>
+  return `<template> 
+<!--在此自动生成--> 
+</template>
 
 <script>
 export default // $script

@@ -53,7 +53,7 @@ export class MainPanelProvider {
         code = code.replace(/:\s*\(([\w\s]*)\)\s*=>/g,"\($1\)");
 
         // 生成展示代码
-        let codeForShow = code.replace(/\s{1}lc_id=".+"/g, '');
+        let codeForShow = code.replace(/\s{1}lc_id=".+?"/g, '');
         codeForShow = codeForShow.replace(/\s{1}lc-mark/g, "");
         this.eventEmitter.emit("codeCreated", codeForShow);
 

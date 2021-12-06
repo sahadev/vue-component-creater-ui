@@ -15,7 +15,7 @@
             <!-- <vue-nestable v-model="treeData" @change="onLevelChange">
               <template v-slot="{ item }">
                 <vue-nestable-handle :item="item">
-                  <i class="el-icon-rank icon-s"></i>
+                  <el-icon class="icon-s"><rank /></el-icon>
                 </vue-nestable-handle>
 
                 <span @click="onNodeClick(item)">{{ item.text }}</span>

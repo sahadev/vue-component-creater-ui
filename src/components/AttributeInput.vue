@@ -13,8 +13,8 @@
           <div class="item" v-for="(item, index) in localAttributes" :key="index">
             <el-input v-model="item.key" :placeholder="'key' + index" class="half-width"></el-input>
             <div class="split">:</div>
-            <el-input v-model="item.value" :placeholder="'value' + index" class="half-width"></el-input>
-            <i class="el-icon-minus" @click="deleteItem(index)"></i>
+            <el-input v-model="item.value" :placeholder="'value' + index" class="half-width" style="flex-grow: 3;"></el-input>
+            <el-icon @click="deleteItem(index)" style="margin-left: 5px;"><minus /></el-icon>
           </div>
 
           <div class="quick-add-root">
@@ -45,23 +45,27 @@
     </div>
 
     <div style="margin-top: 10px;text-align:center;">
-      <!-- <el-tooltip class="item" effect="dark" content="新增属性 ctrl+a" placement="bottom">
-        <el-button type="primary" class="center" @click="createNew" icon="el-icon-circle-plus-outline" circle>
+      <el-tooltip class="item" effect="dark" content="新增属性 ctrl+a" placement="bottom">
+        <el-button type="primary" class="center" @click="createNew" circle>
+          <el-icon><circle-plus /></el-icon>
         </el-button>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="保存属性 ctrl+s" placement="bottom">
-        <el-button type="success" class="center" @click="save" icon="el-icon-refresh" circle></el-button>
-      </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="移除该组件 ctrl+d" placement="bottom">
-        <el-button v-if="enableRemoveButton" type="danger" class="center" icon="el-icon-delete" @click="remove" circle>
+        <el-button type="success" class="center" @click="save" circle>
+          <el-icon><refresh /></el-icon>
         </el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="复制一个兄弟组件 ctrl+c" placement="bottom">
-        <el-button v-if="enableBroButton" type="primary" class="center" icon="el-icon-copy-document" @click="copyBro"
-          circle>
+      <el-tooltip v-if="enableRemoveButton" class="item" effect="dark" content="移除该组件 ctrl+d" placement="bottom">
+        <el-button type="danger" class="center" @click="remove" circle>
+          <el-icon><delete /></el-icon>
         </el-button>
-      </el-tooltip> -->
-    <div style="text-algin: center;">
+      </el-tooltip>
+      <el-tooltip v-if="enableBroButton" class="item" effect="dark" content="复制一个兄弟组件 ctrl+c" placement="bottom">
+        <el-button type="primary" class="center" @click="copyBro" circle>
+          <el-icon><document-copy /></el-icon>
+        </el-button>
+      </el-tooltip>
+      <div style="text-algin: center;">
         <span class="shortcut-tip">支持快捷键操作</span>
       </div>
     </div>
@@ -156,9 +160,7 @@ export default {
       this.localAttributes.push({ key: "", value: "" });
     },
     save() {
-
       try {
-
         let resultList = [];
         if (!this.editMode) {
           resultList = this.localAttributes.filter((item) => {
@@ -268,7 +270,7 @@ export default {
 
 .half-width {
   width: 0%;
-  flex-grow: 1;
+  flex-grow: 2;
 }
 
 .center {
