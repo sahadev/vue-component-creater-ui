@@ -19,15 +19,17 @@
         <div>
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
-              <i ref="help" class="el-icon-question" style="font-size:22px;color:#4dba87;"></i>
+              <el-icon style="font-size:22px;color:#4dba87;"><question-filled /></el-icon>
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-circle-check">基础组件数: {{ componentUnitNum }}
-              </el-dropdown-item>
-              <el-dropdown-item icon="el-icon-document" command="lcg">LCG平台</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-document" command="help">说明文档</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-chat-line-round" command="chat">在线沟通</el-dropdown-item>
-            </el-dropdown-menu>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item icon="el-icon-circle-check">基础组件数: {{ componentUnitNum }}
+                </el-dropdown-item>
+                <el-dropdown-item icon="el-icon-document" command="lcg">LCG平台</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-document" command="help">说明文档</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-chat-line-round" command="chat">在线沟通</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
           </el-dropdown>
         </div>
       </div>

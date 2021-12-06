@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.11.5",
+    "@element-plus/icons": "0.0.11",
     "@originjs/vite-plugin-require-context": "^1.0.9",
     "@vitejs/plugin-vue": "^1.10.0",
     "@vue/compat": "^3.2.22",
