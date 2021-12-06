@@ -27,15 +27,6 @@
               <el-button lc-mark type="warning" round lc_id="jkBcMy35Fs">警告按钮</el-button>
               <el-button lc-mark type="danger" round lc_id="NbMTA5OJFM">危险按钮</el-button>
           </div>
-          <div lc_id="dtI0sv1JGj">
-              <div class="demonstration-element" lc_id="/J59dGf5Ux">Button 图标按钮</div>
-              <el-button lc-mark icon="el-icon-search" circle lc_id="zKuPwfsOg/"></el-button>
-              <el-button lc-mark type="primary" icon="el-icon-edit" circle lc_id="TEEu3UmtSm"></el-button>
-              <el-button lc-mark type="success" icon="el-icon-check" circle lc_id="Gcle27RxOV"></el-button>
-              <el-button lc-mark type="info" icon="el-icon-message" circle lc_id="iYwWDqh7Cj"></el-button>
-              <el-button lc-mark type="warning" icon="el-icon-star-off" circle lc_id="c0jB+EoGdn"></el-button>
-              <el-button lc-mark type="danger" icon="el-icon-delete" circle lc_id="UOzcHamJuB"></el-button>
-          </div>
           <div lc_id="W3QyOQzQlk">
               <div class="demonstration-element" lc_id="smimycex4t">Button 文字按钮</div>
               <el-button lc-mark type="text" lc_id="t0TXebSot2">文字按钮</el-button>
@@ -54,19 +45,6 @@
                   <el-button type="primary" icon="el-icon-share" lc_id="ufr8jjdziC"></el-button>
                   <el-button type="primary" icon="el-icon-delete" lc_id="rp+8TRHMji"></el-button>
               </el-button-group>
-          </div>
-          <div lc_id="k4SqegBXaV">
-              <div class="demonstration-element" lc_id="oFxF0LI+dm">Icon 图标</div>
-              <i class="icon el-icon-edit" lc-mark lc_id="a6mb6XhfMc"></i>
-              <i class="icon el-icon-share" lc-mark lc_id="oXLeLY13kj"></i>
-              <i class="icon el-icon-delete" lc-mark lc_id="s8KebZ+PS1"></i>
-              <i class="icon el-icon-info" lc-mark lc_id="WXq43J9XzJ"></i>
-              <i class="icon el-icon-eleme" lc-mark lc_id="4hI/AencQZ"></i>
-              <i class="icon el-icon-setting" lc-mark lc_id="511YTr9sW9"></i>
-              <i class="icon el-icon-video-camera-solid" lc-mark lc_id="/k6h8zYM65"></i>
-              <i class="icon el-icon-message-solid" lc-mark lc_id="blqIQB6Vhj"></i>
-              <i class="icon el-icon-s-data" lc-mark lc_id="gbq6whZDAm"></i>
-              <el-link href="https://element.eleme.cn/#/zh-CN/component/icon" style="margin-left: 10px;" class="el-icon-d-arrow-right" type="info" target="_blank" lc_id="t+j3VEq1No">查看所有图标</el-link>
           </div>
           <div lc_id="D9dpNStd1t">
               <div class="demonstration-element" lc_id="MPmrgZvo8q">Link 文字链接</div>

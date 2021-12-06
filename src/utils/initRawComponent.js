@@ -1,5 +1,4 @@
 import { generateRawInfo, getSplitTag } from './forCode';
-import { getRawComponentKey } from './common';
 
 
 // 遍历DOM树，初始化lc-mark标记的元素

@@ -1,5 +1,5 @@
 import isEqual from "lodash-es/isEqual";
-// import cryptoRandomString from "crypto-random-string";
+import { customAlphabet, nanoid } from 'nanoid';
 
 export function getRawComponentKey(__rawVueInfo__) {
     return Object.keys(__rawVueInfo__)[0];
@@ -22,6 +22,14 @@ export function isArray(arr) {
 
 export function isObject(obj) {
     return Object.prototype.toString.apply(obj) === "[object Object]";
+}
+
+/**
+ * @description 生成唯一ID
+ */
+ export function createUniqueId() {
+  const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 10);
+  return nanoid();
 }
 
  /**
@@ -50,7 +58,7 @@ export function ergodic(jsonObj) {
 
    // 添加ID
    if (!jsonObj["lc_id"]) {
-    //  jsonObj["lc_id"] = cryptoRandomString({ length: 10, type: "base64" });
+     jsonObj["lc_id"] = createUniqueId();
    }
  }
 }

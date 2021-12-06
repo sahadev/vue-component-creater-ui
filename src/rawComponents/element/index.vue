@@ -2,14 +2,14 @@
   <div lc_id="v91WiYWqPM" class="element-class">
     <lc-button lc_id="pclmcAeMlS"></lc-button>
     <lc-table lc_id="pclmcAeMlS"></lc-table>
-    <lc-form lc_id="ZyKgG7bSXm"></lc-form>
+    <!-- <lc-form lc_id="ZyKgG7bSXm"></lc-form>
     <lc-image></lc-image>
     <lc-form-base></lc-form-base>
     <lc-dialog></lc-dialog>
     <lc-icon lc_id="v31NGzWvBh"></lc-icon>
     <lc-layout lc_id="SBCyi1cZac"></lc-layout>
     <lc-container lc_id="ZyKgG7bSXm"></lc-container>
-    <lc-final></lc-final>
+    <lc-final></lc-final> -->
   </div>
 </template>
 <script>
@@ -24,7 +24,7 @@ import table from "./table";
 // import image from "./image";
 // import final from "./final";
 
-// import { deepLCEle } from "@/utils/initRawComponent";
+import { deepLCEle } from "@/utils/initRawComponent";
 
 export default {
   data() {
@@ -33,10 +33,8 @@ export default {
   mounted() {
     this.$emit('mounted');
     // 对所有拥有lc-mark的元素进行初始化
-    let countComponentCount = 0;
-    // deepLCEle(document.querySelector('.element-class'), () => {
-    //   countComponentCount++;
-    // });
+    deepLCEle(document.querySelector('.element-class'), () => {
+    });
   },
   methods: {},
   components: {
