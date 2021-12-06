@@ -89,7 +89,7 @@ export default {
 <style scoped>
 /*  在此自动生成 */
 
-::v-deep .el-dialog__body {
+:v-deep(.el-dialog__body) {
   padding: 0 30px !important;
 }
 </style>

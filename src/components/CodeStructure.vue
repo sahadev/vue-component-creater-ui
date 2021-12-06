@@ -163,7 +163,7 @@ center {
   padding: 20px;
 }
 
-::v-deep .el-drawer__body {
+:v-deep(.el-drawer__body) {
   height: 100%;
 }
 

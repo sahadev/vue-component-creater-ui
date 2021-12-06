@@ -451,7 +451,7 @@ export default {
     },
   },
 };  </script>
-  <style scoped>.avatar-uploader ::v-deep .el-upload {
+  <style scoped>.avatar-uploader :v-deep(.el-upload) {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
