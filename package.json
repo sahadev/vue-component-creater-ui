@@ -32,6 +32,7 @@
     "codemirror-editor-vue3": "^0.2.4",
     "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.6.4",
+    "crypto-random-string": "^3.3.1",
     "css": "^3.0.0",
     "element-plus": "^1.2.0-beta.3",
     "escodegen": "^2.0.0",
