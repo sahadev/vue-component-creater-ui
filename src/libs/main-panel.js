@@ -66,15 +66,20 @@ export class MainPanelProvider {
         const componentOptions = (new Function(`return ${newScript}`))();
 
         componentOptions.template = template.content;
-
-        // 渲染当前代码
-        createBaseApp(componentOptions).mount(readyForMoutedElement);
-
-        // 拍平数据结构
-        this.editMode && this.flatDataStructure(rawDataStructure);
-
-        // 开启编辑模式
-        this.editMode && this.enableEditMode();
+        
+        if (this.editMode) {
+            // 渲染当前代码
+            createBaseApp(componentOptions).mount(readyForMoutedElement);
+            
+            // 拍平数据结构
+            this.flatDataStructure(rawDataStructure);
+    
+            // 开启编辑模式
+            this.enableEditMode();
+        } else {
+            // 渲染当前代码
+            createBaseApp(componentOptions).mount(this.mountedEle);
+        }
 
         return this;
     }
@@ -88,8 +93,9 @@ export class MainPanelProvider {
         return this;
     }
 
-    setEditMode(editMode) {
+    setEditMode(editMode, mountedEle) {
         this.editMode = editMode;
+        this.mountedEle = mountedEle;
         this.reRender();
     }
 
@@ -117,6 +123,7 @@ export class MainPanelProvider {
     createMountedElement() {
         const renderControlPanel = this.getControlPanelRoot();
         const child = document.createElement('div');
+        child.style = "background-color: white;"
 
         // 清空子节点
         while (renderControlPanel.firstChild) {
@@ -253,6 +260,7 @@ export class MainPanelProvider {
      * 开启编辑模式，并禁用默认的事件，添加编辑事件
      */
     enableEditMode() {
+        debugger
         const renderControlPanel = this.getControlPanelRoot();
         // 加一个延迟的作用是：给el-table这种绘制需要时间的组件留出充足的时间，否则会造成el-table渲染不到页面上
         setTimeout(() => {

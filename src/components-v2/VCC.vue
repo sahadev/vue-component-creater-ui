@@ -60,6 +60,11 @@
       <div class="x"></div>
     </div>
   </div>
+
+  <div id="fullScreen" v-if="!editMode">
+    <div style="margin: 20px; font-weight: bold;">按下ESC退出预览模式</div>
+    <div id="mountedEle"></div>
+  </div>
 </template>
 
 <script>
@@ -73,6 +78,7 @@ import keymaster from "keymaster"
 export default {
   name: "vcc",
   props: ['initCodeEntity'],
+  emits: ['updateCodeEntity'],
   components: {
     RawComponents: defineAsyncComponent(() => import("@/components/RawComponents.vue")),
     ToolsBar: defineAsyncComponent(() => import("./ToolsBar")),
@@ -93,7 +99,7 @@ export default {
       iconCode: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-working-outline.svg"),
       iconClear: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/trash-outline.svg"),
 
-      viewMode: false
+      editMode: true
     };
   },
   watch: {
@@ -136,6 +142,13 @@ export default {
     initShortcut() {
       keymaster('⌘+z, ctrl+z', () => {
         this.undo();
+        return false
+      });
+
+
+      keymaster('esc', () => {
+        this.editMode = true;
+        this.mainPanelProvider.setEditMode(true);
         return false
       });
     },
@@ -204,7 +217,11 @@ export default {
     },
 
     onEditModeChange(newValue) {
-      this.mainPanelProvider.setEditMode(newValue);
+      this.editMode = newValue;
+
+      this.$nextTick(() => {
+        this.mainPanelProvider.setEditMode(newValue, document.querySelector("#mountedEle"));
+      })
     },
 
     renderCode() {
@@ -368,6 +385,21 @@ export default {
     right: 0;
     pointer-events: none;
   }
+}
+
+#fullScreen {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  background: white;
+}
+
+#mountedEle {
+  border: 1px dashed rgb(126, 126, 128);
+  border-radius: 10px;
+  margin: 20px;
 }
 </style>
 

@@ -78,6 +78,10 @@ export default {
     onEditModeChange() {
       this.editMode = !this.editMode;
       this.$emit('onEditModeChange', this.editMode);
+
+      setTimeout(() => {
+        this.editMode = true;
+      }, 500);
     }
   },
   fillter: {},
