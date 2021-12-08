@@ -1,7 +1,7 @@
 <template>
   <el-card class="attribute-container">
 
-    <div style="text-algin: center;">
+    <div style="text-align: center;">
       <el-switch v-model="editMode" active-text="自由编辑" inactive-text="约束编辑" active-color="#13ce66"
         inactive-color="#13ce66">
       </el-switch>
@@ -197,7 +197,7 @@ export default {
     },
     copyBro() {
       copyBroCode(this.__rawVueInfo__);
-      this.$emit('codeRefresh');
+      this.$store.commit('onDragEnd');
     },
     onShow() {
       // 这种方式适用于常规模式下的初始化，因为这个实例初始化后不会被销毁，一直常驻内存。但又不能受到其它实例销毁时的影响，所以需要明确的再次初始化。

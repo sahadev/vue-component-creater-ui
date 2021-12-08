@@ -2,7 +2,7 @@
   <el-drawer v-model="drawer" :with-header="false" size="70%" direction="btt">
     <div class="container">
 
-      <div style="text-algin: center;">组件结构检视图
+      <div style="text-align: center;">组件结构检视图
         <br>
         <span style="font-size:12px;">Components
           Structure</span>
@@ -12,26 +12,13 @@
         <el-col :span="16" style="height: 100%;">
           <div style="overflow: scroll;height:100%; margin: 0 20px;padding: 10px;">
 
-            <!-- <vue-nestable v-model="treeData" @change="onLevelChange">
-              <template v-slot="{ item }">
-                <vue-nestable-handle :item="item">
-                  <el-icon class="icon-s"><rank /></el-icon>
-                </vue-nestable-handle>
-
-                <span @click="onNodeClick(item)">{{ item.text }}</span>
-              </template>
-
-              <template v-slot:placeholder>
-                <div><b>The editor is empty.</b></div>
-              </template>
-            </vue-nestable> -->
+            <nested-draggable :data="treeData" />
 
           </div>
         </el-col>
         <el-col :span="8">
-          <attribute-input ref="attributeInput" :enableRemoveButton="true" v-if="currentEditRawInfo && drawer"
-            @save="onSaveAttr" shortcutInitMode="auto" @remove="onRemove" @codeRefresh="codeRefresh"
-            :__rawVueInfo__="currentEditRawInfo">
+          <attribute-input ref="attributeInput" :enableRemoveButton="true" v-if="currentEditRawInfo" @save="onSaveAttr"
+            shortcutInitMode="auto" @remove="onRemove" :__rawVueInfo__="currentEditRawInfo">
           </attribute-input>
         </el-col>
       </el-row>
@@ -41,81 +28,33 @@
 </template>
 
 <script>
-import "./halower-tree.min.css";
-import "@/assets/nestable.css"
 import { isObject, getRawComponentKey, getRawComponentContent } from "@/utils/common";
-// import { VueNestable, VueNestableHandle } from 'vue-nestable';
+import nestedDraggable from './nested.vue'
+import { defineAsyncComponent } from 'vue'
 
 export default {
   props: ['visible'],
-  emits: ['codeRefresh', 'onLevelChange', 'remove', 'save', 'update:visible'],
+  emits: ['onLevelChange', 'remove', 'save', 'update:visible', 'reRender'],
   components: {
-    AttributeInput: resolve => { require(["./AttributeInput"], resolve) },
-    // VueNestable,
-    // VueNestableHandle
+    AttributeInput: defineAsyncComponent(() => import("@/components/AttributeInput.vue")),
+    nestedDraggable
   },
 
   data() {
     return {
       // 在此自动生成
       treeData: [],
-      currentEditRawInfo: null
     };
   },
   beforeCreate() { },
   created() { },
   beforeMount() { },
-  mounted() { },
+  mounted() {
+  },
   beforeUpdate() { },
   updated() { },
   destoryed() { },
   methods: {
-    // 在此自动生成
-    request() {
-      // 网络请求，可选
-    },
-    codeRefresh() {
-      this.$emit('codeRefresh');
-    },
-    onLevelChange(value, options) {
-      this.$emit('onLevelChange', value.id, options.pathTo);
-    },
-
-    convertStructure(rawInfo) {
-      const title = getRawComponentKey(rawInfo);
-      const object = rawInfo[title];
-      const children = [];
-      if (isObject(object)) {
-        for (const key in object) {
-          if (object.hasOwnProperty(key)) {
-            if (key === '__children') {
-              const element = object[key];
-
-              element.forEach(item => {
-                const temp = this.convertStructure(item);
-                temp && children.push(temp);
-              })
-            } else if (isObject(object[key])) {
-              // 组成一个新的结构，适配只有一个子节点的数据结构
-              const __obj = {};
-              __obj[key] = object[key];
-              const child = this.convertStructure(__obj);
-              child && children.push(child);
-            }
-          }
-        }
-
-        return {
-          text: title,
-          expanded: true,
-          children: children,
-          rawInfo: rawInfo,
-          id: getRawComponentContent(rawInfo).lc_id
-        }
-      } else {
-        return null;
-      }
-    },
 
     onNodeClick(nodeInfo) {
       this.currentEditRawInfo = nodeInfo.rawInfo;
@@ -131,12 +70,17 @@ export default {
     },
 
     updateCode(codeRawInfo) {
-      this.treeData = [this.convertStructure(codeRawInfo)];
+      this._codeRawInfo = codeRawInfo;
+      const content = getRawComponentContent(codeRawInfo);
+      const children = content.__children;
+      this.treeData = children;
     },
 
   },
   watch: {
-    canInitShortcut(newValue) {
+    renderCount(){
+      // 这里利用了vuedraggable v-model的特性，它会更改对象本身的引用
+      this.$emit('reRender', this._codeRawInfo);
     }
   },
   computed: {
@@ -148,8 +92,21 @@ export default {
         this.$emit('update:visible', false);
       }
     },
+
+    renderCount(){
+      return this.$store.state.renderCount;
+    },
+
     canInitShortcut() {
       return this.currentEditRawInfo !== null && this.drawer;
+    },
+    currentEditRawInfo() {
+      if (this.$store.state.currentEditComp) {
+        const vccData = this.$store.state.currentEditComp.vccData;
+        return window.tree[vccData.lc_id];
+      } else {
+        return null;
+      }
     }
   },
   fillter: {},

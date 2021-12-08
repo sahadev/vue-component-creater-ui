@@ -16,8 +16,7 @@
           </div>
         </div>
         <attribute-input :enableRemoveButton="true" class="attribute" @save="onSaveAttr" @remove="onRemove"
-          ref="attributeInput" shortcutInitMode="hand" @codeRefresh="generateVueCode"
-          :__rawVueInfo__="currentEditRawInfo">
+          ref="attributeInput" shortcutInitMode="hand" :__rawVueInfo__="currentEditRawInfo">
         </attribute-input>
       </div>
     </div>
@@ -50,7 +49,7 @@
       <lc-code :rawCode="code" v-model:codeDialogVisible="codeDialogVisible">
       </lc-code>
       <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" v-model="structureVisible"
-        @codeRefresh="generateVueCode" @onLevelChange="onLevelChange">
+        @reRender="render">
       </code-structure>
       <CodeEditor v-model:codeDialogVisible="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
       <VueEditor v-model:vueDialogVisible="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
@@ -220,11 +219,6 @@ export default {
       this.mainPanelProvider.saveAttribute(resultList, lc_id);
     },
 
-    onLevelChange(removeID, movePath) {
-      this.mainPanelProvider.onLevelChange(removeID, movePath);
-    },
-
-    generateVueCode() { },
     onRemove({ lc_id }) {
       this.mainPanelProvider.remove(lc_id);
     },
@@ -240,8 +234,18 @@ export default {
       this.mainPanelProvider.saveJSCode(code);
     },
 
+    /**
+     * 二级编辑解析
+     */
     codeParseSucess(vueCodeEntity) {
       this.mainPanelProvider.render(vueCodeEntity);
+    },
+
+    /**
+     * 渲染指定结构
+     */
+    render(codeEntity) {
+      this.mainPanelProvider.render(codeEntity);
     },
 
     help() {
