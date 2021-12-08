@@ -122,17 +122,7 @@ export class MainPanelProvider {
      */
     createMountedElement() {
         const renderControlPanel = this.getControlPanelRoot();
-        const child = document.createElement('div');
-        child.style = "background-color: white;"
-
-        // 清空子节点
-        while (renderControlPanel.firstChild) {
-            renderControlPanel.removeChild(renderControlPanel.firstChild)
-        }
-
-        renderControlPanel.appendChild(child);
-
-        return child;
+        return renderControlPanel;
     }
 
     /**
@@ -260,7 +250,6 @@ export class MainPanelProvider {
      * 开启编辑模式，并禁用默认的事件，添加编辑事件
      */
     enableEditMode() {
-        debugger
         const renderControlPanel = this.getControlPanelRoot();
         // 加一个延迟的作用是：给el-table这种绘制需要时间的组件留出充足的时间，否则会造成el-table渲染不到页面上
         setTimeout(() => {
