@@ -105,9 +105,6 @@ export default {
   border-radius: 0px;
   align-content: center;
   border-bottom: 1px solid #f0f0f0;
-  > * {
-    margin-right: 5px;
-  }
 }
 
 .edit {
