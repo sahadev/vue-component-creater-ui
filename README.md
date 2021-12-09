@@ -2,11 +2,9 @@
 
 VCC(Vue Compontent Creator)是Low Code Generator中独立的Vue组件代码编辑器。可以独立运行。
 
-> 当前已经升级至Vue3 + Vite。
-
 **通过它可以通过拖拽快速完成Vue组件代码骨架的搭建。详见后文视频介绍链接。** 
 
-> 点击这里快速预览效果：[https://vcc.sahadev.tech/](https://vcc.sahadev.tech/)
+> 点击这里快速预览效果：[https://vcc.sahadev.tech/](https://vcc.sahadev.tech/) 当前已经升级至Vue3 + Vite。
 
 #### 使用示例
 ##### 示例1
@@ -105,7 +103,7 @@ npm i
 
 再进行启动(Vite):
 ```
-npm run vite
+npm run dev
 ```
 
 运行完成后，就可以访问[http://localhost:8008/](http://localhost:8008/)预览效果了.
