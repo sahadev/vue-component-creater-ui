@@ -95,12 +95,22 @@ function convert2Map(jsonObj) {
   }
 }
 
+function findProperty(properties, findWhoStructure) {
+  return properties.find(item=>{
+    if(item.key.name === findWhoStructure){
+      return true;
+    }
+  })
+}
+
 // 对JS代码进行编译
 function compileJsCode(code, onEncounterDuplicateDeclared = () => { }) {
   const ast = espree.parse(code, { ecmaVersion: 6, sourceType: "module" });
   // 提取data中返回的对象结构, 如果文件引入了其它文件, 则body[0]为import语句。
   if (ast.body[0].declaration) {
-    const dataAst = ast.body[0].declaration.properties[0].value.body.body[0].argument;
+    const properties = ast.body[0].declaration.properties;
+    const dataProperty = findProperty(properties, 'data');
+    const dataAst = dataProperty.value.body.body[0].argument;
     const newCode = escodegen.generate(dataAst);
 
     // 这里编译的组件内部应当只包含data和method，不应该包含其它属性
