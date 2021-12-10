@@ -1,29 +1,29 @@
-  <template lc_id="BHClb68uyL">
-      <div lc_id="4wLY9fQl2E">
-          <div lc_id="Ko17F4IQXP">
-              <div class="demonstration-element" lc_id="vYOpmmF/R0">Table 表格</div>
-              <el-table :data="tableData" style="width: 100%" lc-mark lc_id="T6T7c1p16B">
-                  <el-table-column prop="date" label="日期" width="180" lc_id="oG9cZ3BlCT"></el-table-column>
-                  <el-table-column prop="name" label="姓名" width="180" lc_id="LkLHx3aqOa"></el-table-column>
-                  <el-table-column prop="address" label="地址" lc_id="lsXfyqD4Er"></el-table-column>
+  <template lc_id="f5Ag3iA9vi">
+      <div lc_id="rC5FKIl93Q">
+          <div lc_id="5hZQP7chtb">
+              <div class="demonstration-element" lc_id="yKAcBIB8ML">Table 表格</div>
+              <el-table :data="tableData" style="width: 100%" lc-mark lc_id="h1AxSuk1JX">
+                  <el-table-column prop="date" label="日期" width="180" lc_id="N5KOR7kGoN"></el-table-column>
+                  <el-table-column prop="name" label="姓名" width="180" lc_id="v3jApEZujz"></el-table-column>
+                  <el-table-column prop="address" label="地址" lc_id="Ryei21Kxoy"></el-table-column>
               </el-table>
           </div>
-          <div lc_id="taXbrp1lKH">
-              <div class="demonstration-element" lc_id="l2+MLlmW8Y">Table 动态表格👍</div>
-              <el-table :data="tableData" style="width: 100%" lc-mark lc_id="Pndn3Vp6Rx">
-                  <el-table-column :prop="propItem.prop" :label="propItem.label" v-for="propItem in propList" :key="propItem.prop" lc_id="neIrh92kHU">
-                      <template v-slot="{ row }" lc_id="sKUOEvY82H">
-                          <span v-if="!propItem.component" lc_id="8Jox7iwljY">{{
+          <div lc_id="FoIEdS4sgT">
+              <div class="demonstration-element" lc_id="9MFKGxfvJ5">Table 动态表格👍</div>
+              <el-table :data="tableData" style="width: 100%" lc-mark lc_id="+5AJzAYChF">
+                  <el-table-column :prop="propItem.prop" :label="propItem.label" v-for="propItem in propList" :key="propItem.prop" lc_id="gfwgFzB3gO">
+                      <template v-slot="{ row }" lc_id="WHqNxzDsFe">
+                          <span v-if="!propItem.component" lc_id="isWGW9SLlm">{{
               row[propItem.prop]
             }}</span>
-                          <component v-else v-bind:is="propItem.component" :rowinfo="row" lc_id="aMR4DSYBZz"></component>
+                          <component v-else v-bind:is="propItem.component" :rowinfo="row" lc_id="DktA4JZ5fs"></component>
                       </template>
                   </el-table-column>
               </el-table>
           </div>
-          <div lc_id="LSgcsWU12G">
-              <div class="demonstration-element" lc_id="RW6uK0v/uQ">Pagination 分页</div>
-              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="100" lc-mark layout="prev, pager, next" :total="400" lc_id="r+K0+FJnu3"></el-pagination>
+          <div lc_id="GHEnA/+R+x">
+              <div class="demonstration-element" lc_id="LphVmiAWKZ">Pagination 分页</div>
+              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="100" lc-mark layout="prev, pager, next" :total="400" lc_id="V3nz0Q3sZA"></el-pagination>
           </div>
       </div>
   </template>

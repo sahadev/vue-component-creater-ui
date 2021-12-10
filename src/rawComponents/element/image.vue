@@ -1,21 +1,21 @@
-  <template lc_id="0sygtaZzzK">
-      <div lc_id="ALTsXkmIGE">
-          <div lc_id="IyBLXIo0O0">
-              <div class="demonstration-element" lc_id="Nq2fzK+TO2">Image 图片</div>
-              <div style="display: inline-block;" lc-mark lc_id="IXLvop//zD">
-                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="fill" lc_id="JhLOV9CpES"></el-image>
+  <template lc_id="PH+yAXBdg0">
+      <div lc_id="sH9KziXOZQ">
+          <div lc_id="utFsoBQhKe">
+              <div class="demonstration-element" lc_id="OWDlcZd3tn">Image 图片</div>
+              <div style="display: inline-block;" lc-mark lc_id="w68Klpv8Wr">
+                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="fill" lc_id="RvayJfco9G"></el-image>
               </div>
-              <div style="display: inline-block;" lc-mark lc_id="OfDbH48Dqd">
-                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="contain" lc_id="f+p3OK5//3"></el-image>
+              <div style="display: inline-block;" lc-mark lc_id="8L+gABRzhW">
+                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="contain" lc_id="dInTMVYtvm"></el-image>
               </div>
-              <div style="display: inline-block;" lc-mark lc_id="c7PkXHn46B">
-                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="cover" lc_id="xpJHMNhDHQ"></el-image>
+              <div style="display: inline-block;" lc-mark lc_id="YKNPD/ANjR">
+                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="cover" lc_id="PNKy3Vw9/D"></el-image>
               </div>
-              <div style="display: inline-block;" lc-mark lc_id="FHnrBwj71E">
-                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="none" lc_id="pUzae4LDfZ"></el-image>
+              <div style="display: inline-block;" lc-mark lc_id="/MMOV+luD/">
+                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="none" lc_id="gvi3/VnpMI"></el-image>
               </div>
-              <div style="display: inline-block;" lc-mark lc_id="yQL0FP2cM4">
-                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="scale-down" lc_id="uXwV+xiW2H"></el-image>
+              <div style="display: inline-block;" lc-mark lc_id="xyur7jxP1x">
+                  <el-image style="width: 100px; height: 100px;" :src="url4" fit="scale-down" lc_id="7G2nDtcr5y"></el-image>
               </div>
           </div>
       </div>

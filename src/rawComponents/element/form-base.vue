@@ -1,122 +1,107 @@
-  <template lc_id="1FrH/bXxoo">
-  <div lc_id="jhcqX3j75w">
-    <div lc_id="Tu4in0CaIW">
-      <div class="demonstration-element" lc_id="oxVsd4rXLl">Radio 单选框</div>
-      <el-radio-group v-model="radio" lc-mark lc_id="0vrFpPvU4H">
-        <el-radio :label="3" lc_id="7sB/IHgMEP">备选项</el-radio>
-        <el-radio :label="6" lc_id="iUKVuE/8U4">备选项</el-radio>
-        <el-radio :label="9" lc-mark lc_id="YKnWJ/dyc+">备选项</el-radio>
-      </el-radio-group>
-    </div>
-    <div lc_id="XIuuMTW+0j">
-      <div class="demonstration-element" lc_id="UJkx2Yas25">Checkbox 多选框</div>
-      <el-checkbox-group lc-mark v-model="checkList" lc_id="5Ej1enwgPV">
-        <el-checkbox label="复选框 A" lc_id="UjSwDuUvwN"></el-checkbox>
-        <el-checkbox label="复选框 B" lc_id="Lh5ruzddpf"></el-checkbox>
-        <el-checkbox lc-mark label="复选框 C" lc_id="9I+2SXunYS"></el-checkbox>
-      </el-checkbox-group>
-    </div>
-    <div lc_id="t5nTZdVOYh">
-      <el-input v-model="input" placeholder="请输入内容" lc-mark lc_id="oQTDIZ45WD"></el-input>
-      <el-input type="textarea" lc-mark :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="textarea2"
-        lc_id="0Lb1i+lJ+e"></el-input>
-    </div>
-    <div lc_id="5XvABKZyMr">
-      <div class="demonstration-element" lc_id="P4RAkEgdAX">InputNumber 计数器</div>
-      <div style="display:inline-block;width:200px;" lc-mark lc_id="33vSscOdJg">
-        <el-input-number v-model="num" @change="handleChange" :min="1" :max="10" label="描述文字" lc_id="ok2OSKYUlS">
-        </el-input-number>
-      </div>
-      <div style="display:inline-block;width:200px;" lc-mark lc_id="kZfDuqPsUe">
-        <el-input-number v-model="num" controls-position="right" @change="handleChange" :min="1" :max="10"
-          lc_id="ZLZ2cuIsQX"></el-input-number>
-      </div>
-    </div>
-    <div lc_id="zexMdT18+i">
-      <div class="demonstration-element" lc_id="RUghSMgJOW">Select 选择器</div>
-      <el-select v-model="value" lc-mark placeholder="请选择" lc_id="H9t9iMrAPl">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" lc_id="GF42PHtHg8">
-        </el-option>
-      </el-select>
-    </div>
-    <div lc_id="V4l/IYxRw8">
-      <div class="demonstration-element" lc_id="ASIXtb8VYa">Cascader 级联选择器</div>
-      <el-cascader lc-mark v-model="value2" :options="options2" @change="handleChange" lc_id="pPI4GNJgyK"></el-cascader>
-    </div>
-    <div lc_id="nP4qIv2zGf">
-      <div class="demonstration-element" lc_id="CLnpHQZ3Cb">Switch 开关</div>
-      <el-switch lc-mark v-model="value3" active-text="按月付费" inactive-text="按年付费" lc_id="QS2PN4VAu6"></el-switch>
-    </div>
-    <div lc_id="+X3HFNOUDN">
-      <div class="demonstration-element" lc_id="duxYsm2Bqk">Slider 滑块</div>
-      <el-slider lc-mark v-model="value4" lc_id="pZrnjv27e0"></el-slider>
-    </div>
-    <div lc_id="0CqPUH7Loi">
-      <div class="demonstration-element" lc_id="Kn94f+Qtq6">TimePicker 时间选择器</div>
-      <el-time-select v-model="value5" lc-mark :picker-options="{ start: '08:30', step: '00:15', end: '18:30' }"
-        placeholder="选择时间" lc_id="ocidZ8kNvi"></el-time-select>
-      <el-time-picker lc-mark is-range v-model="value1" range-separator="至" start-placeholder="开始时间"
-        end-placeholder="结束时间" placeholder="选择时间范围" lc_id="ul4df4BXqL"></el-time-picker>
-    </div>
-    <div lc_id="vIkUj/Mdx4">
-      <div class="demonstration-element" lc_id="9BXiYtOw1H">DatePicker 日期选择器</div>
-      <el-date-picker v-model="value6" lc-mark type="date" placeholder="选择日期" lc_id="aF5L+DvW8P"></el-date-picker>
-      <el-date-picker v-model="dateValue1" lc-mark type="daterange" range-separator="至" start-placeholder="开始日期"
-        end-placeholder="结束日期" lc_id="KsspMcw+vf"></el-date-picker>
-    </div>
-    <div lc_id="z/NsnEmneM">
-      <div class="demonstration-element" lc_id="31TQ4nvcpw">Upload 上传</div>
-      <div lc_id="XTNxQoBU4c">
-        <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview"
-          :on-remove="handleRemove" :before-remove="beforeRemove" multiple lc-mark :limit="3" :on-exceed="handleExceed"
-          :file-list="fileList" lc_id="koVshztGXe">
-          <el-button size="small" type="primary" lc_id="8K/MngdcDq">点击上传</el-button>
-          <template #tip>
-            <div class="el-upload__tip" lc_id="JhGGSZvOOw">只能上传jpg/png文件，且不超过500kb</div>
-          </template>
-        </el-upload>
-      </div>
-      <div lc-mark style="max-width:400px;font-size:12px;" lc_id="uVTyfuZHcZ">
-        用户头像上传: <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload"
-          lc_id="ggkspVsxtO">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" lc_id="Xq6mKxhmD2" /> <i v-else
-            class="el-icon-plus avatar-uploader-icon" lc_id="yMQJeTHV0Q"></i>
-        </el-upload>
-      </div>
-      <div lc-mark style="max-width:400px;font-size:12px;" lc_id="oLOYzhC3OV">
-        图片列表缩略图: <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" list-type="picture"
-          lc_id="q2XrT8yeX0">
-          <el-button size="small" type="primary" lc_id="5u/ST0LLg3">点击上传</el-button>
-          <template #tip>
-            <div class="el-upload__tip" lc_id="jtqWimxhcH">只能上传jpg/png文件，且不超过500kb</div>
-          </template>
-        </el-upload>
-      </div>
-      <div lc_id="+p5NODNW9x">
-        <el-upload class="upload-demo" lc-mark drag action="https://jsonplaceholder.typicode.com/posts/" multiple
-          lc_id="xBGaLT6/i0">
-          <i class="el-icon-upload" lc_id="IYJxHubhoK"></i>
-          <div class="el-upload__text" lc_id="XlmNpvTMq9">
-            将文件拖到此处，或 <em lc_id="F1wzfewKQd">点击上传</em>
+  <template lc_id="6qRH3lc1dt">
+      <div lc_id="nqlS2COw0N">
+          <div lc_id="D9kF2S4UlD">
+              <div class="demonstration-element" lc_id="DH8WXyx5Hd">Radio 单选框</div>
+              <el-radio-group v-model="radio" lc-mark lc_id="f0v5GqbM8W">
+                  <el-radio :label="3" lc_id="iS/l/lS7uE">备选项</el-radio>
+                  <el-radio :label="6" lc_id="PwMXXlWapK">备选项</el-radio>
+                  <el-radio :label="9" lc-mark lc_id="kgp2vfR6ti">备选项</el-radio>
+              </el-radio-group>
           </div>
-          <template #tip>
-            <div class="el-upload__tip" lc_id="kLNHsmuBIJ">只能上传jpg/png文件，且不超过500kb</div>
-          </template>
-        </el-upload>
+          <div lc_id="wwgDyr1OR2">
+              <div class="demonstration-element" lc_id="6KW/uZOTEM">Checkbox 多选框</div>
+              <el-checkbox-group lc-mark v-model="checkList" lc_id="Uen92zl/6G">
+                  <el-checkbox label="复选框 A" lc_id="FgCPjGEWNa"></el-checkbox>
+                  <el-checkbox label="复选框 B" lc_id="FAGQbE5NjH"></el-checkbox>
+                  <el-checkbox lc-mark label="复选框 C" lc_id="vp/RVl8A/3"></el-checkbox>
+              </el-checkbox-group>
+          </div>
+          <div lc_id="VEDRtauvNm">
+              <el-input v-model="input" placeholder="请输入内容" lc-mark lc_id="ffFxjUysQl"></el-input>
+              <el-input type="textarea" lc-mark :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="textarea2" lc_id="l7XPAnIanl"></el-input>
+          </div>
+          <div lc_id="4JbZ+JNrQw">
+              <div class="demonstration-element" lc_id="qBSKct8boj">InputNumber 计数器</div>
+              <div style="display:inline-block;width:200px;" lc-mark lc_id="xBXsSYROtm">
+                  <el-input-number v-model="num" @change="handleChange" :min="1" :max="10" label="描述文字" lc_id="6UG1vTaWBN"></el-input-number>
+              </div>
+              <div style="display:inline-block;width:200px;" lc-mark lc_id="ma8NcOpTT7">
+                  <el-input-number v-model="num" controls-position="right" @change="handleChange" :min="1" :max="10" lc_id="UBHeHrcbVw"></el-input-number>
+              </div>
+          </div>
+          <div lc_id="cug4WVKxu9">
+              <div class="demonstration-element" lc_id="BkPeGYgetZ">Select 选择器</div>
+              <el-select v-model="value" lc-mark placeholder="请选择" lc_id="qB59tUf6Gc">
+                  <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" lc_id="whLrgIdezr"></el-option>
+              </el-select>
+          </div>
+          <div lc_id="nDNR0MoKZA">
+              <div class="demonstration-element" lc_id="p4yqbL8QdC">Cascader 级联选择器</div>
+              <el-cascader lc-mark v-model="value2" :options="options2" @change="handleChange" lc_id="nMEiBnay+d"></el-cascader>
+          </div>
+          <div lc_id="H/A6J6KXiY">
+              <div class="demonstration-element" lc_id="1ly5rIkWVS">Switch 开关</div>
+              <el-switch lc-mark v-model="value3" active-text="按月付费" inactive-text="按年付费" lc_id="xKdVt8uBzg"></el-switch>
+          </div>
+          <div lc_id="PnI1SUBtFH">
+              <div class="demonstration-element" lc_id="xEukfWny/6">Slider 滑块</div>
+              <el-slider lc-mark v-model="value4" lc_id="6y/Uiwq0ZN"></el-slider>
+          </div>
+          <div lc_id="5dyMzD3j06">
+              <div class="demonstration-element" lc_id="ERiurnsreT">TimePicker 时间选择器</div>
+              <el-time-select v-model="value5" lc-mark :picker-options="{ start: '08:30', step: '00:15', end: '18:30' }" placeholder="选择时间" lc_id="Sz3vn5DAbX"></el-time-select>
+              <el-time-picker lc-mark is-range v-model="value1" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围" lc_id="o2nM93CmIm"></el-time-picker>
+          </div>
+          <div lc_id="xWW1lIgrLe">
+              <div class="demonstration-element" lc_id="Sm6zFTno79">DatePicker 日期选择器</div>
+              <el-date-picker v-model="value6" lc-mark type="date" placeholder="选择日期" lc_id="5S5Yzx2fXs"></el-date-picker>
+              <el-date-picker v-model="dateValue1" lc-mark type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" lc_id="3D+CY23B2Q"></el-date-picker>
+          </div>
+          <div lc_id="SFEe1Ua3f3">
+              <div class="demonstration-element" lc_id="EDwU3s0SZ6">Upload 上传</div>
+              <div lc_id="Cco/MVefy1">
+                  <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple lc-mark :limit="3" :on-exceed="handleExceed" :file-list="fileList" lc_id="7frE/pSrYE">
+                      <el-button size="small" type="primary" lc_id="c/5KHeT+LU">点击上传</el-button>
+                      <template #tip lc_id="cEzrM0eEXc">
+                          <div class="el-upload__tip" lc_id="Vh2iLMvT2c">只能上传jpg/png文件，且不超过500kb</div>
+                      </template>
+                  </el-upload>
+              </div>
+              <div lc-mark style="max-width:400px;font-size:12px;" lc_id="KzLuue+H7z">
+用户头像上传:                  <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" lc_id="1eXpUahgcu">
+                      <img v-if="imageUrl" :src="imageUrl" class="avatar" lc_id="6Ax8qNsE2Z"/>                      <i v-else class="el-icon-plus avatar-uploader-icon" lc_id="lqybUMnnYf"></i>
+                  </el-upload>
+              </div>
+              <div lc-mark style="max-width:400px;font-size:12px;" lc_id="NwHRrU2JEM">
+图片列表缩略图:                  <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" list-type="picture" lc_id="+hJ7DSkPgT">
+                      <el-button size="small" type="primary" lc_id="y3uZKsl9b/">点击上传</el-button>
+                      <template #tip lc_id="0JB5ZbGk3I">
+                          <div class="el-upload__tip" lc_id="esyAhLLNGI">只能上传jpg/png文件，且不超过500kb</div>
+                      </template>
+                  </el-upload>
+              </div>
+              <div lc_id="g/E9ZNwP9E">
+                  <el-upload class="upload-demo" lc-mark drag action="https://jsonplaceholder.typicode.com/posts/" multiple lc_id="ADzwW/1hsX">
+                      <i class="el-icon-upload" lc_id="FsQAFizcWf"></i>
+                      <div class="el-upload__text" lc_id="CCys4DMWDP">
+将文件拖到此处，或                          <em lc_id="TbbfPE9Hu+">点击上传</em>
+                      </div>
+                      <template #tip lc_id="K65M529P0Z">
+                          <div class="el-upload__tip" lc_id="4GA0T+3HDL">只能上传jpg/png文件，且不超过500kb</div>
+                      </template>
+                  </el-upload>
+              </div>
+          </div>
+          <div lc_id="X/f9Q6XT+l">
+              <div class="demonstration-element" lc_id="7NKyW9NxNM">Rate 评分</div>
+              <el-rate v-model="value7" lc-mark show-text lc_id="gWm2+ckHWm"></el-rate>
+          </div>
+          <div lc_id="unZHE/lFYS">
+              <div class="demonstration-element" lc_id="9gDxl8XOEm">ColorPicker 颜色选择器</div>
+              <el-color-picker lc-mark v-model="color1" lc_id="V+9zRMsjFK"></el-color-picker>
+          </div>
       </div>
-    </div>
-    <div lc_id="rmSgFvvDvt">
-      <div class="demonstration-element" lc_id="h5uo8CrShR">Rate 评分</div>
-      <el-rate v-model="value7" lc-mark show-text lc_id="UK81nB7671"></el-rate>
-    </div>
-    <div lc_id="G7LuObrLMZ">
-      <div class="demonstration-element" lc_id="HeOPHNf8Ew">ColorPicker 颜色选择器</div>
-      <el-color-picker lc-mark v-model="color1" lc_id="1pcEEM5BsF"></el-color-picker>
-    </div>
-  </div>
-</template>
+  </template>
   <script>
 export default {
   data() {
@@ -472,8 +457,7 @@ export default {
     },
   },
 };  </script>
-  <style scoped>
-.avatar-uploader :v-deep(.el-upload) {
+  <style scoped>.avatar-uploader :v-deep(.el-upload) {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
@@ -496,5 +480,4 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
-}
-</style>
+}</style>
