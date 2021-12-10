@@ -2,27 +2,27 @@
   <div class="element-class">
     <lc-button></lc-button>
     <lc-table></lc-table>
-    <!-- <lc-form ></lc-form>
+    <lc-form ></lc-form>
     <lc-image></lc-image>
     <lc-form-base></lc-form-base>
     <lc-dialog></lc-dialog>
     <lc-icon ></lc-icon>
     <lc-layout ></lc-layout>
     <lc-container ></lc-container>
-    <lc-final></lc-final> -->
+    <lc-final></lc-final> 
   </div>
 </template>
 <script>
 import button from "./button.vue";
 import table from "./table";
-// import icon from "./icon";
-// import layout from "./layout";
-// import container from "./container";
-// import form from "./form";
-// import formBase from "./form-base";
-// import dialog from "./dialog";
-// import image from "./image";
-// import final from "./final";
+import icon from "./icon";
+import layout from "./layout";
+import container from "./container";
+import form from "./form";
+import formBase from "./form-base";
+import dialog from "./dialog";
+import image from "./image";
+import final from "./final";
 
 import { deepLCEle } from "@/utils/initRawComponent";
 
@@ -40,14 +40,14 @@ export default {
   components: {
     "lc-button": button,
     "lc-table": table,
-    // "lc-icon": icon,
-    // "lc-form": form,
-    // "lc-layout": layout,
-    // "lc-container": container,
-    // "lc-form-base": formBase,
-    // "lc-dialog": dialog,
-    // "lc-image": image,
-    // "lc-final": final,
+    "lc-icon": icon,
+    "lc-form": form,
+    "lc-layout": layout,
+    "lc-container": container,
+    "lc-form-base": formBase,
+    "lc-dialog": dialog,
+    "lc-image": image,
+    "lc-final": final,
   },
 };
 </script>

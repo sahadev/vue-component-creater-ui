@@ -42,12 +42,12 @@
                       <a target="_blank" lc_id="dil67qSs86">订单管理</a>
                   </el-menu-item>
                   <el-submenu index="2" lc_id="NY1ULa4P2Q">
-                      <template slot="title" lc_id="EwUd4efWhm">我的工作台</template>
+                      <template #title lc_id="EwUd4efWhm">我的工作台</template>
                       <el-menu-item index="2-1" lc_id="zafhDPI5vE">选项1</el-menu-item>
                       <el-menu-item index="2-2" lc_id="WlfqjAfsIa">选项2</el-menu-item>
                       <el-menu-item index="2-3" lc_id="BA4wuaM6Zg">选项3</el-menu-item>
                       <el-submenu index="2-4" lc_id="/iWebaFsQq">
-                          <template slot="title" lc_id="V8UUKlvHnc">选项4</template>
+                          <template #title lc_id="V8UUKlvHnc">选项4</template>
                           <el-menu-item index="2-4-1" lc_id="hlaLFAfE7r">选项1</el-menu-item>
                           <el-menu-item index="2-4-2" lc_id="DJomhSf824">选项2</el-menu-item>
                           <el-menu-item index="2-4-3" lc_id="PoxAKU6k+S">选项3</el-menu-item>
@@ -85,13 +85,15 @@
                   <span class="el-dropdown-link" lc_id="hOjhZVZGbR">
 下拉菜单                      <i class="el-icon-arrow-down el-icon--right" lc_id="87SkUBPdnB"></i>
                   </span>
-                  <el-dropdown-menu slot="dropdown" lc_id="Fi6Q4IfNSE">
-                      <el-dropdown-item lc_id="l8vkCE/8VH">黄金糕</el-dropdown-item>
-                      <el-dropdown-item lc_id="gbNMkf9GXr">狮子头</el-dropdown-item>
-                      <el-dropdown-item lc_id="uwaDtykZaN">螺蛳粉</el-dropdown-item>
-                      <el-dropdown-item disabled lc_id="rI2d1vErJ+">双皮奶</el-dropdown-item>
-                      <el-dropdown-item divided lc_id="6tbTs4xG9T">蚵仔煎</el-dropdown-item>
-                  </el-dropdown-menu>
+                  <template #dropdown>
+                    <el-dropdown-menu lc_id="Fi6Q4IfNSE">
+                        <el-dropdown-item lc_id="l8vkCE/8VH">黄金糕</el-dropdown-item>
+                        <el-dropdown-item lc_id="gbNMkf9GXr">狮子头</el-dropdown-item>
+                        <el-dropdown-item lc_id="uwaDtykZaN">螺蛳粉</el-dropdown-item>
+                        <el-dropdown-item disabled lc_id="rI2d1vErJ+">双皮奶</el-dropdown-item>
+                        <el-dropdown-item divided lc_id="6tbTs4xG9T">蚵仔煎</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
               </el-dropdown>
           </div>
           <div lc_id="aZMbV9+94Y">
@@ -105,11 +107,13 @@
           <div lc_id="IiSr5DQBar">
               <div class="demonstration-element" lc_id="9vmJpfJXls">Card 卡片</div>
               <el-card lc-mark class="box-card" lc_id="JZ/f90Eao5">
-                  <div slot="header" class="clearfix" lc_id="SvmakA0ZV4">
+                <template #header>
+                  <div class="clearfix" lc_id="SvmakA0ZV4">
                       <span lc_id="DEDjfa97FG">卡片名称</span>
                       <el-button style="float: right; padding: 3px 0" type="text" lc_id="cCyRGdP1cA">操作按钮</el-button>
                   </div>
                   <div v-for="o in 4" :key="o" class="text item" lc_id="LA6GOdkvYg">{{ "列表内容 " + o }}</div>
+                </template>
               </el-card>
           </div>
           <div lc_id="ee7f8zuUHN">

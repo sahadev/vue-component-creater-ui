@@ -1,0 +1,1847 @@
+diff --git a/package.json b/package.json
+index 4d30ebf..481c92d 100644
+--- a/package.json
++++ b/package.json
+@@ -9,7 +9,8 @@
+   ],
+   "main": "./dist/vcc.umd.min.js",
+   "scripts": {
+-    "serve": "vue-cli-service serve --open --port 8008",
++    "dev": "vite --port 8008",
++    "serve": "vite --port 8008",
+     "build:release": "vue-cli-service build",
+     "build": "vue-cli-service build --report --target lib --name vcc './src/components-v2/VCC.vue' && node ./src/script/distClear.js",
+     "build:win": "vue-cli-service build --report --target lib --name vcc ./src/components-v2/VCC.vue && node ./src/script/distClear.js",
+@@ -21,13 +22,16 @@
+     "debugParser": "node ./src/test/parserJsCode.js"
+   },
+   "dependencies": {
+-    "ant-design-vue": "^1.7.2",
++    "@element-plus/icons": "0.0.11",
++    "@vitejs/plugin-vue": "^1.10.0",
++    "@vue/compiler-sfc": "^3.2.22",
+     "axios": "^0.21.4",
++    "codemirror-editor-vue3": "^0.2.4",
+     "copy-to-clipboard": "^3.3.1",
+-    "crypto-random-string": "^3.3.0",
++    "crypto-random-string": "^3.3.1",
+     "css": "^3.0.0",
++    "element-plus": "^1.2.0-beta.3",
+     "css-scoped": "^1.0.0",
+-    "element-ui": "^2.15.6",
+     "escodegen": "^2.0.0",
+     "espree": "^7.3.0",
+     "eventemitter3": "^4.0.7",
+@@ -35,16 +39,17 @@
+     "fs-extra": "^9.0.1",
+     "glob": "^7.1.6",
+     "keymaster": "^1.6.2",
+-    "lodash": "^4.17.20",
++    "lodash-es": "^4.17.21",
++    "nanoid": "^3.1.30",
+     "prettier": "^2.4.0",
+-    "prismjs": "^1.20.0",
+     "split.js": "^1.6.2",
+-    "stringify-object": "^3.3.0",
+     "vant": "^2.10.7",
+-    "vue": "^2.6.14",
+-    "vue-codemirror": "^4.0.6",
+-    "vue-github-button": "^1.3.0",
+-    "vue-nestable": "^2.6.0"
++    "vite": "^2.6.14",
++    "vue": "^3.2.22",
++    "vuedraggable": "^4.1.0",
++    "vuex": "^4.0.2",
++    "vue-template-compiler": "^2.6.14",
++    "vue-github-button": "^1.3.0"
+   },
+   "devDependencies": {
+     "@babel/generator": "^7.11.6",
+@@ -60,7 +65,8 @@
+     "lint-staged": "^9.5.0",
+     "sass": "^1.25.0",
+     "sass-loader": "^8.0.2",
+-    "vue-template-compiler": "^2.6.14"
++    "is-obj": "^3.0.0",
++    "is-regexp": "^3.0.0"
+   },
+   "eslintConfig": {
+     "root": true,
+diff --git a/public/index.html b/public/index.html
+index 851ae63..2d5bb51 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -11,7 +11,7 @@
+     <noscript>
+       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+     </noscript>
+-    <div id="app"></div>
++    <div id="app" style="height:100%;"></div>
+     <!-- built files will be auto injected -->
+   </body>
+ </html>
+diff --git a/src/App.vue b/src/App.vue
+index 272d6ee..7122e26 100644
+--- a/src/App.vue
++++ b/src/App.vue
+@@ -3,12 +3,13 @@
+ </template>
+ 
+ <script>
++import { defineAsyncComponent } from 'vue'
+ // 以这样一段结构初始化VCC组件
+ const initCodeStr = '{"template":{"lc_id":"root","__children":[{"div":{"class":"container","style":"min-height: 100%; padding-bottom: 100px;","lc_id":"container","__text__":"Hello，欢迎使用LCG，请往此区域拖拽组件","__children":[{"el-button":{"lc-mark":"","type":"danger","lc_id":"COAAYXizyI","__children":[],"__text__":"危险按钮","@click":"onButtonClick","size":"small"}}]}}]}}'
+ 
+ export default {
+   components: {
+-    vcc: () => import('./components-v2/VCC.vue'),
++    vcc: defineAsyncComponent(() => import('./components-v2/VCC.vue')),
+   },
+   data() {
+     return {
+diff --git a/src/components-v2/ToolsBar.vue b/src/components-v2/ToolsBar.vue
+index 2e6ea8f..d9168a3 100644
+--- a/src/components-v2/ToolsBar.vue
++++ b/src/components-v2/ToolsBar.vue
+@@ -25,8 +25,8 @@
+           Structure</el-link>
+       </el-col>
+       <el-col :span="3">
+-        <github-button href="https://github.com/sahadev/vue-component-creater-ui" data-icon="octicon-star"
+-          data-show-count="true" aria-label="Star sahadev/vue-component-creater-ui on GitHub">Star</github-button>
++        <a class="github-button" href="https://github.com/sahadev/vue-component-creater-ui" data-icon="octicon-star"
++          data-show-count="true" aria-label="Star sahadev/vue-component-creater-ui on GitHub">Star</a>
+       </el-col>
+     </el-row>
+ 
+@@ -47,11 +47,9 @@
+ </template>
+ 
+ <script>
+-import GithubButton from 'vue-github-button'
+-
+ export default {
+   props: [],
+-  components: { GithubButton },
++  components: { },
+   data() {
+     return {
+       previewMode: false,
+@@ -85,6 +83,10 @@ export default {
+     onEditModeChange() {
+       this.editMode = !this.editMode;
+       this.$emit('onEditModeChange', this.editMode);
++
++      setTimeout(() => {
++        this.editMode = true;
++      }, 500);
+     }
+   },
+   fillter: {},
+@@ -103,9 +105,6 @@ export default {
+   border-radius: 0px;
+   align-content: center;
+   border-bottom: 1px solid #f0f0f0;
+-  > * {
+-    margin-right: 5px;
+-  }
+ }
+ 
+ .edit {
+diff --git a/src/components-v2/VCC.vue b/src/components-v2/VCC.vue
+index eee0b81..c867402 100644
+--- a/src/components-v2/VCC.vue
++++ b/src/components-v2/VCC.vue
+@@ -16,8 +16,7 @@
+           </div>
+         </div>
+         <attribute-input :enableRemoveButton="true" class="attribute" @save="onSaveAttr" @remove="onRemove"
+-          ref="attributeInput" shortcutInitMode="hand" @codeRefresh="generateVueCode" style="display:none;"
+-          :__rawVueInfo__="currentEditRawInfo">
++          ref="attributeInput" shortcutInitMode="hand" :__rawVueInfo__="currentEditRawInfo">
+         </attribute-input>
+       </div>
+     </div>
+@@ -38,22 +37,22 @@
+       <el-tooltip effect="dark" content="查看实时代码" placement="top-start">
+         <img class="round-icon" :src="iconCode" alt="" @click="codeDialogVisible = true">
+       </el-tooltip>
+-      <el-tooltip effect="dark" content="清空当前编辑内容" placement="top-start">
+-        <el-popconfirm confirmButtonText="确认" cancelButtonText="点错了" icon="el-icon-info" iconColor="red"
+-          title="点我将清空所有编辑的内容, 确认吗?" @onConfirm="clear">
+-          <img slot="reference" class="round-icon" :src="iconClear" alt="">
+-        </el-popconfirm>
+-      </el-tooltip>
++      <el-popconfirm confirmButtonText="确认" cancelButtonText="点错了" icon="el-icon-info" iconColor="red"
++        title="点我将清空所有编辑的内容, 确认吗?" @confirm="clear">
++        <template #reference>
++          <img class="round-icon" :src="iconClear" alt="">
++        </template>
++      </el-popconfirm>
+     </div>
+ 
+     <div>
+-      <lc-code :rawCode="code" :codeDialogVisible.sync="codeDialogVisible">
++      <lc-code :rawCode="code" v-model:codeDialogVisible="codeDialogVisible">
+       </lc-code>
+-      <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" :visible.sync="structureVisible"
+-        @codeRefresh="generateVueCode" @onLevelChange="onLevelChange">
++      <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" v-model="structureVisible"
++        @reRender="render">
+       </code-structure>
+-      <CodeEditor :codeDialogVisible.sync="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
+-      <VueEditor :vueDialogVisible.sync="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
++      <CodeEditor v-model:codeDialogVisible="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
++      <VueEditor v-model:vueDialogVisible="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
+     </div>
+ 
+     <!-- 辅助定位线 -->
+@@ -61,27 +60,33 @@
+       <div class="x"></div>
+     </div>
+   </div>
++
++  <div id="fullScreen" v-if="!editMode">
++    <div style="margin: 20px; font-weight: bold;">按下ESC退出预览模式</div>
++    <div id="mountedEle"></div>
++  </div>
+ </template>
+ 
+ <script>
++import { defineAsyncComponent } from 'vue'
+ import { splitInit } from "../libs/split-init";
+-// 这个文件不可以进行懒加载，它会导致运行时不可点击的行为，具体原因未知
++// // 这个文件不可以进行懒加载，它会导致运行时不可点击的行为，具体原因未知
+ import { MainPanelProvider } from "../libs/main-panel";
+ import { initContainerForLine } from "@/utils/lineHelper";
+-
+-const keymaster = require('keymaster');
++import keymaster from "keymaster"
+ 
+ export default {
+   name: "vcc",
+   props: ['initCodeEntity'],
++  emits: ['updateCodeEntity'],
+   components: {
+-    RawComponents: () => import("../components/RawComponents"),
+-    ToolsBar: () => import("./ToolsBar"),
+-    AttributeInput: () => import("../components/AttributeInput"),
+-    CodeStructure: () => import("../components/CodeStructure"),
+-    "lc-code": () => import("../components/Code"),
+-    CodeEditor: () => import('../components/JSCodeEditorDialog.vue'),
+-    VueEditor: () => import('../components/VueCodeParseDialog.vue')
++    RawComponents: defineAsyncComponent(() => import("@/components/RawComponents.vue")),
++    ToolsBar: defineAsyncComponent(() => import("./ToolsBar")),
++    AttributeInput: defineAsyncComponent(() => import("../components/AttributeInput")),
++    CodeStructure: defineAsyncComponent(() => import("../components/CodeStructure")),
++    "lc-code": defineAsyncComponent(() => import("../components/Code")),
++    CodeEditor: defineAsyncComponent(() => import('../components/JSCodeEditorDialog.vue')),
++    VueEditor: defineAsyncComponent(() => import('../components/VueCodeParseDialog.vue'))
+   },
+   data() {
+     return {
+@@ -94,14 +99,14 @@ export default {
+       iconCode: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-working-outline.svg"),
+       iconClear: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/trash-outline.svg"),
+ 
+-      viewMode: false
++      editMode: true
+     };
+   },
+   watch: {
+     currentEditRawInfo(newValue) {
+       const attributeContainter = document.querySelector(".attribute");
+       if (newValue) {
+-        attributeContainter.style = "right:10px;";
++        attributeContainter.style = "right:10px; display:block;";
+         this.$refs['attributeInput'].onShow();
+       } else {
+         attributeContainter.style = "right: calc(-300px - 20px); display:none;";
+@@ -139,6 +144,13 @@ export default {
+         this.undo();
+         return false
+       });
++
++
++      keymaster('esc', () => {
++        this.editMode = true;
++        this.mainPanelProvider.setEditMode(true);
++        return false
++      });
+     },
+ 
+     init() {
+@@ -205,7 +217,11 @@ export default {
+     },
+ 
+     onEditModeChange(newValue) {
+-      this.mainPanelProvider.setEditMode(newValue);
++      this.editMode = newValue;
++
++      this.$nextTick(() => {
++        this.mainPanelProvider.setEditMode(newValue, document.querySelector("#mountedEle"));
++      })
+     },
+ 
+     renderCode() {
+@@ -220,11 +236,6 @@ export default {
+       this.mainPanelProvider.saveAttribute(resultList, lc_id);
+     },
+ 
+-    onLevelChange(removeID, movePath) {
+-      this.mainPanelProvider.onLevelChange(removeID, movePath);
+-    },
+-
+-    generateVueCode() { },
+     onRemove({ lc_id }) {
+       this.mainPanelProvider.remove(lc_id);
+     },
+@@ -240,10 +251,20 @@ export default {
+       this.mainPanelProvider.saveJSCode(code);
+     },
+ 
++    /**
++     * 二级编辑解析
++     */
+     codeParseSucess(vueCodeEntity) {
+       this.mainPanelProvider.render(vueCodeEntity);
+     },
+ 
++    /**
++     * 渲染指定结构
++     */
++    render(codeEntity) {
++      this.mainPanelProvider.render(codeEntity);
++    },
++
+     help() {
+       window.open('/doc')
+     }
+@@ -365,6 +386,21 @@ export default {
+     pointer-events: none;
+   }
+ }
++
++#fullScreen {
++  width: 100%;
++  height: 100%;
++  position: fixed;
++  z-index: 3;
++  top: 0;
++  background: white;
++}
++
++#mountedEle {
++  border: 1px dashed rgb(126, 126, 128);
++  border-radius: 10px;
++  margin: 20px;
++}
+ </style>
+ 
+ <!-- 以下的样式作用于渲染容器中-->
+diff --git a/src/components/AttributeInput.vue b/src/components/AttributeInput.vue
+index f576218..4041bf3 100644
+--- a/src/components/AttributeInput.vue
++++ b/src/components/AttributeInput.vue
+@@ -1,11 +1,11 @@
+ <template>
+   <el-card class="attribute-container">
+ 
+-    <center>
++    <div style="text-align: center;">
+       <el-switch v-model="editMode" active-text="自由编辑" inactive-text="约束编辑" active-color="#13ce66"
+         inactive-color="#13ce66">
+       </el-switch>
+-    </center>
++    </div>
+ 
+     <div style="margin-top: 20px;">
+       <div name="1" v-show="!editMode">
+@@ -13,8 +13,8 @@
+           <div class="item" v-for="(item, index) in localAttributes" :key="index">
+             <el-input v-model="item.key" :placeholder="'key' + index" class="half-width"></el-input>
+             <div class="split">:</div>
+-            <el-input v-model="item.value" :placeholder="'value' + index" class="half-width"></el-input>
+-            <i class="el-icon-minus" @click="deleteItem(index)"></i>
++            <el-input v-model="item.value" :placeholder="'value' + index" class="half-width" style="flex-grow: 3;"></el-input>
++            <el-icon @click="deleteItem(index)" style="margin-left: 5px;"><minus /></el-icon>
+           </div>
+ 
+           <div class="quick-add-root">
+@@ -44,28 +44,31 @@
+       </div>
+     </div>
+ 
+-    <center style="margin-top: 10px;">
++    <div style="margin-top: 10px;text-align:center;">
+       <el-tooltip class="item" effect="dark" content="新增属性 ctrl+a" placement="bottom">
+-        <el-button type="primary" class="center" @click="createNew" icon="el-icon-circle-plus-outline" circle>
++        <el-button type="primary" class="center" @click="createNew" circle>
++          <el-icon><circle-plus /></el-icon>
+         </el-button>
+       </el-tooltip>
+       <el-tooltip class="item" effect="dark" content="保存属性 ctrl+s" placement="bottom">
+-        <el-button type="success" class="center" @click="save" icon="el-icon-refresh" circle></el-button>
++        <el-button type="success" class="center" @click="save" circle>
++          <el-icon><refresh /></el-icon>
++        </el-button>
+       </el-tooltip>
+-      <el-tooltip class="item" effect="dark" content="移除该组件 ctrl+d" placement="bottom">
+-        <el-button v-if="enableRemoveButton" type="danger" class="center" icon="el-icon-delete" @click="remove" circle>
++      <el-tooltip v-if="enableRemoveButton" class="item" effect="dark" content="移除该组件 ctrl+d" placement="bottom">
++        <el-button type="danger" class="center" @click="remove" circle>
++          <el-icon><delete /></el-icon>
+         </el-button>
+       </el-tooltip>
+-      <el-tooltip class="item" effect="dark" content="复制一个兄弟组件 ctrl+c" placement="bottom">
+-        <el-button v-if="enableBroButton" type="primary" class="center" icon="el-icon-copy-document" @click="copyBro"
+-          circle>
++      <el-tooltip v-if="enableBroButton" class="item" effect="dark" content="复制一个兄弟组件 ctrl+c" placement="bottom">
++        <el-button type="primary" class="center" @click="copyBro" circle>
++          <el-icon><document-copy /></el-icon>
+         </el-button>
+       </el-tooltip>
+-
+-      <center>
++      <div style="text-algin: center;">
+         <span class="shortcut-tip">支持快捷键操作</span>
+-      </center>
+-    </center>
++      </div>
++    </div>
+ 
+   </el-card>
+ </template>
+@@ -73,7 +76,7 @@
+ <script>
+ import { getRawComponentKey, getRawComponentContent } from "@/utils/common";
+ import { brotherEleEnum, copyBroCode } from "@/libs/bro-ele-config";
+-const keymaster = require('keymaster');
++import keymaster from "keymaster"
+ 
+ export default {
+   props: ['__rawVueInfo__', 'enableRemoveButton', 'shortcutInitMode'],// __rawVueInfo__为当前编辑的原始代码对象, shortcutInitMode快捷键的初始化方式
+@@ -117,8 +120,6 @@ export default {
+ 
+     initShortcut() {
+       console.log(`init by mode: ${this.shortcutInitMode}`)
+-
+-
+       keymaster('⌘+a, ctrl+a', () => {
+         if (this.enable) {
+           this.createNew();
+@@ -159,9 +160,7 @@ export default {
+       this.localAttributes.push({ key: "", value: "" });
+     },
+     save() {
+-
+       try {
+-
+         let resultList = [];
+         if (!this.editMode) {
+           resultList = this.localAttributes.filter((item) => {
+@@ -198,7 +197,7 @@ export default {
+     },
+     copyBro() {
+       copyBroCode(this.__rawVueInfo__);
+-      this.$emit('codeRefresh');
++      this.$store.commit('onDragEnd');
+     },
+     onShow() {
+       // 这种方式适用于常规模式下的初始化，因为这个实例初始化后不会被销毁，一直常驻内存。但又不能受到其它实例销毁时的影响，所以需要明确的再次初始化。
+@@ -271,7 +270,7 @@ export default {
+ 
+ .half-width {
+   width: 0%;
+-  flex-grow: 1;
++  flex-grow: 2;
+ }
+ 
+ .center {
+diff --git a/src/components/Code.vue b/src/components/Code.vue
+index 531660e..3bab94d 100644
+--- a/src/components/Code.vue
++++ b/src/components/Code.vue
+@@ -1,36 +1,36 @@
+ <template>
+-  <el-dialog title="代码预览" :visible.sync="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
+-    :center=true>
+-    <pre style="max-height: 60vh;">
+-    <code v-html="formatCode"></code>
+-    </pre>
+-    <div>
+-      <center style="color: #666; font-size: 12px;">使用代码前请确认相应的组件库已集成至项目</center>
+-    </div>
+-    <span slot="footer">
+-
+-      <el-tooltip effect="dark" content="拷贝" placement="left">
+-        <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
+-      </el-tooltip>
+-      <el-tooltip effect="dark" content="下载" placement="right">
+-        <img class="round-icon" :src="iconDownload" alt="" @click="download">
+-      </el-tooltip>
+-
+-    </span>
++  <el-dialog title="代码预览" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
++    <!-- 这里加v-if是因为CodeEditor内部不支持watch数据监测 -->
++    <CodeEditor v-if="codeDialogVisible" style="max-height: 65vh;" ref="codeEditor" :initCode="prettyCode" mode="text/html"></CodeEditor>
++    <div style="color: #666; font-size: 12px; text-align:center; margin: 5px;">使用代码前请确认相应的组件库已集成至项目</div>
++    <template v-slot:footer>
++      <span>
++        <el-tooltip effect="dark" content="拷贝" placement="left">
++          <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
++        </el-tooltip>
++        <el-tooltip effect="dark" content="下载" placement="right">
++          <img class="round-icon" :src="iconDownload" alt="" @click="download">
++        </el-tooltip>
++      </span>
++    </template>
+   </el-dialog>
+ 
+ </template>
+ 
+ <script>
+ import './prism.css'
+-import Prism from "prismjs";
+ import prettier from "prettier/standalone";
+ import parserHtml from "prettier/parser-html";
+ import copy from 'copy-to-clipboard';
+ import { saveAs } from "file-saver";
+ 
++import CodeEditor from './CodeEditor.vue'
++
+ export default {
+   props: ['rawCode', 'codeDialogVisible'],
++  components: {
++    CodeEditor
++  },
+ 
+   data() {
+     return {
+@@ -95,10 +95,6 @@ export default {
+       }
+ 
+     },
+-
+-    formatCode() {
+-      return Prism.highlight(this.prettyCode, Prism.languages.markup, "html");
+-    }
+   },
+   fillter: {},
+ };
+@@ -107,7 +103,7 @@ export default {
+ <style scoped>
+ /*  在此自动生成 */
+ 
+-::v-deep .el-dialog__body {
++:v-deep(.el-dialog__body) {
+   padding: 0 30px !important;
+ }
+ 
+diff --git a/src/components/CodeEditor.vue b/src/components/CodeEditor.vue
+index 4fb487c..ed46553 100644
+--- a/src/components/CodeEditor.vue
++++ b/src/components/CodeEditor.vue
+@@ -1,12 +1,12 @@
+ <template>
+   <div class="codemirror">
+-    <codemirror v-model="code" :options="cmOption" @cursorActivity="onCmCursorActivity" @ready="onCmReady"
++    <codemirror v-model:value="code" :options="cmOption" @cursorActivity="onCmCursorActivity" @ready="onCmReady"
+       @focus="onCmFocus" @blur="onCmBlur" />
+   </div>
+ </template>
+ 
+ <script>
+-import { codemirror } from 'vue-codemirror'
++import Codemirror from "codemirror-editor-vue3";
+ 
+ // base style
+ import 'codemirror/lib/codemirror.css'
+@@ -50,20 +50,23 @@ import 'codemirror/addon/fold/indent-fold.js'
+ import 'codemirror/addon/fold/markdown-fold.js'
+ import 'codemirror/addon/fold/xml-fold.js'
+ 
+-require(['axios'], axios => {
+-  self.axios = axios.create({
+-    baseURL: '',
+-    timeout: 1000,
+-  });
+-});
++import axios from 'axios';
+ 
+ export default {
+   props: ['initCode', 'mode'],
+   name: 'code-editor',
+   title: 'Mode: text/x-vue & Theme: monokai',
+   components: {
+-    codemirror
++    Codemirror
+   },
++
++  created() {
++    self.axios = axios.create({
++      baseURL: '',
++      timeout: 1000,
++    });
++  },
++
+   computed: {
+     code: {
+       get() {
+@@ -74,6 +77,12 @@ export default {
+       }
+     }
+   },
++  watch: {
++    initCode() {
++      this.codeStore = this.initCode;
++    }
++  },
++
+   data() {
+     return {
+       codeStore: this.initCode,
+diff --git a/src/components/CodeStructure.vue b/src/components/CodeStructure.vue
+index 61bd396..ee08c5f 100644
+--- a/src/components/CodeStructure.vue
++++ b/src/components/CodeStructure.vue
+@@ -1,37 +1,24 @@
+ <template>
+-  <el-drawer :visible.sync="drawer" :with-header="false" size="70%" direction="btt">
++  <el-drawer v-model="drawer" :with-header="false" size="70%" direction="btt">
+     <div class="container">
+ 
+-      <center>组件结构检视图
++      <div style="text-align: center;">组件结构检视图
+         <br>
+         <span style="font-size:12px;">Components
+           Structure</span>
+-      </center>
++      </div>
+ 
+       <el-row :gutter="20" style="height:0px;flex-grow:1;">
+         <el-col :span="16" style="height: 100%;">
+           <div style="overflow: scroll;height:100%; margin: 0 20px;padding: 10px;">
+ 
+-            <vue-nestable v-model="treeData" @change="onLevelChange">
+-              <template slot-scope="{ item }">
+-                <vue-nestable-handle :item="item">
+-                  <i class="el-icon-rank icon-s"></i>
+-                </vue-nestable-handle>
+-
+-                <span @click="onNodeClick(item)">{{ item.text }}</span>
+-              </template>
+-
+-              <div slot="placeholder">
+-                <b>The editor is empty.</b>
+-              </div>
+-            </vue-nestable>
++            <nested-draggable :data="treeData" />
+ 
+           </div>
+         </el-col>
+         <el-col :span="8">
+-          <attribute-input ref="attributeInput" :enableRemoveButton="true" v-if="currentEditRawInfo && drawer"
+-            @save="onSaveAttr" shortcutInitMode="auto" @remove="onRemove" @codeRefresh="codeRefresh"
+-            :__rawVueInfo__="currentEditRawInfo">
++          <attribute-input ref="attributeInput" :enableRemoveButton="true" v-if="currentEditRawInfo" @save="onSaveAttr"
++            shortcutInitMode="auto" @remove="onRemove" :__rawVueInfo__="currentEditRawInfo">
+           </attribute-input>
+         </el-col>
+       </el-row>
+@@ -41,80 +28,33 @@
+ </template>
+ 
+ <script>
+-import "./halower-tree.min.css";
+-import "@/assets/nestable.css"
+ import { isObject, getRawComponentKey, getRawComponentContent } from "@/utils/common";
+-import { VueNestable, VueNestableHandle } from 'vue-nestable';
++import nestedDraggable from './nested.vue'
++import { defineAsyncComponent } from 'vue'
+ 
+ export default {
+   props: ['visible'],
++  emits: ['onLevelChange', 'remove', 'save', 'update:visible', 'reRender'],
+   components: {
+-    AttributeInput: resolve => { require(["./AttributeInput"], resolve) },
+-    VueNestable,
+-    VueNestableHandle
++    AttributeInput: defineAsyncComponent(() => import("@/components/AttributeInput.vue")),
++    nestedDraggable
+   },
+ 
+   data() {
+     return {
+       // 在此自动生成
+       treeData: [],
+-      currentEditRawInfo: null
+     };
+   },
+   beforeCreate() { },
+   created() { },
+   beforeMount() { },
+-  mounted() { },
++  mounted() {
++  },
+   beforeUpdate() { },
+   updated() { },
+   destoryed() { },
+   methods: {
+-    // 在此自动生成
+-    request() {
+-      // 网络请求，可选
+-    },
+-    codeRefresh() {
+-      this.$emit('codeRefresh');
+-    },
+-    onLevelChange(value, options) {
+-      this.$emit('onLevelChange', value.id, options.pathTo);
+-    },
+-
+-    convertStructure(rawInfo) {
+-      const title = getRawComponentKey(rawInfo);
+-      const object = rawInfo[title];
+-      const children = [];
+-      if (isObject(object)) {
+-        for (const key in object) {
+-          if (object.hasOwnProperty(key)) {
+-            if (key === '__children') {
+-              const element = object[key];
+-
+-              element.forEach(item => {
+-                const temp = this.convertStructure(item);
+-                temp && children.push(temp);
+-              })
+-            } else if (isObject(object[key])) {
+-              // 组成一个新的结构，适配只有一个子节点的数据结构
+-              const __obj = {};
+-              __obj[key] = object[key];
+-              const child = this.convertStructure(__obj);
+-              child && children.push(child);
+-            }
+-          }
+-        }
+-
+-        return {
+-          text: title,
+-          expanded: true,
+-          children: children,
+-          rawInfo: rawInfo,
+-          id: getRawComponentContent(rawInfo).lc_id
+-        }
+-      } else {
+-        return null;
+-      }
+-    },
+ 
+     onNodeClick(nodeInfo) {
+       this.currentEditRawInfo = nodeInfo.rawInfo;
+@@ -130,12 +70,17 @@ export default {
+     },
+ 
+     updateCode(codeRawInfo) {
+-      this.treeData = [this.convertStructure(codeRawInfo)];
++      this._codeRawInfo = codeRawInfo;
++      const content = getRawComponentContent(codeRawInfo);
++      const children = content.__children;
++      this.treeData = children;
+     },
+ 
+   },
+   watch: {
+-    canInitShortcut(newValue) {
++    renderCount(){
++      // 这里利用了vuedraggable v-model的特性，它会更改对象本身的引用
++      this.$emit('reRender', this._codeRawInfo);
+     }
+   },
+   computed: {
+@@ -147,8 +92,21 @@ export default {
+         this.$emit('update:visible', false);
+       }
+     },
++
++    renderCount(){
++      return this.$store.state.renderCount;
++    },
++
+     canInitShortcut() {
+       return this.currentEditRawInfo !== null && this.drawer;
++    },
++    currentEditRawInfo() {
++      if (this.$store.state.currentEditComp) {
++        const vccData = this.$store.state.currentEditComp.vccData;
++        return window.tree[vccData.lc_id];
++      } else {
++        return null;
++      }
+     }
+   },
+   fillter: {},
+@@ -162,7 +120,7 @@ center {
+   padding: 20px;
+ }
+ 
+-::v-deep .el-drawer__body {
++:v-deep(.el-drawer__body) {
+   height: 100%;
+ }
+ 
+diff --git a/src/components/JSCodeEditorDialog.vue b/src/components/JSCodeEditorDialog.vue
+index a002f2e..19735d2 100644
+--- a/src/components/JSCodeEditorDialog.vue
++++ b/src/components/JSCodeEditorDialog.vue
+@@ -1,5 +1,5 @@
+ <template>
+-  <el-dialog title="JS逻辑编辑" :visible.sync="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
++  <el-dialog title="JS逻辑编辑" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
+     :center=true>
+     <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/javascript"></CodeEditor>
+ 
+@@ -18,6 +18,7 @@ import CodeEditor from './CodeEditor.vue'
+ 
+ export default {
+   props: ['codeDialogVisible'],
++  emits: ['saveJSCode', 'update:codeDialogVisible'],
+   components: {
+     CodeEditor
+   },
+@@ -117,7 +118,7 @@ export default {
+ <style scoped>
+ /*  在此自动生成 */
+ 
+-::v-deep .el-dialog__body {
++:v-deep(.el-dialog__body) {
+   padding: 0 30px !important;
+ }
+ </style>
+\ No newline at end of file
+diff --git a/src/components/RawComponents.vue b/src/components/RawComponents.vue
+index d1410ee..deeb5d8 100644
+--- a/src/components/RawComponents.vue
++++ b/src/components/RawComponents.vue
+@@ -19,26 +19,28 @@
+         <div>
+           <el-dropdown @command="handleCommand">
+             <span class="el-dropdown-link">
+-              <i ref="help" class="el-icon-question" style="font-size:22px;color:#4dba87;"></i>
++              <el-icon style="font-size:22px;color:#4dba87;"><question-filled /></el-icon>
+             </span>
+-            <el-dropdown-menu slot="dropdown">
+-              <el-dropdown-item icon="el-icon-circle-check">基础组件数: {{ componentUnitNum }}
+-              </el-dropdown-item>
+-              <el-dropdown-item icon="el-icon-document" command="lcg">LCG平台</el-dropdown-item>
+-              <el-dropdown-item icon="el-icon-document" command="help">说明文档</el-dropdown-item>
+-              <el-dropdown-item icon="el-icon-chat-line-round" command="chat">在线沟通</el-dropdown-item>
+-            </el-dropdown-menu>
++            <template #dropdown>
++              <el-dropdown-menu>
++                <el-dropdown-item icon="el-icon-circle-check">基础组件数: {{ componentUnitNum }}
++                </el-dropdown-item>
++                <el-dropdown-item icon="el-icon-document" command="lcg">LCG平台</el-dropdown-item>
++                <el-dropdown-item icon="el-icon-document" command="help">说明文档</el-dropdown-item>
++                <el-dropdown-item icon="el-icon-chat-line-round" command="chat">在线沟通</el-dropdown-item>
++              </el-dropdown-menu>
++            </template>
+           </el-dropdown>
+         </div>
+       </div>
+     </nav>
+ 
+     <nav v-if="currentSelectBrand.titleArray && currentSelectBrand.titleArray.length > 0">
+-      <center style="margin-bottom:10px;">
++      <div style="margin-bottom:10px;text-align:center;">
+         <div style="padding:5px;font-size:12px;color:grey;">快速查找需要的</div>
+         <el-autocomplete class="inline-input" v-model="componentSearch" :fetch-suggestions="querySearch" size="mini"
+           placeholder="请输入..." @select="handleSelect"></el-autocomplete>
+-      </center>
++      </div>
+       <div class="dismiss-scroll">
+         <div v-for="(item, index) in currentSelectBrand.titleArray" :key="item.title" class="second-nav"
+           :class="{'active':currentSelectBrand.selectIndex === index}" @click="selectSubnav(currentSelectBrand, index)">
+@@ -60,8 +62,8 @@
+ // import vant from "../rawComponents/vant";
+ // import iview from "../rawComponents/iview";
+ // import quasar from "../rawComponents/quasar";
+-import raw from "../rawComponents/raw";
+-import ele from "../rawComponents/element";
++import raw from "../rawComponents/raw/index.vue";
++import ele from "../rawComponents/element/index.vue";
+ 
+ export default {
+   data() {
+@@ -94,7 +96,7 @@ export default {
+         enable: false
+       },],
+ 
+-      currentIndex: 1
++      currentIndex: 0
+     };
+   },
+   methods: {
+@@ -260,7 +262,7 @@ nav {
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+ }
+ 
+-::v-deep .el-submenu__title {
++:v-deep(.el-submenu__title) {
+   padding: 0 15px !important;
+ }
+ 
+diff --git a/src/components/VueCodeParseDialog.vue b/src/components/VueCodeParseDialog.vue
+index 7c3f996..0636704 100644
+--- a/src/components/VueCodeParseDialog.vue
++++ b/src/components/VueCodeParseDialog.vue
+@@ -1,5 +1,5 @@
+ <template>
+-  <el-dialog title="Vue二次编辑" :visible.sync="vueDialogVisible" width="70%" top="10vh" :before-close="handleClose"
++  <el-dialog title="Vue二次编辑" v-model="vueDialogVisible" width="70%" top="10vh" :before-close="handleClose"
+     :center=true>
+     <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/html"></CodeEditor>
+ 
+@@ -20,6 +20,7 @@ import { ergodic, findAObject } from '../utils/common';
+ 
+ export default {
+   props: ['vueDialogVisible'],
++  emits: ['codeParseSucess', 'update:vueDialogVisible'],
+   components: {
+     CodeEditor
+   },
+@@ -88,7 +89,7 @@ export default {
+ <style scoped>
+ /*  在此自动生成 */
+ 
+-::v-deep .el-dialog__body {
++:v-deep(.el-dialog__body) {
+   padding: 0 30px !important;
+ }
+ </style>
+\ No newline at end of file
+diff --git a/src/components/nested.vue b/src/components/nested.vue
+new file mode 100644
+index 0000000..f256caf
+--- /dev/null
++++ b/src/components/nested.vue
+@@ -0,0 +1,89 @@
++<template>
++  <draggable class="dragArea" tag="ul" :list="data" @start="onStartDrag" @choose="onClick"
++    @end="onEndDrag">
++    <template #item="{ element }">
++      <li class="itemArea">
++        <p>{{ getRawComponentKey(element) }}</p>
++        <nested-draggable :data="getRawComponentContent(element).__children" />
++      </li>
++    </template>
++  </draggable>
++</template>
++<script>
++import draggable from "vuedraggable";
++import { getRawComponentKey, getRawComponentContent } from "@/utils/common";
++
++export default {
++  props: {
++    data: {
++      required: true,
++      type: Array
++    }
++  },
++  data() {
++    return {
++    }
++  },
++
++  computed: {
++  },
++  methods: {
++    getRawComponentKey, 
++    getRawComponentContent,
++    onStartDrag(event) {
++      event.item.classList.add("is-dragging");
++    },
++    onClick(event) {
++      if(this.$store.state.currentEditComp){
++        this.$store.state.currentEditComp.item.classList.remove("is-dragging");
++      }
++
++      event.item.classList.add("is-dragging");
++
++      event.vccData = getRawComponentContent(this.data[event.oldIndex]);
++      this.$store.commit('storeCurrentEditComp', event);
++    },
++    onEndDrag(event) {
++      event.item.classList.remove("is-dragging");
++
++      this.$store.commit('onDragEnd');
++    }
++  },
++
++  components: {
++    draggable
++  },
++  name: "nested-draggable"
++};
++</script>
++<style scoped lang="scss">
++.dragArea {
++  min-height: 20px;
++  border: 1px dashed rgb(126, 126, 128);
++  border-radius: 5px;
++  padding-inline-start: 30px;
++  padding-right: 2px;
++  padding-bottom: 2px;
++}
++
++p {
++  margin: 10px 0;
++}
++
++.itemArea {
++  min-height: 20px;
++  border: 1px dashed rgb(126, 126, 128);
++  padding-right: 2px;
++  padding-bottom: 2px;
++  border-radius: 5px;
++  padding-inline-start: 10px;
++  margin: 10px 0 0;
++}
++
++.is-dragging {
++  background-color: rgba(106, 127, 233, 0.274);
++  border: 1px dashed rgb(73, 100, 241);
++  -webkit-border-radius: 5px;
++  border-radius: 5px;
++}
++</style>
+\ No newline at end of file
+diff --git a/src/libs/bundle-core-esm.js b/src/libs/bundle-core-esm.js
+index bd90e71..784c93d 100644
+--- a/src/libs/bundle-core-esm.js
++++ b/src/libs/bundle-core-esm.js
+@@ -1,16 +1,15 @@
+ //该文件会遍历Object，获取关键的class,事件,data, 最终拼装为一个完整的SFC文件
+-
+-import stringifyObject from 'stringify-object';
+-import _ from 'lodash';
++import stringifyObject from '@/libs/stringify-object'
++import merge from 'lodash-es/merge';
++import cloneDeep from 'lodash-es/cloneDeep';
+ import prettier from 'prettier/standalone.js';
+ import parserBabel from 'prettier/parser-babel.js';
+ 
+ // 导出组件模板文件
+ 
+ function vueTemplate () {
+-  return `
+-<template> 
+-  <!--在此自动生成--> 
++  return `<template> 
++<!--在此自动生成--> 
+ </template>
+ 
+ <script>
+@@ -424,14 +423,6 @@ const scriptTemplate = `{
+     fillter: {},
+   };`;
+ 
+-const { merge, cloneDeep } = _;
+-
+-const rawAdd = Set.prototype.add;
+-Set.prototype.add = function (value) {
+-  if (typeof value === "string" && checkKeyword(value))
+-    rawAdd.apply(this, arguments);
+-};
+-
+ function checkKeyword(value) {
+   return value != "true" && value != "false";
+ }
+@@ -501,7 +492,7 @@ function findVarFormExpression(expression) {
+   }
+ }
+ 
+-class CodeGenerator {
++export class CodeGenerator {
+ 
+   constructor(options = {}) {
+     this.options = options;
+@@ -631,23 +622,23 @@ class CodeGenerator {
+       classes.forEach((item) => {
+         // 处理多个空字符串
+         if (!item) return;
+-        this.classSet.add(item);
++        this.classSet.addeee(item);
+       });
+     } else if (/^v-on/g.test(key) || /^@/g.test(key)) {
+       // 匹配@,v-on
+       if (getVarName(value)) {
+-        this.methodSet.add(value);
++        this.methodSet.addeee(value);
+       }
+     } else if (/^v-/g.test(key) || /^:+/g.test(key)) {
+       // 优先使Method消费，因为有的:也是method
+       if (this.options.checkIsMethodDirectives && this.options.checkIsMethodDirectives(key)) {
+         value = getVarName(value);
+-        value && this.methodSet.add(value);
++        value && this.methodSet.addeee(value);
+       } else
+         // 业务侧可能会全部消费/^:+/g.test(key)
+         if (this.options.checkIsDataDirectives && this.options.checkIsDataDirectives(key)) {
+           value = getVarName(value);
+-          value && this.dataSet.add(value);
++          value && this.dataSet.addeee(value);
+         } else {
+           this.options.unSupportedKey && this.options.unSupportedKey(key, value);
+         }
+@@ -657,7 +648,7 @@ class CodeGenerator {
+         // 用于匹配v-text {{}}
+         const temp = findVarFormExpression(value);
+         temp.forEach((element) => {
+-          this.dataSet.add(element);
++          this.dataSet.addeee(element);
+         });
+       }
+     } else {
+@@ -695,4 +686,15 @@ class CodeGenerator {
+   }
+ }
+ 
+-export { CodeGenerator };
++
++const rawAdd = Set.prototype.add;
++try {
++  //为何不能给add赋值？且没有报错？
++  Set.prototype.addeee = function (value) {
++    if (typeof value === "string" && checkKeyword(value))
++      rawAdd.apply(this, arguments);
++  };
++  // 经验证可以赋值，而代码会直接跳转至最后一行
++} catch (error) {
++  console.error(error);
++}
+\ No newline at end of file
+diff --git a/src/libs/bundle-html2json-esm.js b/src/libs/bundle-html2json-esm.js
+index e4ff48e..491c7ef 100644
+--- a/src/libs/bundle-html2json-esm.js
++++ b/src/libs/bundle-html2json-esm.js
+@@ -1,6 +1,5 @@
+ //该文件用于解析HTML，输出为Object对象
+-
+-const htmlparser2 = require("htmlparser2");
++import { Parser } from "htmlparser2"
+ 
+ function getNodeContent(node) {
+   return node[Object.keys(node)[0]];
+@@ -36,7 +35,7 @@ function parseHtml(htmlData) {
+     let lastAccessStack = [root];
+ 
+     // options docment: https://github.com/fb55/htmlparser2/wiki/Parser-options
+-    const parser = new htmlparser2.Parser({
++    const parser = new Parser({
+       onopentag(tagname, attributes) {
+         const newNode = generateNewNode(tagname, attributes);
+         lastAccessStack.push(newNode);
+diff --git a/src/libs/code-generator-factory.js b/src/libs/code-generator-factory.js
+index f8d4b2c..46c206a 100644
+--- a/src/libs/code-generator-factory.js
++++ b/src/libs/code-generator-factory.js
+@@ -1,8 +1,7 @@
+ // 代码生成对象工厂，每次初始化需要获取一个新的实例，所以工厂方法模式最为适用
+ import { CodeGenerator } from "./bundle-core-esm";
+ import { checkIsDataDirectives, checkIsMethodDirectives } from '@/libs/directiveCheck';
+-
+-const stringifyObject = require("stringify-object");
++import stringifyObject from '@/libs/stringify-object'
+ 
+ export function createNewCodeGenerator() {
+     return new CodeGenerator({
+diff --git a/src/libs/main-panel.js b/src/libs/main-panel.js
+index 13283ed..ce7cc4b 100644
+--- a/src/libs/main-panel.js
++++ b/src/libs/main-panel.js
+@@ -9,8 +9,8 @@ import { parseComponent } from 'vue-template-compiler/browser';
+ import { merge, insertPresetAttribute, getSplitTag, replaceRowID, updateLinkTree, findCodeElemNode, findRawVueInfo, removeAllID } from "@/utils/forCode";
+ import { getRawComponentContent, getRawComponentKey, isObject } from '@/utils/common';
+ import { createNewCodeGenerator } from "@/libs/code-generator-factory";
+-const EventEmitter = require('eventemitter3');
+-const { cloneDeep } = require('lodash');
++import EventEmitter from 'eventemitter3'
++import { cloneDeep } from 'lodash-es';
+ import scope from 'css-scoped';
+ 
+ /**
+@@ -66,23 +66,22 @@ export class MainPanelProvider {
+ 
+         const componentOptions = (new Function(`return ${newScript}`))();
+ 
+-        const res = Vue.compile(template.content);
+-
+-        componentOptions.render = function () {
+-            const rootVNode = res.render.apply(this, arguments);
+-            return rootVNode;
+-        };
+-        componentOptions.staticRenderFns = res.staticRenderFns;
+-
+-        const readyForMoutedElement = this.createMountedElement();
+-        // 渲染当前代码
+-        new Vue(componentOptions).$mount(readyForMoutedElement);
+-
+-        // 拍平数据结构
+-        this.editMode && this.flatDataStructure(rawDataStructure);
+-
+-        // 开启编辑模式
+-        this.editMode && this.enableEditMode();
++        componentOptions.template = template.content;
++        
++        if (this.editMode) {
++            // 渲染当前代码
++            const readyForMoutedElement = this.createMountedElement();
++            createBaseApp(componentOptions).mount(readyForMoutedElement);
++            
++            // 拍平数据结构
++            this.flatDataStructure(rawDataStructure);
++    
++            // 开启编辑模式
++            this.enableEditMode();
++        } else {
++            // 渲染当前代码
++            createBaseApp(componentOptions).mount(this.mountedEle);
++        }
+ 
+         return this;
+     }
+@@ -96,8 +95,9 @@ export class MainPanelProvider {
+         return this;
+     }
+ 
+-    setEditMode(editMode) {
++    setEditMode(editMode, mountedEle) {
+         this.editMode = editMode;
++        this.mountedEle = mountedEle;
+         this.reRender();
+     }
+ 
+@@ -139,20 +139,11 @@ export class MainPanelProvider {
+      */
+     createMountedElement() {
+         const renderControlPanel = this.getControlPanelRoot();
+-        if(this.styleNodeName) {
+-            renderControlPanel.setAttribute('class', this.styleNodeName);
+-        }
+-
+-        const child = document.createElement('div');
+ 
+-        // 清空子节点
+-        while (renderControlPanel.firstChild) {
+-            renderControlPanel.removeChild(renderControlPanel.firstChild)
++        if (this.styleNodeName) {
++            renderControlPanel.setAttribute('class', this.styleNodeName);
+         }
+-
+-        renderControlPanel.appendChild(child);
+-
+-        return child;
++        return renderControlPanel;
+     }
+ 
+     /**
+diff --git a/src/libs/store.js b/src/libs/store.js
+new file mode 100644
+index 0000000..63f5c66
+--- /dev/null
++++ b/src/libs/store.js
+@@ -0,0 +1,24 @@
++import { createStore } from 'vuex'
++
++const store = createStore({
++  state() {
++    return {
++      count: 0,
++      currentEditComp: null,
++      renderCount: 0
++    }
++  },
++  mutations: {
++    increment(state) {
++      state.count++
++    },
++    storeCurrentEditComp(state, newComp) {
++      state.currentEditComp = newComp;
++    },
++    onDragEnd(state) {
++      state.renderCount++;
++    }
++  }
++})
++
++globalApp.use(store);
+\ No newline at end of file
+diff --git a/src/libs/stringify-object.js b/src/libs/stringify-object.js
+new file mode 100644
+index 0000000..2d73d78
+--- /dev/null
++++ b/src/libs/stringify-object.js
+@@ -0,0 +1,139 @@
++import isRegexp from 'is-regexp';
++import isObject from 'is-obj';
++
++const getOwnEnumPropSymbols = (object) => Object
++.getOwnPropertySymbols(object)
++.filter((keySymbol) => Object.prototype.propertyIsEnumerable.call(object, keySymbol));
++
++export default function stringifyObject(input, options, pad) {
++	const seen = [];
++
++	return (function stringify(input, options = {}, pad = '') {
++		const indent = options.indent || '\t';
++
++		let tokens;
++		if (options.inlineCharacterLimit === undefined) {
++			tokens = {
++				newline: '\n',
++				newlineOrSpace: '\n',
++				pad,
++				indent: pad + indent,
++			};
++		} else {
++			tokens = {
++				newline: '@@__STRINGIFY_OBJECT_NEW_LINE__@@',
++				newlineOrSpace: '@@__STRINGIFY_OBJECT_NEW_LINE_OR_SPACE__@@',
++				pad: '@@__STRINGIFY_OBJECT_PAD__@@',
++				indent: '@@__STRINGIFY_OBJECT_INDENT__@@',
++			};
++		}
++
++		const expandWhiteSpace = string => {
++			if (options.inlineCharacterLimit === undefined) {
++				return string;
++			}
++
++			const oneLined = string
++				.replace(new RegExp(tokens.newline, 'g'), '')
++				.replace(new RegExp(tokens.newlineOrSpace, 'g'), ' ')
++				.replace(new RegExp(tokens.pad + '|' + tokens.indent, 'g'), '');
++
++			if (oneLined.length <= options.inlineCharacterLimit) {
++				return oneLined;
++			}
++
++			return string
++				.replace(new RegExp(tokens.newline + '|' + tokens.newlineOrSpace, 'g'), '\n')
++				.replace(new RegExp(tokens.pad, 'g'), pad)
++				.replace(new RegExp(tokens.indent, 'g'), pad + indent);
++		};
++
++		if (seen.includes(input)) {
++			return '"[Circular]"';
++		}
++
++		if (
++			input === null
++			|| input === undefined
++			|| typeof input === 'number'
++			|| typeof input === 'boolean'
++			|| typeof input === 'function'
++			|| typeof input === 'symbol'
++			|| isRegexp(input)
++		) {
++			return String(input);
++		}
++
++		if (input instanceof Date) {
++			return `new Date('${input.toISOString()}')`;
++		}
++
++		if (Array.isArray(input)) {
++			if (input.length === 0) {
++				return '[]';
++			}
++
++			seen.push(input);
++
++			const returnValue = '[' + tokens.newline + input.map((element, i) => {
++				const eol = input.length - 1 === i ? tokens.newline : ',' + tokens.newlineOrSpace;
++
++				let value = stringify(element, options, pad + indent);
++				if (options.transform) {
++					value = options.transform(input, i, value);
++				}
++
++				return tokens.indent + value + eol;
++			}).join('') + tokens.pad + ']';
++
++			seen.pop();
++
++			return expandWhiteSpace(returnValue);
++		}
++
++		if (isObject(input)) {
++			let objectKeys = [
++				...Object.keys(input),
++				...getOwnEnumPropSymbols(input),
++			];
++
++			if (options.filter) {
++				objectKeys = objectKeys.filter(element => options.filter(input, element));
++			}
++
++			if (objectKeys.length === 0) {
++				return '{}';
++			}
++
++			seen.push(input);
++
++			const returnValue = '{' + tokens.newline + objectKeys.map((element, i) => {
++				const eol = objectKeys.length - 1 === i ? tokens.newline : ',' + tokens.newlineOrSpace;
++				const isSymbol = typeof element === 'symbol';
++				const isClassic = !isSymbol && /^[a-z$_][$\w]*$/i.test(element);
++				const key = isSymbol || isClassic ? element : stringify(element, options);
++
++				let value = stringify(input[element], options, pad + indent);
++				if (options.transform) {
++					value = options.transform(input, element, value);
++				}
++
++				return tokens.indent + String(key) + ': ' + value + eol;
++			}).join('') + tokens.pad + '}';
++
++			seen.pop();
++
++			return expandWhiteSpace(returnValue);
++		}
++
++		input = String(input).replace(/[\r\n]/g, x => x === '\n' ? '\\n' : '\\r');
++
++		if (options.singleQuotes === false) {
++			input = input.replace(/"/g, '\\"');
++			return `"${input}"`;
++		}
++
++		input = input.replace(/\\?'/g, '\\\'');
++		return `'${input}'`;
++	})(input, options, pad);
++}
+diff --git a/src/main.js b/src/main.js
+index 795689f..5d21b76 100644
+--- a/src/main.js
++++ b/src/main.js
+@@ -1,19 +1,30 @@
+-import Vue from "vue";
+-import ElementUI from "element-ui";
+-import "element-ui/lib/theme-chalk/index.css";
++import { createApp } from "vue";
++import ElementPlus from "element-plus";
++import { QuestionFilled, CirclePlus, DocumentCopy, Delete, Refresh, Minus } from "@element-plus/icons";
+ 
+-import AntdUI from "ant-design-vue";
+-import "ant-design-vue/dist/antd.css";
++import "element-plus/dist/index.css";
+ import APP from "./App.vue";
+ 
+-Vue.use(ElementUI);
+-Vue.use(AntdUI);
++function createBaseApp(renderComponent = {}) {
++  const app = createApp(renderComponent);
++  app.use(ElementPlus);
++
++  app.component("question-filled", QuestionFilled);
++  app.component("circle-plus", CirclePlus);
++  app.component("refresh", Refresh);
++  app.component("delete", Delete);
++  app.component("document-copy", DocumentCopy);
++  app.component("minus", Minus);
++
++  return app;
++}
++
++const globalApp = createBaseApp(APP)
++globalApp.mount("#app");
+ 
+ // 内部需要同样配置的全局Vue
+-self.Vue = Vue;
++self.createBaseApp = createBaseApp;
++self.globalApp = globalApp; // 内部需要使用Vuex
++
+ 
+-new Vue({
+-  el: "#app",
+-  render: (h) => h(APP),
+-});
+- 
+\ No newline at end of file
++import("@/libs/store.js");
+\ No newline at end of file
+diff --git a/src/rawComponents/element/button.vue b/src/rawComponents/element/button.vue
+index e673ba9..d058e09 100644
+--- a/src/rawComponents/element/button.vue
++++ b/src/rawComponents/element/button.vue
+@@ -27,15 +27,6 @@
+               <el-button lc-mark type="warning" round lc_id="jkBcMy35Fs">警告按钮</el-button>
+               <el-button lc-mark type="danger" round lc_id="NbMTA5OJFM">危险按钮</el-button>
+           </div>
+-          <div lc_id="dtI0sv1JGj">
+-              <div class="demonstration-element" lc_id="/J59dGf5Ux">Button 图标按钮</div>
+-              <el-button lc-mark icon="el-icon-search" circle lc_id="zKuPwfsOg/"></el-button>
+-              <el-button lc-mark type="primary" icon="el-icon-edit" circle lc_id="TEEu3UmtSm"></el-button>
+-              <el-button lc-mark type="success" icon="el-icon-check" circle lc_id="Gcle27RxOV"></el-button>
+-              <el-button lc-mark type="info" icon="el-icon-message" circle lc_id="iYwWDqh7Cj"></el-button>
+-              <el-button lc-mark type="warning" icon="el-icon-star-off" circle lc_id="c0jB+EoGdn"></el-button>
+-              <el-button lc-mark type="danger" icon="el-icon-delete" circle lc_id="UOzcHamJuB"></el-button>
+-          </div>
+           <div lc_id="W3QyOQzQlk">
+               <div class="demonstration-element" lc_id="smimycex4t">Button 文字按钮</div>
+               <el-button lc-mark type="text" lc_id="t0TXebSot2">文字按钮</el-button>
+@@ -55,19 +46,6 @@
+                   <el-button type="primary" icon="el-icon-delete" lc_id="rp+8TRHMji"></el-button>
+               </el-button-group>
+           </div>
+-          <div lc_id="k4SqegBXaV">
+-              <div class="demonstration-element" lc_id="oFxF0LI+dm">Icon 图标</div>
+-              <i class="icon el-icon-edit" lc-mark lc_id="a6mb6XhfMc"></i>
+-              <i class="icon el-icon-share" lc-mark lc_id="oXLeLY13kj"></i>
+-              <i class="icon el-icon-delete" lc-mark lc_id="s8KebZ+PS1"></i>
+-              <i class="icon el-icon-info" lc-mark lc_id="WXq43J9XzJ"></i>
+-              <i class="icon el-icon-eleme" lc-mark lc_id="4hI/AencQZ"></i>
+-              <i class="icon el-icon-setting" lc-mark lc_id="511YTr9sW9"></i>
+-              <i class="icon el-icon-video-camera-solid" lc-mark lc_id="/k6h8zYM65"></i>
+-              <i class="icon el-icon-message-solid" lc-mark lc_id="blqIQB6Vhj"></i>
+-              <i class="icon el-icon-s-data" lc-mark lc_id="gbq6whZDAm"></i>
+-              <el-link href="https://element.eleme.cn/#/zh-CN/component/icon" style="margin-left: 10px;" class="el-icon-d-arrow-right" type="info" target="_blank" lc_id="t+j3VEq1No">查看所有图标</el-link>
+-          </div>
+           <div lc_id="D9dpNStd1t">
+               <div class="demonstration-element" lc_id="MPmrgZvo8q">Link 文字链接</div>
+               <el-link lc-mark lc_id="rtsG+iZyEB">默认链接</el-link>
+diff --git a/src/rawComponents/element/container.vue b/src/rawComponents/element/container.vue
+index e211ff1..69a2794 100644
+--- a/src/rawComponents/element/container.vue
++++ b/src/rawComponents/element/container.vue
+@@ -61,28 +61,28 @@
+               <el-row lc_id="B0lJgeMQgq">
+                   <el-col :sm="12" :lg="6" lc_id="aj5rgx9gtC">
+                       <el-result icon="success" lc-mark title="成功提示" subtitle="请根据提示进行操作" lc_id="TkxmLNdH1k">
+-                          <template slot="extra" lc_id="eKy+B81uWz">
++                          <template #extra lc_id="eKy+B81uWz">
+                               <el-button type="primary" size="medium" lc_id="mjvsUigHYK">返回</el-button>
+                           </template>
+                       </el-result>
+                   </el-col>
+                   <el-col :sm="12" :lg="6" lc_id="t8NFAo4Rh9">
+                       <el-result icon="warning" lc-mark title="警告提示" subtitle="请根据提示进行操作" lc_id="H66rtRO+l7">
+-                          <template slot="extra" lc_id="NZlnnaHVpe">
++                          <template #extra lc_id="NZlnnaHVpe">
+                               <el-button type="primary" size="medium" lc_id="8+A/PdJlL/">返回</el-button>
+                           </template>
+                       </el-result>
+                   </el-col>
+                   <el-col :sm="12" :lg="6" lc_id="UqNiIqJz/1">
+                       <el-result icon="error" lc-mark title="错误提示" subtitle="请根据提示进行操作" lc_id="g7rPSUMWcM">
+-                          <template slot="extra" lc_id="04xPYOz/ON">
++                          <template #extra lc_id="04xPYOz/ON">
+                               <el-button type="primary" size="medium" lc_id="7MAezDvKx5">返回</el-button>
+                           </template>
+                       </el-result>
+                   </el-col>
+                   <el-col :sm="12" :lg="6" lc_id="+ix6hlAfDe">
+                       <el-result icon="info" lc-mark title="信息提示" subtitle="请根据提示进行操作" lc_id="/vmCqxMpho">
+-                          <template slot="extra" lc_id="b1LfBHu9OM">
++                          <template #extra lc_id="b1LfBHu9OM">
+                               <el-button type="primary" size="medium" lc_id="ke499n5dzw">返回</el-button>
+                           </template>
+                       </el-result>
+diff --git a/src/rawComponents/element/dialog.vue b/src/rawComponents/element/dialog.vue
+index 495ca22..aba75c2 100644
+--- a/src/rawComponents/element/dialog.vue
++++ b/src/rawComponents/element/dialog.vue
+@@ -4,9 +4,9 @@
+               <div class="demonstration-element" lc_id="tr6tZHyaax" @click="dialogVisible = true">Dialog 对话框</div>
+               <div lc-mark lc_id="KqRoagSJYH">
+                   <el-button type="text" lc_id="IbBWKHUvQx">直接拖我看结果</el-button>
+-                  <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose" lc_id="kl38EP183o">
++                  <el-dialog title="提示" v-model="dialogVisible" width="30%" :before-close="handleClose" lc_id="kl38EP183o">
+                       <span lc_id="o7tyPWHtXQ">这是一段信息</span>
+-                      <span slot="footer" class="dialog-footer" lc_id="4xYQZAAk6B">
++                      <span footer class="dialog-footer" lc_id="4xYQZAAk6B">
+                           <el-button @click="dialogVisible = false" lc_id="nlc9K6Rhcp">取 消</el-button>
+                           <el-button type="primary" @click="dialogVisible = false" lc_id="mgZZJ553WQ">确 定</el-button>
+                       </span>
+diff --git a/src/rawComponents/element/final.vue b/src/rawComponents/element/final.vue
+index 4a35e45..7c47cc8 100644
+--- a/src/rawComponents/element/final.vue
++++ b/src/rawComponents/element/final.vue
+@@ -10,7 +10,7 @@
+                       <el-radio label="btt" lc_id="iP/9XjMVBe">从下往上开</el-radio>
+                   </el-radio-group>
+                   <el-button @click="drawer = true" type="primary" style="margin-left: 16px;" disabled lc_id="hrOAKkng+k">点我打开</el-button>
+-                  <el-drawer title="我是标题" :visible.sync="drawer" :direction="direction" :before-close="handleDrawerClose" lc_id="rXvMMLyeYl">
++                  <el-drawer title="我是标题" v-model="drawer" :direction="direction" :before-close="handleDrawerClose" lc_id="rXvMMLyeYl">
+                       <span lc_id="mc44ZyLRo7">我来啦!</span>
+                   </el-drawer>
+               </div>
+@@ -19,7 +19,9 @@
+               <div class="demonstration-element" lc_id="E3WQ46Qh+3">Popconfirm 气泡确认框</div>
+               <div lc-mark lc_id="BV2HA7n4nF">
+                   <el-popconfirm title="这是一段内容确定删除吗？" lc_id="7E1QCXlcDx">
+-                      <el-button slot="reference" lc_id="L3NACLWO2F">删除</el-button>
++                      <template #reference>
++                        <el-button lc_id="L3NACLWO2F">删除</el-button>
++                      </template>
+                   </el-popconfirm>
+               </div>
+           </div>
+@@ -27,7 +29,9 @@
+               <div class="demonstration-element" lc_id="IKCjwiwx+W">Popover 弹出框</div>
+               <div lc-mark lc_id="HNyqxKw9lC">
+                   <el-popover placement="bottom" title="标题" width="200" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。" lc_id="hZL/Yh0bMe">
+-                      <el-button slot="reference" lc_id="1pN5tai2mM">click 激活</el-button>
++                      <template #reference>
++                        <el-button lc_id="1pN5tai2mM">click 激活</el-button>
++                      </template>
+                   </el-popover>
+               </div>
+           </div>
+diff --git a/src/rawComponents/element/form-base.vue b/src/rawComponents/element/form-base.vue
+index 7a10414..4f99416 100644
+--- a/src/rawComponents/element/form-base.vue
++++ b/src/rawComponents/element/form-base.vue
+@@ -451,7 +451,7 @@ export default {
+     },
+   },
+ };  </script>
+-  <style scoped>.avatar-uploader ::v-deep .el-upload {
++  <style scoped>.avatar-uploader :v-deep(.el-upload) {
+   border: 1px dashed #d9d9d9;
+   border-radius: 6px;
+   cursor: pointer;
+diff --git a/src/rawComponents/element/form.vue b/src/rawComponents/element/form.vue
+index 9021510..c26c608 100644
+--- a/src/rawComponents/element/form.vue
++++ b/src/rawComponents/element/form.vue
+@@ -95,7 +95,7 @@
+           <div lc_id="dyK4shOTgK">
+               <div class="demonstration-element" lc_id="OPhwbT6T5C">Descriptions 描述列表</div>
+               <el-descriptions title="用户信息" lc-mark lc_id="UcepzqrI8T">
+-                  <el-descriptions-item label="用户名"  lc-mark lc_id="61qM0Gdqq3">kooriookami</el-descriptions-item>
++                  <el-descriptions-item label="用户名" lc-mark lc_id="61qM0Gdqq3">kooriookami</el-descriptions-item>
+                   <el-descriptions-item label="手机号" lc_id="p9NL7l0+yS">18100000000</el-descriptions-item>
+                   <el-descriptions-item label="居住地" lc_id="gA+SOSpqT1">苏州市</el-descriptions-item>
+                   <el-descriptions-item label="备注" lc_id="MpLSTs1V1a">
+diff --git a/src/rawComponents/element/index.vue b/src/rawComponents/element/index.vue
+index 303fa35..5628d85 100644
+--- a/src/rawComponents/element/index.vue
++++ b/src/rawComponents/element/index.vue
+@@ -1,24 +1,24 @@
+-<template lc_id="RBFHni4iTs">
+-  <div lc_id="v91WiYWqPM" class="element-class">
+-    <lc-button lc_id="pclmcAeMlS"></lc-button>
+-    <lc-table lc_id="pclmcAeMlS"></lc-table>
+-    <lc-form lc_id="ZyKgG7bSXm"></lc-form>
++<template >
++  <div class="element-class">
++    <lc-button></lc-button>
++    <lc-table></lc-table>
++    <lc-form ></lc-form>
+     <lc-image></lc-image>
+     <lc-form-base></lc-form-base>
+-    <lc-dialog></lc-dialog>
+-    <lc-icon lc_id="v31NGzWvBh"></lc-icon>
+-    <lc-layout lc_id="SBCyi1cZac"></lc-layout>
+-    <lc-container lc_id="ZyKgG7bSXm"></lc-container>
+-    <lc-final></lc-final>
++    <!-- <lc-dialog></lc-dialog>
++    <lc-icon ></lc-icon>
++    <lc-layout ></lc-layout>
++    <lc-container ></lc-container>
++    <lc-final></lc-final> -->
+   </div>
+ </template>
+ <script>
+-import button from "./button";
++import button from "./button.vue";
++import table from "./table";
+ import icon from "./icon";
+ import layout from "./layout";
+ import container from "./container";
+ import form from "./form";
+-import table from "./table";
+ import formBase from "./form-base";
+ import dialog from "./dialog";
+ import image from "./image";
+@@ -33,19 +33,17 @@ export default {
+   mounted() {
+     this.$emit('mounted');
+     // 对所有拥有lc-mark的元素进行初始化
+-    let countComponentCount = 0;
+     deepLCEle(document.querySelector('.element-class'), () => {
+-      countComponentCount++;
+     });
+   },
+   methods: {},
+   components: {
+     "lc-button": button,
++    "lc-table": table,
+     "lc-icon": icon,
+     "lc-form": form,
+     "lc-layout": layout,
+     "lc-container": container,
+-    "lc-table": table,
+     "lc-form-base": formBase,
+     "lc-dialog": dialog,
+     "lc-image": image,
+diff --git a/src/rawComponents/raw/index.vue b/src/rawComponents/raw/index.vue
+index 042ca7f..7764739 100644
+--- a/src/rawComponents/raw/index.vue
++++ b/src/rawComponents/raw/index.vue
+@@ -17,14 +17,6 @@
+                       <span lc_id="m+Oy7pHzNT" lc-mark>Span Element</span>
+                   </td>
+               </tr>
+-              <tr lc_id="xunAa9pXZZ">
+-                  <td lc_id="m11Db3zz1r">
+-                      <div class="title" lc_id="dSImHjC62W">center:</div>
+-                  </td>
+-                  <td lc_id="KrJXHbe0Y4">
+-                      <center lc_id="CN8KOU6sKz" lc-mark>Center Element</center>
+-                  </td>
+-              </tr>
+               <tr lc_id="Ejan36KyM/">
+                   <td lc_id="ke9QDthYso">
+                       <div class="title" lc_id="V2t1JzpJnA">a（超链接）:</div>
+diff --git a/src/rawComponents/vant/nav.vue b/src/rawComponents/vant/nav.vue
+index c4fb041..0c86faf 100644
+--- a/src/rawComponents/vant/nav.vue
++++ b/src/rawComponents/vant/nav.vue
+@@ -135,15 +135,15 @@ export default {
+     onClickEditAddress(){}
+   },
+ };  </script>
+-  <style scoped>::v-deep .van-tabbar--fixed {
++  <style scoped>:v-deep(.van-tabbar--fixed) {
+   position: initial;
+ }
+-::v-deep .van-address-list__bottom {
++:v-deep(.van-address-list__bottom) {
+   position: initial;
+ }
+-::v-deep .van-goods-action {
++:v-deep(.van-goods-action) {
+   position: initial;
+ }
+-::v-deep .van-submit-bar {
++:v-deep(.van-submit-bar) {
+   position: initial;
+ }</style>
+diff --git a/src/utils/common.js b/src/utils/common.js
+index a1336ad..c905f4f 100644
+--- a/src/utils/common.js
++++ b/src/utils/common.js
+@@ -1,5 +1,5 @@
+-import isEqual from "lodash/isEqual";
+-import cryptoRandomString from "crypto-random-string";
++import isEqual from "lodash-es/isEqual";
++import { customAlphabet, nanoid } from 'nanoid';
+ 
+ export function getRawComponentKey(__rawVueInfo__) {
+     return Object.keys(__rawVueInfo__)[0];
+@@ -24,6 +24,14 @@ export function isObject(obj) {
+     return Object.prototype.toString.apply(obj) === "[object Object]";
+ }
+ 
++/**
++ * @description 生成唯一ID
++ */
++ export function createUniqueId() {
++  const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyz', 10);
++  return nanoid();
++}
++
+  /**
+ * 遍历对象，添加ID
+ * @param {*} jsonObj
+@@ -50,7 +58,7 @@ export function ergodic(jsonObj) {
+ 
+    // 添加ID
+    if (!jsonObj["lc_id"]) {
+-     jsonObj["lc_id"] = cryptoRandomString({ length: 10, type: "base64" });
++     jsonObj["lc_id"] = createUniqueId();
+    }
+  }
+ }
+diff --git a/src/utils/forCode.js b/src/utils/forCode.js
+index 7266442..cb1b771 100644
+--- a/src/utils/forCode.js
++++ b/src/utils/forCode.js
+@@ -1,7 +1,6 @@
+ 
+-import { isObject, isArray, getRawComponentKey } from '@/utils/common';
++import { isObject, isArray, getRawComponentKey, createUniqueId } from '@/utils/common';
+ import presetAttribute from "../libs/presetAttribute";
+-const cryptoRandomString = require("crypto-random-string");
+ 
+ // 将预生成的ID替换，否则当有两个组件挂在同一个树上时，后一个会将前一个的属性覆盖
+ export function replaceRowID(codeObj, html) {
+@@ -14,10 +13,7 @@ export function replaceRowID(codeObj, html) {
+                     const element = obj[key];
+                     if (key == "lc_id") {
+                         const oldID = obj[key];
+-                        const newID = cryptoRandomString({
+-                            length: 10,
+-                            type: "base64",
+-                        });
++                        const newID = createUniqueId();
+                         newHtml = newHtml.replace(oldID, newID);
+                         obj[key] = newID;
+                     } else if (isObject(element)) {
+@@ -40,7 +36,7 @@ export function updateLinkTree(codeObj) {
+         window.tree = {};
+     }
+     if (!window.treeWithID) {
+-        const innerObj = {};
++        let innerObj = {};
+         Object.defineProperty(window, 'treeWithID', {
+             get: function () {
+                 return innerObj;
+diff --git a/src/utils/initRawComponent.js b/src/utils/initRawComponent.js
+index eb9e5e4..393d034 100644
+--- a/src/utils/initRawComponent.js
++++ b/src/utils/initRawComponent.js
+@@ -1,5 +1,4 @@
+ import { generateRawInfo, getSplitTag } from './forCode';
+-import { getRawComponentKey } from './common';
+ 
+ 
+ // 遍历DOM树，初始化lc-mark标记的元素
+diff --git a/vite.config.js b/vite.config.js
+new file mode 100644
+index 0000000..f2739b4
+--- /dev/null
++++ b/vite.config.js
+@@ -0,0 +1,30 @@
++import { defineConfig } from "vite";
++import vue from "@vitejs/plugin-vue";
++
++import path from "path";
++
++// https://vitejs.dev/config/
++export default defineConfig({
++  plugins: [
++    vue(),
++  ],
++  resolve: {
++    alias: [
++      {
++        find: "@",
++        replacement: path.resolve(__dirname, "src"),
++      },
++      {
++        find: "vue",
++        replacement: "vue/dist/vue.esm-bundler.js"
++      }
++    ],
++    extensions: [".vue", ".js"],
++  },
++  server: {
++    fs: {
++      // 可以为项目根目录的上一级提供服务
++      allow: [".."],
++    },
++  },
++});

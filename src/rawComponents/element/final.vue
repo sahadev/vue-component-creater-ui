@@ -19,7 +19,9 @@
               <div class="demonstration-element" lc_id="E3WQ46Qh+3">Popconfirm 气泡确认框</div>
               <div lc-mark lc_id="BV2HA7n4nF">
                   <el-popconfirm title="这是一段内容确定删除吗？" lc_id="7E1QCXlcDx">
-                      <el-button slot="reference" lc_id="L3NACLWO2F">删除</el-button>
+                      <template #reference>
+                        <el-button lc_id="L3NACLWO2F">删除</el-button>
+                      </template>
                   </el-popconfirm>
               </div>
           </div>
@@ -27,7 +29,9 @@
               <div class="demonstration-element" lc_id="IKCjwiwx+W">Popover 弹出框</div>
               <div lc-mark lc_id="HNyqxKw9lC">
                   <el-popover placement="bottom" title="标题" width="200" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。" lc_id="hZL/Yh0bMe">
-                      <el-button slot="reference" lc_id="1pN5tai2mM">click 激活</el-button>
+                      <template #reference>
+                        <el-button lc_id="1pN5tai2mM">click 激活</el-button>
+                      </template>
                   </el-popover>
               </div>
           </div>
