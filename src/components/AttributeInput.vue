@@ -1,11 +1,11 @@
 <template>
   <el-card class="attribute-container">
 
-    <center>
+    <div style="text-align: center;">
       <el-switch v-model="editMode" active-text="自由编辑" inactive-text="约束编辑" active-color="#13ce66"
         inactive-color="#13ce66">
       </el-switch>
-    </center>
+    </div>
 
     <div style="margin-top: 20px;">
       <div name="1" v-show="!editMode">
@@ -13,8 +13,8 @@
           <div class="item" v-for="(item, index) in localAttributes" :key="index">
             <el-input v-model="item.key" :placeholder="'key' + index" class="half-width"></el-input>
             <div class="split">:</div>
-            <el-input v-model="item.value" :placeholder="'value' + index" class="half-width"></el-input>
-            <i class="el-icon-minus" @click="deleteItem(index)"></i>
+            <el-input v-model="item.value" :placeholder="'value' + index" class="half-width" style="flex-grow: 3;"></el-input>
+            <el-icon @click="deleteItem(index)" style="margin-left: 5px;"><minus /></el-icon>
           </div>
 
           <div class="quick-add-root">
@@ -44,28 +44,31 @@
       </div>
     </div>
 
-    <center style="margin-top: 10px;">
+    <div style="margin-top: 10px;text-align:center;">
       <el-tooltip class="item" effect="dark" content="新增属性 ctrl+a" placement="bottom">
-        <el-button type="primary" class="center" @click="createNew" icon="el-icon-circle-plus-outline" circle>
+        <el-button type="primary" class="center" @click="createNew" circle>
+          <el-icon><circle-plus /></el-icon>
         </el-button>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="保存属性 ctrl+s" placement="bottom">
-        <el-button type="success" class="center" @click="save" icon="el-icon-refresh" circle></el-button>
-      </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="移除该组件 ctrl+d" placement="bottom">
-        <el-button v-if="enableRemoveButton" type="danger" class="center" icon="el-icon-delete" @click="remove" circle>
+        <el-button type="success" class="center" @click="save" circle>
+          <el-icon><refresh /></el-icon>
         </el-button>
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="复制一个兄弟组件 ctrl+c" placement="bottom">
-        <el-button v-if="enableBroButton" type="primary" class="center" icon="el-icon-copy-document" @click="copyBro"
-          circle>
+      <el-tooltip v-if="enableRemoveButton" class="item" effect="dark" content="移除该组件 ctrl+d" placement="bottom">
+        <el-button type="danger" class="center" @click="remove" circle>
+          <el-icon><delete /></el-icon>
         </el-button>
       </el-tooltip>
-
-      <center>
+      <el-tooltip v-if="enableBroButton" class="item" effect="dark" content="复制一个兄弟组件 ctrl+c" placement="bottom">
+        <el-button type="primary" class="center" @click="copyBro" circle>
+          <el-icon><document-copy /></el-icon>
+        </el-button>
+      </el-tooltip>
+      <div style="text-algin: center;">
         <span class="shortcut-tip">支持快捷键操作</span>
-      </center>
-    </center>
+      </div>
+    </div>
 
   </el-card>
 </template>
@@ -73,7 +76,7 @@
 <script>
 import { getRawComponentKey, getRawComponentContent } from "@/utils/common";
 import { brotherEleEnum, copyBroCode } from "@/libs/bro-ele-config";
-const keymaster = require('keymaster');
+import keymaster from "keymaster"
 
 export default {
   props: ['__rawVueInfo__', 'enableRemoveButton', 'shortcutInitMode'],// __rawVueInfo__为当前编辑的原始代码对象, shortcutInitMode快捷键的初始化方式
@@ -117,8 +120,6 @@ export default {
 
     initShortcut() {
       console.log(`init by mode: ${this.shortcutInitMode}`)
-
-
       keymaster('⌘+a, ctrl+a', () => {
         if (this.enable) {
           this.createNew();
@@ -159,9 +160,7 @@ export default {
       this.localAttributes.push({ key: "", value: "" });
     },
     save() {
-
       try {
-
         let resultList = [];
         if (!this.editMode) {
           resultList = this.localAttributes.filter((item) => {
@@ -198,7 +197,7 @@ export default {
     },
     copyBro() {
       copyBroCode(this.__rawVueInfo__);
-      this.$emit('codeRefresh');
+      this.$store.commit('onDragEnd');
     },
     onShow() {
       // 这种方式适用于常规模式下的初始化，因为这个实例初始化后不会被销毁，一直常驻内存。但又不能受到其它实例销毁时的影响，所以需要明确的再次初始化。
@@ -271,7 +270,7 @@ export default {
 
 .half-width {
   width: 0%;
-  flex-grow: 1;
+  flex-grow: 2;
 }
 
 .center {

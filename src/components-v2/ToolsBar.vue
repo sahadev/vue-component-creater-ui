@@ -25,8 +25,8 @@
           Structure</el-link>
       </el-col>
       <el-col :span="3">
-        <github-button href="https://github.com/sahadev/vue-component-creater-ui" data-icon="octicon-star"
-          data-show-count="true" aria-label="Star sahadev/vue-component-creater-ui on GitHub">Star</github-button>
+        <a class="github-button" href="https://github.com/sahadev/vue-component-creater-ui" data-icon="octicon-star"
+          data-show-count="true" aria-label="Star sahadev/vue-component-creater-ui on GitHub">Star</a>
       </el-col>
     </el-row>
 
@@ -47,11 +47,9 @@
 </template>
 
 <script>
-import GithubButton from 'vue-github-button'
-
 export default {
   props: [],
-  components: { GithubButton },
+  components: { },
   data() {
     return {
       previewMode: false,
@@ -85,6 +83,10 @@ export default {
     onEditModeChange() {
       this.editMode = !this.editMode;
       this.$emit('onEditModeChange', this.editMode);
+
+      setTimeout(() => {
+        this.editMode = true;
+      }, 500);
     }
   },
   fillter: {},
@@ -103,9 +105,6 @@ export default {
   border-radius: 0px;
   align-content: center;
   border-bottom: 1px solid #f0f0f0;
-  > * {
-    margin-right: 5px;
-  }
 }
 
 .edit {

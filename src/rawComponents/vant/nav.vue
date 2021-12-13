@@ -135,15 +135,15 @@ export default {
     onClickEditAddress(){}
   },
 };  </script>
-  <style scoped>::v-deep .van-tabbar--fixed {
+  <style scoped>:v-deep(.van-tabbar--fixed) {
   position: initial;
 }
-::v-deep .van-address-list__bottom {
+:v-deep(.van-address-list__bottom) {
   position: initial;
 }
-::v-deep .van-goods-action {
+:v-deep(.van-goods-action) {
   position: initial;
 }
-::v-deep .van-submit-bar {
+:v-deep(.van-submit-bar) {
   position: initial;
 }</style>

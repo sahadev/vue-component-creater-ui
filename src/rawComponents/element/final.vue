@@ -1,48 +1,52 @@
-  <template lc_id="T4QTBulnfw">
-      <div lc_id="51vNFGmvh3">
-          <div lc_id="65mfinsz9a">
-              <div class="demonstration-element" lc_id="trHvmrS793">Drawer 抽屉</div>
-              <div lc-mark lc_id="GT58r4P5Wk">
-                  <el-radio-group v-model="direction" lc_id="A9TjD47V/m">
-                      <el-radio label="ltr" lc_id="3JnIViDWTD">从左往右开</el-radio>
-                      <el-radio label="rtl" lc_id="//V9WuHsrh">从右往左开</el-radio>
-                      <el-radio label="ttb" lc_id="QiPEQRv+sx">从上往下开</el-radio>
-                      <el-radio label="btt" lc_id="iP/9XjMVBe">从下往上开</el-radio>
+  <template lc_id="tcjDDP7Fub">
+      <div lc_id="qEWQVtO4HV">
+          <div lc_id="ryB2czrr/o">
+              <div class="demonstration-element" lc_id="1XMeUcBuC6">Drawer 抽屉</div>
+              <div lc-mark lc_id="iopQBcTsL/">
+                  <el-radio-group v-model="direction" lc_id="oBXOGHBjIr">
+                      <el-radio label="ltr" lc_id="sOtBkShpnA">从左往右开</el-radio>
+                      <el-radio label="rtl" lc_id="npclPhSAAr">从右往左开</el-radio>
+                      <el-radio label="ttb" lc_id="r21dYPRqlH">从上往下开</el-radio>
+                      <el-radio label="btt" lc_id="eNbrmYhimD">从下往上开</el-radio>
                   </el-radio-group>
-                  <el-button @click="drawer = true" type="primary" style="margin-left: 16px;" disabled lc_id="hrOAKkng+k">点我打开</el-button>
-                  <el-drawer title="我是标题" :visible.sync="drawer" :direction="direction" :before-close="handleDrawerClose" lc_id="rXvMMLyeYl">
-                      <span lc_id="mc44ZyLRo7">我来啦!</span>
+                  <el-button @click="drawer = true" type="primary" style="margin-left: 16px;" disabled lc_id="LKDidefo88">点我打开</el-button>
+                  <el-drawer title="我是标题" v-model="drawer" :direction="direction" :before-close="handleDrawerClose" lc_id="QMf8/82LI6">
+                      <span lc_id="wtfxsNwyPw">我来啦!</span>
                   </el-drawer>
               </div>
           </div>
-          <div lc_id="YR/wK0bfUo">
-              <div class="demonstration-element" lc_id="E3WQ46Qh+3">Popconfirm 气泡确认框</div>
-              <div lc-mark lc_id="BV2HA7n4nF">
-                  <el-popconfirm title="这是一段内容确定删除吗？" lc_id="7E1QCXlcDx">
-                      <el-button slot="reference" lc_id="L3NACLWO2F">删除</el-button>
+          <div lc_id="VsANkPibgZ">
+              <div class="demonstration-element" lc_id="61ILio7Yfy">Popconfirm 气泡确认框</div>
+              <div lc-mark lc_id="tipD3v4v0E">
+                  <el-popconfirm title="这是一段内容确定删除吗？" lc_id="8wIQQ5fsm0">
+                      <template #reference lc_id="VRks4FGAp4">
+                          <el-button lc_id="UfoVVwFlH8">删除</el-button>
+                      </template>
                   </el-popconfirm>
               </div>
           </div>
-          <div lc_id="N4IfEZ7Epi">
-              <div class="demonstration-element" lc_id="IKCjwiwx+W">Popover 弹出框</div>
-              <div lc-mark lc_id="HNyqxKw9lC">
-                  <el-popover placement="bottom" title="标题" width="200" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。" lc_id="hZL/Yh0bMe">
-                      <el-button slot="reference" lc_id="1pN5tai2mM">click 激活</el-button>
+          <div lc_id="wLPA+POQar">
+              <div class="demonstration-element" lc_id="ViuBm3mn/O">Popover 弹出框</div>
+              <div lc-mark lc_id="tk2qy+nwU2">
+                  <el-popover placement="bottom" title="标题" width="200" trigger="click" content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。" lc_id="E3FQnEvqcg">
+                      <template #reference lc_id="w1CDln4qFc">
+                          <el-button lc_id="fuAYnHW69Y">click 激活</el-button>
+                      </template>
                   </el-popover>
               </div>
           </div>
-          <div lc_id="/Cu2Xq/CwH">
-              <div class="demonstration-element" lc_id="HgnHrhiDVx">Tooltip 文字提示</div>
-              <div lc-mark lc_id="Zucoe7eh64">
-                  <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start" lc_id="wk1LWx4f2K">
-                      <el-button lc_id="njQ+Vlz5uK">上左</el-button>
+          <div lc_id="0PvfhG+ZYr">
+              <div class="demonstration-element" lc_id="4K55zxXUgL">Tooltip 文字提示</div>
+              <div lc-mark lc_id="hxejw7uzbB">
+                  <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start" lc_id="XXoofblsAn">
+                      <el-button lc_id="C27qPtyTjp">上左</el-button>
                   </el-tooltip>
               </div>
           </div>
-          <div lc_id="EkQH0AzvZs">
-              <div class="demonstration-element" lc_id="qV+/Ma51v8">Transfer 穿梭框</div>
-              <div lc-mark lc_id="mNxdbVDp7U">
-                  <el-transfer v-model="transferValue" :data="transferData" lc_id="8RAvvEZGCO"></el-transfer>
+          <div lc_id="kDLIM+qGMq">
+              <div class="demonstration-element" lc_id="9LXwSf1r1p">Transfer 穿梭框</div>
+              <div lc-mark lc_id="Mfn7m1Nz4k">
+                  <el-transfer v-model="transferValue" :data="transferData" lc_id="FIK2q2sQGP"></el-transfer>
               </div>
           </div>
       </div>

@@ -19,26 +19,28 @@
         <div>
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
-              <i ref="help" class="el-icon-question" style="font-size:22px;color:#4dba87;"></i>
+              <el-icon style="font-size:22px;color:#4dba87;"><question-filled /></el-icon>
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-circle-check">基础组件数: {{ componentUnitNum }}
-              </el-dropdown-item>
-              <el-dropdown-item icon="el-icon-document" command="lcg">LCG平台</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-document" command="help">说明文档</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-chat-line-round" command="chat">在线沟通</el-dropdown-item>
-            </el-dropdown-menu>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item icon="el-icon-circle-check">基础组件数: {{ componentUnitNum }}
+                </el-dropdown-item>
+                <el-dropdown-item icon="el-icon-document" command="lcg">LCG平台</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-document" command="help">说明文档</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-chat-line-round" command="chat">在线沟通</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
           </el-dropdown>
         </div>
       </div>
     </nav>
 
     <nav v-if="currentSelectBrand.titleArray && currentSelectBrand.titleArray.length > 0">
-      <center style="margin-bottom:10px;">
+      <div style="margin-bottom:10px;text-align:center;">
         <div style="padding:5px;font-size:12px;color:grey;">快速查找需要的</div>
         <el-autocomplete class="inline-input" v-model="componentSearch" :fetch-suggestions="querySearch" size="mini"
           placeholder="请输入..." @select="handleSelect"></el-autocomplete>
-      </center>
+      </div>
       <div class="dismiss-scroll">
         <div v-for="(item, index) in currentSelectBrand.titleArray" :key="item.title" class="second-nav"
           :class="{'active':currentSelectBrand.selectIndex === index}" @click="selectSubnav(currentSelectBrand, index)">
@@ -103,7 +105,7 @@ export default {
         titleArray: [], // 快速索引标题，默认为空，VCC会自动按照className搜集快速索引标题。
       },],
 
-      currentIndex: 1
+      currentIndex: 0
     };
   },
   methods: {
@@ -272,7 +274,7 @@ nav {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 
-::v-deep .el-submenu__title {
+:v-deep(.el-submenu__title) {
   padding: 0 15px !important;
 }
 

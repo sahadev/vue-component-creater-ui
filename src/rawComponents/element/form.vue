@@ -1,94 +1,94 @@
-  <template lc_id="dONI+eltfy">
-      <div lc_id="pYW7lbQNBm">
-          <div lc_id="Q9ouPvVCDr">
-              <div class="demonstration-element" lc_id="QS2gym2BZJ">Form 行内表单</div>
-              <el-form inline lc-mark :model="formInline" class="demo-form-inline" lc_id="WsfIP160bw">
-                  <el-form-item label="审批人" lc_id="nwnVQASGS0" lc-mark>
-                      <el-input v-model="formInline.user" placeholder="审批人" lc_id="fyTWqa6xR3"></el-input>
+  <template lc_id="03KSNQZ/MV">
+      <div lc_id="JoW6e9bEi+">
+          <div lc_id="VGGG5BzJK+">
+              <div class="demonstration-element" lc_id="LgRs8iauTY">Form 行内表单</div>
+              <el-form inline lc-mark :model="formInline" class="demo-form-inline" lc_id="1WJLzNIqg/">
+                  <el-form-item label="审批人" lc-mark lc_id="9iLdD7vRhd">
+                      <el-input v-model="formInline.user" placeholder="审批人" lc_id="2N8NbmX1qy"></el-input>
                   </el-form-item>
-                  <el-form-item label="活动区域" lc_id="eofsdbRMjx" lc-mark>
-                      <el-select v-model="formInline.region" placeholder="活动区域" lc_id="+2rUZ3W3aC">
-                          <el-option label="区域一" value="shanghai" lc_id="IHvRkwasBm"></el-option>
-                          <el-option label="区域二" value="beijing" lc_id="TR+GgYcJ6L"></el-option>
+                  <el-form-item label="活动区域" lc-mark lc_id="cuShpTy+7P">
+                      <el-select v-model="formInline.region" placeholder="活动区域" lc_id="fblnBhXD33">
+                          <el-option label="区域一" value="shanghai" lc_id="xEcFlTO5pD"></el-option>
+                          <el-option label="区域二" value="beijing" lc_id="PjVhPT7HZa"></el-option>
                       </el-select>
                   </el-form-item>
               </el-form>
           </div>
-          <div lc_id="RDjCjjhD6t">
-              <div class="demonstration-element" lc_id="rfAmqnOfPE">Form 表单</div>
-              <span lc-mark lc_id="RAHdW2D6Om">
-                  <span lc_id="c4he125BD/">Key:</span>
-                  <span lc_id="XQkdV8NCZs">Value</span>
+          <div lc_id="tY5UywhfnK">
+              <div class="demonstration-element" lc_id="Efto0Pndua">Form 表单</div>
+              <span lc-mark lc_id="hqHTBq8YqG">
+                  <span lc_id="EF8c2VPZRA">Key:</span>
+                  <span lc_id="lWbqzj2kHH">Value</span>
               </span>
-              <span lc-mark lc_id="7aLYLrp+/S">
-                  <b lc_id="rO/kiINZrQ">Key:</b>
-                  <span lc_id="6hy1WShna9">Value</span>
+              <span lc-mark lc_id="cjIUIdSSsS">
+                  <b lc_id="ADps8bfr5O">Key:</b>
+                  <span lc_id="beSG8unZWU">Value</span>
               </span>
-              <span lc-mark lc_id="PJogpEwg0Q">
-                  <b lc_id="BVD6vZZXln">Key:</b>
-                  <div lc_id="9PkvdAl5Pg" label-lc-mark></div>
+              <span lc-mark lc_id="y29nZqQNoJ">
+                  <b lc_id="N9wWIaXqzx">Key:</b>
+                  <div label-lc-mark lc_id="/ZBycQe5p/"></div>
               </span>
           </div>
-          <div lc_id="mL5ltGQ2+1">
-              <div class="demonstration-element" lc_id="2ckgf6ruBF">Form 容器</div>
-              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" lc-mark label-width="100px" class="demo-border" lc_id="gUzm9BtYBr"></el-form>
+          <div lc_id="PzuXdsu6kd">
+              <div class="demonstration-element" lc_id="LdGjb6Df9M">Form 容器</div>
+              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" lc-mark label-width="100px" class="demo-border" lc_id="Zzz06+mzkO"></el-form>
           </div>
-          <div lc_id="4tNJzbfZpl">
-              <div class="demonstration-element" lc_id="q2A/v0bGPa">Form 典型表单</div>
-              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" lc-mark label-width="100px" class="demo-border" lc_id="+J7wuw2kfG">
-                  <el-form-item label="活动名称" prop="name" lc_id="8zJ3QynhGf" lc-mark>
-                      <el-input v-model="ruleForm.name" lc_id="+0z/Usri5w"></el-input>
+          <div lc_id="8ZewsTbRuD">
+              <div class="demonstration-element" lc_id="cX5zh7f+RV">Form 典型表单</div>
+              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" lc-mark label-width="100px" class="demo-border" lc_id="gx5EBJU9WS">
+                  <el-form-item label="活动名称" prop="name" lc-mark lc_id="6md1kDs8qa">
+                      <el-input v-model="ruleForm.name" lc_id="QG5eYYTCSB"></el-input>
                   </el-form-item>
-                  <el-form-item label="活动区域" prop="region" lc_id="BQknWoGJD1" lc-mark>
-                      <el-select v-model="ruleForm.region" placeholder="请选择活动区域" lc_id="BsYEO5rf2i">
-                          <el-option label="区域一" value="shanghai" lc_id="WZgkAhC9vv"></el-option>
-                          <el-option label="区域二" value="beijing" lc_id="q96ygTFk/B"></el-option>
+                  <el-form-item label="活动区域" prop="region" lc-mark lc_id="tnJTgI76Kp">
+                      <el-select v-model="ruleForm.region" placeholder="请选择活动区域" lc_id="nrTlsTbxPM">
+                          <el-option label="区域一" value="shanghai" lc_id="mXsEEs0/z0"></el-option>
+                          <el-option label="区域二" value="beijing" lc_id="2GzfZP1Cbx"></el-option>
                       </el-select>
                   </el-form-item>
-                  <el-form-item label="活动时间" required lc_id="3hYK5tYClq" lc-mark>
-                      <el-col :span="11" lc_id="2/zvr1UBRS">
-                          <el-form-item prop="date1" lc_id="SRsyrJFuY7">
-                              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%" lc_id="ut4BH5tRjv"></el-date-picker>
+                  <el-form-item label="活动时间" required lc-mark lc_id="fz4dTVUbEb">
+                      <el-col :span="11" lc_id="mmEYR54uQF">
+                          <el-form-item prop="date1" lc_id="QkTT/2WWLK">
+                              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%" lc_id="G3lxZTQsw5"></el-date-picker>
                           </el-form-item>
                       </el-col>
-                      <el-col class="line" :span="2" lc_id="cYnewYwc7x">-</el-col>
-                      <el-col :span="11" lc_id="CDem+Jbdu6">
-                          <el-form-item prop="date2" lc_id="mU9tDRBd+N">
-                              <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%" lc_id="IgAhjz/1Sa"></el-time-picker>
+                      <el-col class="line" :span="2" lc_id="R2NmSO2FCi">-</el-col>
+                      <el-col :span="11" lc_id="eOACIzQ+Dq">
+                          <el-form-item prop="date2" lc_id="Ub+QEqDUGN">
+                              <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%" lc_id="+tkG6VmYdM"></el-time-picker>
                           </el-form-item>
                       </el-col>
                   </el-form-item>
-                  <el-form-item label="即时配送" prop="delivery" lc_id="BSjAgD4RBz" lc-mark>
-                      <el-switch v-model="ruleForm.delivery" lc_id="dHzXy9Kd9/"></el-switch>
+                  <el-form-item label="即时配送" prop="delivery" lc-mark lc_id="Lz8oPy38nU">
+                      <el-switch v-model="ruleForm.delivery" lc_id="COO1BlBrjF"></el-switch>
                   </el-form-item>
-                  <el-form-item label="文件上传" prop="delivery" lc_id="bO0otoJGdo" lc-mark>
-                      <el-button type="primary" size="small" lc_id="be1qikAvG/">
-上传                          <i class="el-icon-upload el-icon--right" lc_id="7wBx/Um7eK"></i>
+                  <el-form-item label="文件上传" prop="delivery" lc-mark lc_id="eFNZ7B9jgX">
+                      <el-button type="primary" size="small" lc_id="7ZjOmdz3Ur">
+上传                          <i class="el-icon-upload el-icon--right" lc_id="IOumsfqV0c"></i>
                       </el-button>
                   </el-form-item>
-                  <el-form-item label="自定义form-item" prop="delivery" lc_id="QJ3NN+wUEW" lc-mark>
-                      <div class="demo-border" lc_id="gWcKKmRXlJ"></div>
+                  <el-form-item label="自定义form-item" prop="delivery" lc-mark lc_id="g9ZQTRZogP">
+                      <div class="demo-border" lc_id="bICnUogCxE"></div>
                   </el-form-item>
-                  <el-form-item label="活动性质" prop="type" lc_id="oLunX/GRuH" lc-mark>
-                      <el-checkbox-group v-model="ruleForm.type" lc_id="++4Bda/NVN">
-                          <el-checkbox label="美食/餐厅线上活动" name="type" lc_id="+wC1g9MHna"></el-checkbox>
-                          <el-checkbox label="地推活动" name="type" lc_id="sdCzrXAT2y"></el-checkbox>
-                          <el-checkbox label="线下主题活动" name="type" lc_id="gTsBARyLOu"></el-checkbox>
-                          <el-checkbox label="单纯品牌曝光" name="type" lc_id="TDBRWL+ui/"></el-checkbox>
+                  <el-form-item label="活动性质" prop="type" lc-mark lc_id="u5e4jMDa0Z">
+                      <el-checkbox-group v-model="ruleForm.type" lc_id="4odzSgDoVc">
+                          <el-checkbox label="美食/餐厅线上活动" name="type" lc_id="qRZK4l23q9"></el-checkbox>
+                          <el-checkbox label="地推活动" name="type" lc_id="WbtFV7IdQ0"></el-checkbox>
+                          <el-checkbox label="线下主题活动" name="type" lc_id="/fBZC9Wz76"></el-checkbox>
+                          <el-checkbox label="单纯品牌曝光" name="type" lc_id="V+qui3Km7r"></el-checkbox>
                       </el-checkbox-group>
                   </el-form-item>
-                  <el-form-item label="特殊资源" prop="resource" lc_id="AIVW6a+WMo" lc-mark>
-                      <el-radio-group v-model="ruleForm.resource" lc_id="arM0Xl8Ow8">
-                          <el-radio label="线上品牌商赞助" lc_id="kFYdyqdoNE"></el-radio>
-                          <el-radio label="线下场地免费" lc_id="9NfIeEmiWw"></el-radio>
+                  <el-form-item label="特殊资源" prop="resource" lc-mark lc_id="EfEJRxIgMc">
+                      <el-radio-group v-model="ruleForm.resource" lc_id="UaAE0hW4YD">
+                          <el-radio label="线上品牌商赞助" lc_id="eVUn2fPBO0"></el-radio>
+                          <el-radio label="线下场地免费" lc_id="OhNxMXrfFs"></el-radio>
                       </el-radio-group>
                   </el-form-item>
-                  <el-form-item label="活动形式" prop="desc" lc_id="b5oLJSA9VW" lc-mark>
-                      <el-input type="textarea" v-model="ruleForm.desc" lc_id="Kjz00qg2bm"></el-input>
+                  <el-form-item label="活动形式" prop="desc" lc-mark lc_id="1J3SXxTQjA">
+                      <el-input type="textarea" v-model="ruleForm.desc" lc_id="KndAAF/3Mu"></el-input>
                   </el-form-item>
-                  <el-form-item lc_id="8uphY++lpC">
-                      <el-button type="primary" @click="submitForm" lc_id="iaY/zpWjSS">立即创建</el-button>
-                      <el-button @click="resetForm" lc_id="KxBu2mPKhs">重置</el-button>
+                  <el-form-item lc_id="wSyCEJYjUD">
+                      <el-button type="primary" @click="submitForm" lc_id="wp2oC1qxYN">立即创建</el-button>
+                      <el-button @click="resetForm" lc_id="nWgxJ6a9v+">重置</el-button>
                   </el-form-item>
               </el-form>
           </div>
@@ -101,16 +101,16 @@
                   <el-descriptions-item label="备注" lc_id="MpLSTs1V1a">
                       <el-tag size="small" lc_id="x+3JGPZLjM">学校</el-tag>
                   </el-descriptions-item>
-                  <el-descriptions-item label="联系地址" lc_id="OoN2WiOmV9">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
+                  <el-descriptions-item label="联系地址" lc_id="P7eacW7mxC">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
               </el-descriptions>
-              <el-descriptions title="垂直带边框列表" direction="vertical" :column="4" border lc-mark lc_id="szloMrlo+J">
->                  <el-descriptions-item label="用户名" lc_id="eiu+5s736W">kooriookami</el-descriptions-item>
-                  <el-descriptions-item label="手机号" lc_id="5jN1FMg0JM">18100000000</el-descriptions-item>
-                  <el-descriptions-item label="居住地" :span="2" lc_id="0kqZ2EOUJ/">苏州市</el-descriptions-item>
-                  <el-descriptions-item label="备注" lc_id="iSiDebVpZg">
-                      <el-tag size="small" lc_id="gy68yv4szb">学校</el-tag>
+              <el-descriptions title="垂直带边框列表" direction="vertical" :column="4" border lc-mark lc_id="k4Y9MNzVZb">
+>                  <el-descriptions-item label="用户名" lc_id="YTqOj5iy95">kooriookami</el-descriptions-item>
+                  <el-descriptions-item label="手机号" lc_id="qx7ONklayE">18100000000</el-descriptions-item>
+                  <el-descriptions-item label="居住地" :span="2" lc_id="Gip/4MIafd">苏州市</el-descriptions-item>
+                  <el-descriptions-item label="备注" lc_id="4wYkIRcdbX">
+                      <el-tag size="small" lc_id="9iHUBLDbHY">学校</el-tag>
                   </el-descriptions-item>
-                  <el-descriptions-item label="联系地址" lc_id="FOfDHeKGh6">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
+                  <el-descriptions-item label="联系地址" lc_id="zfJtvesctl">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
               </el-descriptions>
           </div>
       </div>

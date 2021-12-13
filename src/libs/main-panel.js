@@ -9,8 +9,9 @@ import { parseComponent } from 'vue-template-compiler/browser';
 import { merge, insertPresetAttribute, getSplitTag, replaceRowID, updateLinkTree, findCodeElemNode, findRawVueInfo, removeAllID } from "@/utils/forCode";
 import { getRawComponentContent, getRawComponentKey, isObject } from '@/utils/common';
 import { createNewCodeGenerator } from "@/libs/code-generator-factory";
-const EventEmitter = require('eventemitter3');
-const { cloneDeep } = require('lodash');
+import EventEmitter from 'eventemitter3'
+import { cloneDeep } from 'lodash-es';
+import scope from 'css-scoped';
 
 /**
  * 主控制面板辅助类，用于代码的生成与绘制
@@ -44,8 +45,6 @@ export class MainPanelProvider {
 
         console.groupCollapsed('---> for code generator warn <---');
 
-        const readyForMoutedElement = this.createMountedElement();
-
         // 生成原始代码
         let code = this.codeGenerator.outputVueCodeWithJsonObj(rawDataStructure);
 
@@ -61,26 +60,28 @@ export class MainPanelProvider {
 
         const { template, script, styles, customBlocks } = parseComponent(code);
 
+        this.loadStyle(styles);
+
         let newScript = script.content.replace(/\s*export default\s*/, "")
 
         const componentOptions = (new Function(`return ${newScript}`))();
 
-        const res = Vue.compile(template.content);
-
-        componentOptions.render = function () {
-            const rootVNode = res.render.apply(this, arguments);
-            return rootVNode;
-        };
-        componentOptions.staticRenderFns = res.staticRenderFns;
-
-        // 渲染当前代码
-        new Vue(componentOptions).$mount(readyForMoutedElement);
-
-        // 拍平数据结构
-        this.editMode && this.flatDataStructure(rawDataStructure);
-
-        // 开启编辑模式
-        this.editMode && this.enableEditMode();
+        componentOptions.template = template.content;
+        
+        if (this.editMode) {
+            // 渲染当前代码
+            const readyForMoutedElement = this.createMountedElement();
+            createBaseApp(componentOptions).mount(readyForMoutedElement);
+            
+            // 拍平数据结构
+            this.flatDataStructure(rawDataStructure);
+    
+            // 开启编辑模式
+            this.enableEditMode();
+        } else {
+            // 渲染当前代码
+            createBaseApp(componentOptions).mount(this.mountedEle);
+        }
 
         return this;
     }
@@ -94,9 +95,25 @@ export class MainPanelProvider {
         return this;
     }
 
-    setEditMode(editMode) {
+    setEditMode(editMode, mountedEle) {
         this.editMode = editMode;
+        this.mountedEle = mountedEle;
         this.reRender();
+    }
+
+    loadStyle(styles) {
+        if (styles.length > 0) {
+            const scopedStyle = styles[0];
+
+            this.styleNodeName = `cssScoped${Date.now()}`;
+
+            const scopedCss = scope(scopedStyle.content.replace(/::v-deep/g, ''), this.styleNodeName);
+            const styleNode = document.createElement('style');
+            styleNode.innerText = scopedCss;
+
+            // 这个会导致越来越卡
+            document.head.appendChild(styleNode);
+        }
     }
 
     /**
@@ -122,16 +139,11 @@ export class MainPanelProvider {
      */
     createMountedElement() {
         const renderControlPanel = this.getControlPanelRoot();
-        const child = document.createElement('div');
 
-        // 清空子节点
-        while (renderControlPanel.firstChild) {
-            renderControlPanel.removeChild(renderControlPanel.firstChild)
+        if (this.styleNodeName) {
+            renderControlPanel.setAttribute('class', this.styleNodeName);
         }
-
-        renderControlPanel.appendChild(child);
-
-        return child;
+        return renderControlPanel;
     }
 
     /**

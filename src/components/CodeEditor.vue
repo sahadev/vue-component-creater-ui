@@ -1,12 +1,12 @@
 <template>
   <div class="codemirror">
-    <codemirror v-model="code" :options="cmOption" @cursorActivity="onCmCursorActivity" @ready="onCmReady"
+    <codemirror v-model:value="code" :options="cmOption" @cursorActivity="onCmCursorActivity" @ready="onCmReady"
       @focus="onCmFocus" @blur="onCmBlur" />
   </div>
 </template>
 
 <script>
-import { codemirror } from 'vue-codemirror'
+import Codemirror from "codemirror-editor-vue3";
 
 // base style
 import 'codemirror/lib/codemirror.css'
@@ -50,20 +50,23 @@ import 'codemirror/addon/fold/indent-fold.js'
 import 'codemirror/addon/fold/markdown-fold.js'
 import 'codemirror/addon/fold/xml-fold.js'
 
-require(['axios'], axios => {
-  self.axios = axios.create({
-    baseURL: '',
-    timeout: 1000,
-  });
-});
+import axios from 'axios';
 
 export default {
   props: ['initCode', 'mode'],
   name: 'code-editor',
   title: 'Mode: text/x-vue & Theme: monokai',
   components: {
-    codemirror
+    Codemirror
   },
+
+  created() {
+    self.axios = axios.create({
+      baseURL: '',
+      timeout: 1000,
+    });
+  },
+
   computed: {
     code: {
       get() {
@@ -74,6 +77,12 @@ export default {
       }
     }
   },
+  watch: {
+    initCode() {
+      this.codeStore = this.initCode;
+    }
+  },
+
   data() {
     return {
       codeStore: this.initCode,

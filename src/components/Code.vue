@@ -1,36 +1,36 @@
 <template>
-  <el-dialog title="代码预览" :visible.sync="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
-    :center=true>
-    <pre style="max-height: 60vh;">
-    <code v-html="formatCode"></code>
-    </pre>
-    <div>
-      <center style="color: #666; font-size: 12px;">使用代码前请确认相应的组件库已集成至项目</center>
-    </div>
-    <span slot="footer">
-
-      <el-tooltip effect="dark" content="拷贝" placement="left">
-        <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
-      </el-tooltip>
-      <el-tooltip effect="dark" content="下载" placement="right">
-        <img class="round-icon" :src="iconDownload" alt="" @click="download">
-      </el-tooltip>
-
-    </span>
+  <el-dialog title="代码预览" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
+    <!-- 这里加v-if是因为CodeEditor内部不支持watch数据监测 -->
+    <CodeEditor v-if="codeDialogVisible" style="max-height: 65vh;" ref="codeEditor" :initCode="prettyCode" mode="text/html"></CodeEditor>
+    <div style="color: #666; font-size: 12px; text-align:center; margin: 5px;">使用代码前请确认相应的组件库已集成至项目</div>
+    <template v-slot:footer>
+      <span>
+        <el-tooltip effect="dark" content="拷贝" placement="left">
+          <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
+        </el-tooltip>
+        <el-tooltip effect="dark" content="下载" placement="right">
+          <img class="round-icon" :src="iconDownload" alt="" @click="download">
+        </el-tooltip>
+      </span>
+    </template>
   </el-dialog>
 
 </template>
 
 <script>
 import './prism.css'
-import Prism from "prismjs";
 import prettier from "prettier/standalone";
 import parserHtml from "prettier/parser-html";
 import copy from 'copy-to-clipboard';
 import { saveAs } from "file-saver";
 
+import CodeEditor from './CodeEditor.vue'
+
 export default {
   props: ['rawCode', 'codeDialogVisible'],
+  components: {
+    CodeEditor
+  },
 
   data() {
     return {
@@ -95,10 +95,6 @@ export default {
       }
 
     },
-
-    formatCode() {
-      return Prism.highlight(this.prettyCode, Prism.languages.markup, "html");
-    }
   },
   fillter: {},
 };
@@ -107,7 +103,7 @@ export default {
 <style scoped>
 /*  在此自动生成 */
 
-::v-deep .el-dialog__body {
+:v-deep(.el-dialog__body) {
   padding: 0 30px !important;
 }
 

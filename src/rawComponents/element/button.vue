@@ -1,94 +1,72 @@
-  <template lc_id="31lOXuZFW0">
-      <div lc_id="Sqe/e9T+dn">
-          <div lc_id="pzMg3o1GpZ">
-              <div class="demonstration-element" lc_id="CSFGeU2yIh">Button 默认按钮</div>
-              <el-button lc-mark lc_id="It6s7MEKEj">默认按钮</el-button>
-              <el-button lc-mark type="primary" lc_id="gySZODvPq4">主要按钮</el-button>
-              <el-button lc-mark type="success" lc_id="C8H4RxH9J4">成功按钮</el-button>
-              <el-button lc-mark type="info" lc_id="hyRMogHx7g">信息按钮</el-button>
-              <el-button lc-mark type="warning" lc_id="+1ZoY42NKV">警告按钮</el-button>
-              <el-button lc-mark type="danger" lc_id="//OdfFfDNy">危险按钮</el-button>
+  <template lc_id="h951btrjIz">
+      <div lc_id="Wys3+gAG6o">
+          <div lc_id="xz+q4JsE0H">
+              <div class="demonstration-element" lc_id="QOAgJcuNgl">Button 默认按钮</div>
+              <el-button lc-mark lc_id="CsCNd5VsAG">默认按钮</el-button>
+              <el-button lc-mark type="primary" lc_id="86aZgUKBRW">主要按钮</el-button>
+              <el-button lc-mark type="success" lc_id="i9rRR1vGUu">成功按钮</el-button>
+              <el-button lc-mark type="info" lc_id="KNdblHt7v/">信息按钮</el-button>
+              <el-button lc-mark type="warning" lc_id="6xzwRUzCpX">警告按钮</el-button>
+              <el-button lc-mark type="danger" lc_id="n/gRbf1hnb">危险按钮</el-button>
           </div>
-          <div lc_id="dXKZZTSE6f">
-              <div class="demonstration-element" lc_id="AEqE9Y2JJx">Button 朴素按钮</div>
-              <el-button lc-mark plain lc_id="xpIy9dyoLu">朴素按钮</el-button>
-              <el-button lc-mark type="primary" plain lc_id="uuXSeas9Rn">主要按钮</el-button>
-              <el-button lc-mark type="success" plain lc_id="yT/mnDTNZC">成功按钮</el-button>
-              <el-button lc-mark type="info" plain lc_id="MkQKv/edLT">信息按钮</el-button>
-              <el-button lc-mark type="warning" plain lc_id="1nay6UmyQn">警告按钮</el-button>
-              <el-button lc-mark type="danger" plain lc_id="4dXLsK63dR">危险按钮</el-button>
+          <div lc_id="aS+4+fs63u">
+              <div class="demonstration-element" lc_id="eZqzsVXDsz">Button 朴素按钮</div>
+              <el-button lc-mark plain lc_id="BC7OoDacJj">朴素按钮</el-button>
+              <el-button lc-mark type="primary" plain lc_id="bWC9CeWjjY">主要按钮</el-button>
+              <el-button lc-mark type="success" plain lc_id="sVBJspZDuU">成功按钮</el-button>
+              <el-button lc-mark type="info" plain lc_id="YUbh6jGrjF">信息按钮</el-button>
+              <el-button lc-mark type="warning" plain lc_id="LOykTx4Sf0">警告按钮</el-button>
+              <el-button lc-mark type="danger" plain lc_id="0hBjU/hwbY">危险按钮</el-button>
           </div>
-          <div lc_id="BrDirV0DiW">
-              <div class="demonstration-element" lc_id="Ibx7/Oljm1">Button 圆角按钮</div>
-              <el-button lc-mark round lc_id="vnhZCSYTKi">圆角按钮</el-button>
-              <el-button lc-mark type="primary" round lc_id="4G/Xt4oA/W">主要按钮</el-button>
-              <el-button lc-mark type="success" round lc_id="21dRU+4EP6">成功按钮</el-button>
-              <el-button lc-mark type="info" round lc_id="t/e3BMImqQ">信息按钮</el-button>
-              <el-button lc-mark type="warning" round lc_id="jkBcMy35Fs">警告按钮</el-button>
-              <el-button lc-mark type="danger" round lc_id="NbMTA5OJFM">危险按钮</el-button>
+          <div lc_id="TIyAo1YWH2">
+              <div class="demonstration-element" lc_id="ci4hr/TXbi">Button 圆角按钮</div>
+              <el-button lc-mark round lc_id="JGOxzRnIcl">圆角按钮</el-button>
+              <el-button lc-mark type="primary" round lc_id="GOolXgPQ8i">主要按钮</el-button>
+              <el-button lc-mark type="success" round lc_id="QpK7RbxSP1">成功按钮</el-button>
+              <el-button lc-mark type="info" round lc_id="rPNRcyrUBY">信息按钮</el-button>
+              <el-button lc-mark type="warning" round lc_id="MCBR6sxh+2">警告按钮</el-button>
+              <el-button lc-mark type="danger" round lc_id="KCAVqthQwo">危险按钮</el-button>
           </div>
-          <div lc_id="dtI0sv1JGj">
-              <div class="demonstration-element" lc_id="/J59dGf5Ux">Button 图标按钮</div>
-              <el-button lc-mark icon="el-icon-search" circle lc_id="zKuPwfsOg/"></el-button>
-              <el-button lc-mark type="primary" icon="el-icon-edit" circle lc_id="TEEu3UmtSm"></el-button>
-              <el-button lc-mark type="success" icon="el-icon-check" circle lc_id="Gcle27RxOV"></el-button>
-              <el-button lc-mark type="info" icon="el-icon-message" circle lc_id="iYwWDqh7Cj"></el-button>
-              <el-button lc-mark type="warning" icon="el-icon-star-off" circle lc_id="c0jB+EoGdn"></el-button>
-              <el-button lc-mark type="danger" icon="el-icon-delete" circle lc_id="UOzcHamJuB"></el-button>
+          <div lc_id="RdvVbD8tRt">
+              <div class="demonstration-element" lc_id="MCe1tz7lec">Button 文字按钮</div>
+              <el-button lc-mark type="text" lc_id="VzeBeEyMRU">文字按钮</el-button>
+              <el-button lc-mark type="text" disabled lc_id="gGBAHuLrE2">文字按钮</el-button>
           </div>
-          <div lc_id="W3QyOQzQlk">
-              <div class="demonstration-element" lc_id="smimycex4t">Button 文字按钮</div>
-              <el-button lc-mark type="text" lc_id="t0TXebSot2">文字按钮</el-button>
-              <el-button lc-mark type="text" disabled lc_id="5YRlNpmVjb">文字按钮</el-button>
-          </div>
-          <div lc_id="80RD4YeUsn">
-              <div class="demonstration-element" lc_id="5MhACg2EuC">Button 按钮组</div>
-              <el-button-group lc-mark lc_id="xEZPfVC0Vk">
-                  <el-button type="primary" icon="el-icon-arrow-left" lc_id="SAyGGlazMe">上一页</el-button>
-                  <el-button type="primary" lc_id="xOLpFj/kpi">
-下一页                      <i class="el-icon-arrow-right el-icon--right" lc_id="SMXHxa2XXa"></i>
+          <div lc_id="fiJ0b+a2C7">
+              <div class="demonstration-element" lc_id="NadQOxXAQD">Button 按钮组</div>
+              <el-button-group lc-mark lc_id="zPylslsF8c">
+                  <el-button type="primary" icon="el-icon-arrow-left" lc_id="YcgENB34wv">上一页</el-button>
+                  <el-button type="primary" lc_id="7ZtWxMoRg5">
+下一页                      <i class="el-icon-arrow-right el-icon--right" lc_id="nhJ1UtAuzb"></i>
                   </el-button>
               </el-button-group>
-              <el-button-group lc-mark lc_id="bgUv4uEWun">
-                  <el-button type="primary" icon="el-icon-edit" lc_id="ZZsmy9U270"></el-button>
-                  <el-button type="primary" icon="el-icon-share" lc_id="ufr8jjdziC"></el-button>
-                  <el-button type="primary" icon="el-icon-delete" lc_id="rp+8TRHMji"></el-button>
+              <el-button-group lc-mark lc_id="8NQc5ZELeT">
+                  <el-button type="primary" icon="el-icon-edit" lc_id="rBWkIADCIC"></el-button>
+                  <el-button type="primary" icon="el-icon-share" lc_id="aZ8b7GZRtx"></el-button>
+                  <el-button type="primary" icon="el-icon-delete" lc_id="6htBQsITGM"></el-button>
               </el-button-group>
           </div>
-          <div lc_id="k4SqegBXaV">
-              <div class="demonstration-element" lc_id="oFxF0LI+dm">Icon 图标</div>
-              <i class="icon el-icon-edit" lc-mark lc_id="a6mb6XhfMc"></i>
-              <i class="icon el-icon-share" lc-mark lc_id="oXLeLY13kj"></i>
-              <i class="icon el-icon-delete" lc-mark lc_id="s8KebZ+PS1"></i>
-              <i class="icon el-icon-info" lc-mark lc_id="WXq43J9XzJ"></i>
-              <i class="icon el-icon-eleme" lc-mark lc_id="4hI/AencQZ"></i>
-              <i class="icon el-icon-setting" lc-mark lc_id="511YTr9sW9"></i>
-              <i class="icon el-icon-video-camera-solid" lc-mark lc_id="/k6h8zYM65"></i>
-              <i class="icon el-icon-message-solid" lc-mark lc_id="blqIQB6Vhj"></i>
-              <i class="icon el-icon-s-data" lc-mark lc_id="gbq6whZDAm"></i>
-              <el-link href="https://element.eleme.cn/#/zh-CN/component/icon" style="margin-left: 10px;" class="el-icon-d-arrow-right" type="info" target="_blank" lc_id="t+j3VEq1No">查看所有图标</el-link>
+          <div lc_id="x1oSPpUpOu">
+              <div class="demonstration-element" lc_id="uVL6JgP+Au">Link 文字链接</div>
+              <el-link lc-mark lc_id="dsEhJ0nNvP">默认链接</el-link>
+              <el-link lc-mark type="primary" lc_id="b0ksqSWND7">主要链接</el-link>
+              <el-link lc-mark type="success" lc_id="n0JFscE5rV">成功链接</el-link>
+              <el-link lc-mark type="warning" lc_id="xZ3qu7QdEE">警告链接</el-link>
+              <el-link lc-mark type="danger" lc_id="DxB6pyqUDJ">危险链接</el-link>
+              <el-link lc-mark type="info" lc_id="oWXSle5p3a">信息链接</el-link>
           </div>
-          <div lc_id="D9dpNStd1t">
-              <div class="demonstration-element" lc_id="MPmrgZvo8q">Link 文字链接</div>
-              <el-link lc-mark lc_id="rtsG+iZyEB">默认链接</el-link>
-              <el-link lc-mark type="primary" lc_id="qk6VNOTl/3">主要链接</el-link>
-              <el-link lc-mark type="success" lc_id="q91ZwmwpjV">成功链接</el-link>
-              <el-link lc-mark type="warning" lc_id="EJaR3vy19z">警告链接</el-link>
-              <el-link lc-mark type="danger" lc_id="2ixn7o9E7E">危险链接</el-link>
-              <el-link lc-mark type="info" lc_id="FWgv1C2y/2">信息链接</el-link>
+          <div lc_id="XE215BO7ZG">
+              <div class="demonstration-element" lc_id="dIss2fOIh1">Tag 标签</div>
+              <el-tag lc-mark lc_id="srSB/cYw2J">标签一</el-tag>
+              <el-tag lc-mark type="success" lc_id="LRJZ1ZP4ZH">标签二</el-tag>
+              <el-tag lc-mark type="info" lc_id="B+b33TM6FV">标签三</el-tag>
+              <el-tag lc-mark type="warning" lc_id="VRus6unUUj">标签四</el-tag>
+              <el-tag lc-mark type="danger" lc_id="7MofqTTFPE">标签五</el-tag>
           </div>
-          <div lc_id="/barCioNfE">
-              <div class="demonstration-element" lc_id="PLG2KvKH8y">Tag 标签</div>
-              <el-tag lc-mark lc_id="U/u261/Smt">标签一</el-tag>
-              <el-tag lc-mark type="success" lc_id="IDATiLqGk9">标签二</el-tag>
-              <el-tag lc-mark type="info" lc_id="0D0MewaqKv">标签三</el-tag>
-              <el-tag lc-mark type="warning" lc_id="vAdw0BIcX+">标签四</el-tag>
-              <el-tag lc-mark type="danger" lc_id="nbAcfgii7o">标签五</el-tag>
-          </div>
-          <div lc_id="saMTK5tD7X">
-              <div class="demonstration-element" lc_id="BXSBwotgSp">Avatar 头像</div>
-              <el-avatar lc-mark :size="50" :src="circleUrl" lc_id="T5mj8odU47"></el-avatar>
-              <el-avatar lc-mark shape="square" :size="50" :src="squareUrl" lc_id="CGR8yckrEF"></el-avatar>
+          <div lc_id="MWF8TZpYmQ">
+              <div class="demonstration-element" lc_id="ILdDu9StTB">Avatar 头像</div>
+              <el-avatar lc-mark :size="50" :src="circleUrl" lc_id="fRttsgKaqk"></el-avatar>
+              <el-avatar lc-mark shape="square" :size="50" :src="squareUrl" lc_id="m8hK+IsKji"></el-avatar>
           </div>
       </div>
   </template>

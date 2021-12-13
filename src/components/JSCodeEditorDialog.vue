@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="JS逻辑编辑" :visible.sync="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
+  <el-dialog title="JS逻辑编辑" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
     :center=true>
     <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/javascript"></CodeEditor>
 
@@ -18,6 +18,7 @@ import CodeEditor from './CodeEditor.vue'
 
 export default {
   props: ['codeDialogVisible'],
+  emits: ['saveJSCode', 'update:codeDialogVisible'],
   components: {
     CodeEditor
   },
@@ -117,7 +118,7 @@ export default {
 <style scoped>
 /*  在此自动生成 */
 
-::v-deep .el-dialog__body {
+:v-deep(.el-dialog__body) {
   padding: 0 30px !important;
 }
 </style>

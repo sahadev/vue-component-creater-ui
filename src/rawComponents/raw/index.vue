@@ -17,14 +17,6 @@
                       <span lc_id="m+Oy7pHzNT" lc-mark>Span Element</span>
                   </td>
               </tr>
-              <tr lc_id="xunAa9pXZZ">
-                  <td lc_id="m11Db3zz1r">
-                      <div class="title" lc_id="dSImHjC62W">center:</div>
-                  </td>
-                  <td lc_id="KrJXHbe0Y4">
-                      <center lc_id="CN8KOU6sKz" lc-mark>Center Element</center>
-                  </td>
-              </tr>
               <tr lc_id="Ejan36KyM/">
                   <td lc_id="ke9QDthYso">
                       <div class="title" lc_id="V2t1JzpJnA">a（超链接）:</div>

@@ -1,7 +1,6 @@
 
-import { isObject, isArray, getRawComponentKey } from '@/utils/common';
+import { isObject, isArray, getRawComponentKey, createUniqueId } from '@/utils/common';
 import presetAttribute from "../libs/presetAttribute";
-const cryptoRandomString = require("crypto-random-string");
 
 // 将预生成的ID替换，否则当有两个组件挂在同一个树上时，后一个会将前一个的属性覆盖
 export function replaceRowID(codeObj, html) {
@@ -14,10 +13,7 @@ export function replaceRowID(codeObj, html) {
                     const element = obj[key];
                     if (key == "lc_id") {
                         const oldID = obj[key];
-                        const newID = cryptoRandomString({
-                            length: 10,
-                            type: "base64",
-                        });
+                        const newID = createUniqueId();
                         newHtml = newHtml.replace(oldID, newID);
                         obj[key] = newID;
                     } else if (isObject(element)) {
@@ -40,7 +36,7 @@ export function updateLinkTree(codeObj) {
         window.tree = {};
     }
     if (!window.treeWithID) {
-        const innerObj = {};
+        let innerObj = {};
         Object.defineProperty(window, 'treeWithID', {
             get: function () {
                 return innerObj;

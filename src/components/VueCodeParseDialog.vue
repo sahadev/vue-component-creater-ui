@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="Vue二次编辑" :visible.sync="vueDialogVisible" width="70%" top="10vh" :before-close="handleClose"
+  <el-dialog title="Vue二次编辑" v-model="vueDialogVisible" width="70%" top="10vh" :before-close="handleClose"
     :center=true>
     <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/html"></CodeEditor>
 
@@ -20,6 +20,7 @@ import { ergodic, findAObject } from '../utils/common';
 
 export default {
   props: ['vueDialogVisible'],
+  emits: ['codeParseSucess', 'update:vueDialogVisible'],
   components: {
     CodeEditor
   },
@@ -88,7 +89,7 @@ export default {
 <style scoped>
 /*  在此自动生成 */
 
-::v-deep .el-dialog__body {
+:v-deep(.el-dialog__body) {
   padding: 0 30px !important;
 }
 </style>
