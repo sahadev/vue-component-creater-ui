@@ -54,7 +54,7 @@ export default {
 
 .demonstration-vant::before {
   content: "";
-  background-color: #b700ff;
+  background-color: #0004ff;
   display: inline-block;
   height: 1em;
   margin-right: 4px;
