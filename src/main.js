@@ -8,17 +8,13 @@ import {
   Refresh,
   Minus,
 } from "@element-plus/icons";
-
 import "element-plus/dist/index.css";
-import APP from "./App.vue";
 
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
+import APP from "./App.vue";
 
 function createBaseApp(renderComponent = {}) {
   const app = createApp(renderComponent);
   app.use(ElementPlus);
-  app.use(Antd);
 
   app.component("question-filled", QuestionFilled);
   app.component("circle-plus", CirclePlus);
@@ -38,13 +34,4 @@ self.createBaseApp = createBaseApp;
 self.globalApp = globalApp; // 内部需要使用Vuex
 
 import("@/libs/store.js");
-
-function loadVant() {
-  const vantLoadPromise = (() => import("vant"))();
-  (() => import("vant/lib/index.css"))();
-  vantLoadPromise.then((vantModule) => {
-    self.globalApp.use(vantModule);
-  });
-}
-
-loadVant();
+import("@/libs/UIComponentInit.js");
