@@ -5,9 +5,13 @@ import { QuestionFilled, CirclePlus, DocumentCopy, Delete, Refresh, Minus } from
 import "element-plus/dist/index.css";
 import APP from "./App.vue";
 
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+
 function createBaseApp(renderComponent = {}) {
   const app = createApp(renderComponent);
   app.use(ElementPlus);
+  app.use(Antd);
 
   app.component("question-filled", QuestionFilled);
   app.component("circle-plus", CirclePlus);
