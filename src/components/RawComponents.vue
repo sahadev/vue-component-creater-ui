@@ -59,11 +59,10 @@
   </div>
 </template>
 <script>
-// import vant from "../rawComponents/vant";
 // import iview from "../rawComponents/iview";
 // import quasar from "../rawComponents/quasar";
 import raw from "../rawComponents/raw/index.vue";
-import ele from "../rawComponents/element/index.vue";
+import { defineAsyncComponent } from "vue";
 
 export default {
   data() {
@@ -87,7 +86,13 @@ export default {
         titleArray: [],
       }, {
         icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/vant-n.png'),
-        enable: false
+        clickCallback: this.onSelectElement,
+        className: "demonstration-vant",
+        selectIndex: 0,
+        componentName: 'vant',
+        enable: true,
+        titleArray: [],
+        enable: true
       }, {
         icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/iview-n.png'),
         enable: false
@@ -173,21 +178,12 @@ export default {
         }
       }
     },
-    surprise() {
-      const that = this;
-      function color() {
-        window.requestAnimationFrame(color);
-      }
-
-      window.requestAnimationFrame(color);
-    }
   },
 
   created() { },
 
   mounted() {
     this.init();
-    // this.surprise();
   },
 
   computed: {
@@ -210,10 +206,10 @@ export default {
 
   components: {
     raw,
-    // vant,
+    vant: defineAsyncComponent(() => import("../rawComponents/vant")),
     // iview,
     // quasar,
-    ele,
+    ele: defineAsyncComponent(() => import("../rawComponents/element/index.vue")),
   },
 
 };
