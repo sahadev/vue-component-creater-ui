@@ -60,7 +60,7 @@
     <div lc_id="mllWNtm7WD">
       <div class="demonstration-vant" lc_id="XU1g37b7Bj">Skeleton 骨架屏</div>
       <van-skeleton title :row="3" lc-mark lc_id="B9ypSupDLY"></van-skeleton>
-      <br>
+      <br lc_id="gJKqa1lhDD" />
       <van-skeleton title avatar :row="3" lc-mark lc_id="LH6oqOei+U"></van-skeleton>
     </div>
     <div lc_id="H2zy4AGqzd">

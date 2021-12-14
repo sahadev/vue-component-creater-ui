@@ -394,6 +394,7 @@ export default {
   z-index: 3;
   top: 0;
   background: white;
+  overflow: scroll;
 }
 
 #mountedEle {

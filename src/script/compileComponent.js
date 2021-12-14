@@ -239,6 +239,7 @@ async function compiler(path) {
       format: true,
       indentBy: "  ",
       supressEmptyNode: false,
+      singleTags: ['br']
     };
 
     const parser = new Parser(defaultOptions);

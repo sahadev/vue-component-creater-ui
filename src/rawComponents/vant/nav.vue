@@ -36,15 +36,12 @@
           </div>
           <div lc_id="HFSjLBSjr4">
               <div class="demonstration-vant" lc_id="5zilvW7BTu">ActionBar 动作栏</div>
-              <div style="position: relative;" lc-mark lc_id="LywB4w//P/">
-                  <van-action-bar lc_id="44C1zLHqlz">
-                      <van-action-bar-icon icon="chat-o" text="客服" @click="onClickIcon" lc_id="2rUDSvAMip">
-                          <van-action-bar-icon icon="cart-o" text="购物车" @click="onClickIcon" lc_id="MAju6gwdil">
-                              <van-action-bar-icon icon="shop-o" text="店铺" @click="onClickIcon" lc_id="gSY/APPOCK">
-                                  <van-action-bar-button type="danger" text="立即购买" @click="onClickButton" lc_id="iHUXW5cxjd"></van-action-bar-button>
-                              </van-action-bar-icon>
-                          </van-action-bar-icon>
-                      </van-action-bar-icon>
+              <div style="position: relative;" lc-mark lc_id="Pt76lmgRrB">
+                  <van-action-bar lc_id="9ToRhiLix2">
+                      <van-action-bar-icon icon="chat-o" text="客服" @click="onClickIcon" lc_id="+KLvcHu+dq"></van-action-bar-icon>
+                      <van-action-bar-icon icon="cart-o" text="购物车" @click="onClickIcon" lc_id="jmPWsraNbw"></van-action-bar-icon>
+                      <van-action-bar-icon icon="shop-o" text="店铺" @click="onClickIcon" lc_id="9nvKcSlBKx"></van-action-bar-icon>
+                      <van-action-bar-button type="danger" text="立即购买" @click="onClickButton" lc_id="SxUbF/TzkY"></van-action-bar-button>
                   </van-action-bar>
               </div>
           </div>
@@ -149,7 +146,15 @@ export default {
 :v-deep(.van-submit-bar) {
   position: initial;
 }
+</style>
+
+<style>
 .van-action-bar {
   position: relative;
   padding-bottom: 0;
-}</style>
+}
+
+.van-submit-bar {
+  z-index: 0;
+}
+</style>
