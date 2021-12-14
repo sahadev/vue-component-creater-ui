@@ -71,7 +71,7 @@ export class MainPanelProvider {
         if (this.editMode) {
             // 渲染当前代码
             const readyForMoutedElement = this.createMountedElement();
-            createBaseApp(componentOptions).mount(readyForMoutedElement);
+            createBaseAppAsync(componentOptions).then(app => app.mount(readyForMoutedElement));
             
             // 拍平数据结构
             this.flatDataStructure(rawDataStructure);
@@ -80,7 +80,7 @@ export class MainPanelProvider {
             this.enableEditMode();
         } else {
             // 渲染当前代码
-            createBaseApp(componentOptions).mount(this.mountedEle);
+            createBaseAppAsync(componentOptions).then(app => app.mount(this.mountedEle));
         }
 
         return this;

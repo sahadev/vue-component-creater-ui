@@ -21,4 +21,7 @@ const store = createStore({
   }
 })
 
-globalApp.use(store);
+export default function loadStore(app) {
+  app.use(store);
+  return app;
+}

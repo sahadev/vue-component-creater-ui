@@ -1,69 +1,68 @@
-<template>
-  <div>
-    <div>
-      <div class="demonstration-vant">Grid 宫格</div>
-      <van-grid lc-mark>
-        <van-grid-item icon="photo-o" text="文字"></van-grid-item>
-        <van-grid-item icon="photo-o" text="文字"></van-grid-item>
-        <van-grid-item icon="photo-o" text="文字"></van-grid-item>
-        <van-grid-item icon="photo-o" text="文字"></van-grid-item>
-      </van-grid>
-    </div>
-    <div>
-      <div class="demonstration-vant">NavBar 导航栏</div>
-      <van-nav-bar lc-mark title="标题" left-text="返回" right-text="按钮" left-arrow @click-left="onClickLeft"
-        @click-right="onClickRight"></van-nav-bar>
-    </div>
-    <div>
-      <div class="demonstration-vant">Pagination 分页</div>
-      <van-pagination lc-mark v-model="currentPage13" :total-items="24" :items-per-page="5"></van-pagination>
-    </div>
-    <div>
-      <div class="demonstration-vant">Sidebar 侧边导航</div>
-      <van-sidebar v-model="activeKey" lc-mark>
-        <van-sidebar-item title="标签名称"></van-sidebar-item>
-        <van-sidebar-item title="标签名称"></van-sidebar-item>
-        <van-sidebar-item title="标签名称"></van-sidebar-item>
-      </van-sidebar>
-    </div>
-    <div>
-      <div class="demonstration-vant">Tab 标签页</div>
-      <van-tabs v-model="active14" lc-mark>
-        <van-tab title="标签 1">内容 1</van-tab>
-        <van-tab title="标签 2">内容 2</van-tab>
-        <van-tab title="标签 3">内容 3</van-tab>
-        <van-tab title="标签 4">内容 4</van-tab>
-      </van-tabs>
-    </div>
-    <div>
-      <div class="demonstration-vant">ActionBar 动作栏</div>
-      <div style="position: relative;" lc-mark>
-        <van-action-bar>
-          <van-action-bar-icon icon="chat-o" text="客服" @click="onClickIcon" />
-          <van-action-bar-icon icon="cart-o" text="购物车" @click="onClickIcon" />
-          <van-action-bar-icon icon="shop-o" text="店铺" @click="onClickIcon" />
-          <van-action-bar-button type="danger" text="立即购买" @click="onClickButton" />
-        </van-action-bar>
+  <template lc_id="/QY7monDLp">
+      <div lc_id="/ntrNy7wOc">
+          <div lc_id="ta6EIAh72H">
+              <div class="demonstration-vant" lc_id="ZMbTJO4efl">Grid 宫格</div>
+              <van-grid lc-mark lc_id="X08eZY9vTs">
+                  <van-grid-item icon="photo-o" text="文字" lc_id="X7rCKONAIT"></van-grid-item>
+                  <van-grid-item icon="photo-o" text="文字" lc_id="LMykLYqUkC"></van-grid-item>
+                  <van-grid-item icon="photo-o" text="文字" lc_id="E2Hd160o5Q"></van-grid-item>
+                  <van-grid-item icon="photo-o" text="文字" lc_id="d34lSEesuk"></van-grid-item>
+              </van-grid>
+          </div>
+          <div lc_id="dS3rIMgHEa">
+              <div class="demonstration-vant" lc_id="PMja4pIbgj">NavBar 导航栏</div>
+              <van-nav-bar lc-mark title="标题" left-text="返回" right-text="按钮" left-arrow @click-left="onClickLeft" @click-right="onClickRight" lc_id="REnoRWpVUY"></van-nav-bar>
+          </div>
+          <div lc_id="UhV4g9qnPl">
+              <div class="demonstration-vant" lc_id="GEoGgaEQRn">Pagination 分页</div>
+              <van-pagination lc-mark v-model="currentPage13" :total-items="24" :items-per-page="5" lc_id="IOGXwSfLUN"></van-pagination>
+          </div>
+          <div lc_id="DY3MQ06idt">
+              <div class="demonstration-vant" lc_id="Y/UGT4oFUC">Sidebar 侧边导航</div>
+              <van-sidebar v-model="activeKey" lc-mark lc_id="7AlKZZMGtG">
+                  <van-sidebar-item title="标签名称" lc_id="YGZitVPi4d"></van-sidebar-item>
+                  <van-sidebar-item title="标签名称" lc_id="hWh5LOl2oL"></van-sidebar-item>
+                  <van-sidebar-item title="标签名称" lc_id="TshkJd38qC"></van-sidebar-item>
+              </van-sidebar>
+          </div>
+          <div lc_id="6QKkhZ8evV">
+              <div class="demonstration-vant" lc_id="U6vxh2loAk">Tab 标签页</div>
+              <van-tabs v-model="active14" lc-mark lc_id="rohxtUBk/l">
+                  <van-tab title="标签 1" lc_id="MSSxMZ2ebB">内容 1</van-tab>
+                  <van-tab title="标签 2" lc_id="f+cAezYPuU">内容 2</van-tab>
+                  <van-tab title="标签 3" lc_id="N36xJv03F6">内容 3</van-tab>
+                  <van-tab title="标签 4" lc_id="iy8oej8ecZ">内容 4</van-tab>
+              </van-tabs>
+          </div>
+          <div lc_id="HFSjLBSjr4">
+              <div class="demonstration-vant" lc_id="5zilvW7BTu">ActionBar 动作栏</div>
+              <div style="position: relative;" lc-mark lc_id="LywB4w//P/">
+                  <van-action-bar lc_id="44C1zLHqlz">
+                      <van-action-bar-icon icon="chat-o" text="客服" @click="onClickIcon" lc_id="2rUDSvAMip">
+                          <van-action-bar-icon icon="cart-o" text="购物车" @click="onClickIcon" lc_id="MAju6gwdil">
+                              <van-action-bar-icon icon="shop-o" text="店铺" @click="onClickIcon" lc_id="gSY/APPOCK">
+                                  <van-action-bar-button type="danger" text="立即购买" @click="onClickButton" lc_id="iHUXW5cxjd"></van-action-bar-button>
+                              </van-action-bar-icon>
+                          </van-action-bar-icon>
+                      </van-action-bar-icon>
+                  </van-action-bar>
+              </div>
+          </div>
+          <div lc_id="kzIjwCrNnO">
+              <div class="demonstration-vant" lc_id="8dbio3vxQH">AddressEdit 地址编辑</div>
+              <van-address-edit :area-list="areaList" show-postal lc-mark show-delete show-set-default show-search-result :search-result="searchResult" :area-columns-placeholder="['请选择', '请选择', '请选择']" @save="onSave" @delete="onDelete" @change-detail="onChangeDetail" lc_id="Tn1/r0M9YC"></van-address-edit>
+          </div>
+          <div lc_id="wa8o497uS2">
+              <div class="demonstration-vant" lc_id="eUXBZScEN8">Card 商品卡片</div>
+              <van-card num="2" lc-mark price="2" desc="描述信息" title="商品标题" thumb="https://img.yzcdn.cn/vant/ipad.jpeg" lc_id="cBHYsOWBw2"></van-card>
+          </div>
+          <div lc_id="8m37ZW49xJ">
+              <div class="demonstration-vant" lc_id="WFfLIn2BMo">ActionBar 行动栏</div>
+              <van-submit-bar style="position: relative;" lc-mark :price="3050" button-text="提交订单" @submit="onSubmit" lc_id="iGAW34dMaI"></van-submit-bar>
+          </div>
       </div>
-    </div>
-    <div>
-      <div class="demonstration-vant">AddressEdit 地址编辑</div>
-      <van-address-edit :area-list="areaList" show-postal lc-mark show-delete show-set-default show-search-result
-        :search-result="searchResult" :area-columns-placeholder="['请选择', '请选择', '请选择']" @save="onSave"
-        @delete="onDelete" @change-detail="onChangeDetail"></van-address-edit>
-    </div>
-    <div>
-      <div class="demonstration-vant">Card 商品卡片</div>
-      <van-card num="2" lc-mark price="2" desc="描述信息" title="商品标题" thumb="https://img.yzcdn.cn/vant/ipad.jpeg">
-      </van-card>
-    </div>
-    <div>
-      <div class="demonstration-vant">ActionBar 行动栏</div>
-      <van-submit-bar style="position: relative;" lc-mark :price="3050" button-text="提交订单" @submit="onSubmit" />
-    </div>
-  </div>
-</template>
-<script>
+  </template>
+  <script>
 export default {
   data() {
     return {
@@ -140,10 +139,8 @@ export default {
     onSubmit11() { },
     onClickEditAddress() { },
   },
-};
-</script>
-<style scoped>
-:v-deep(.van-tabbar--fixed) {
+};  </script>
+  <style scoped>:v-deep(.van-tabbar--fixed) {
   position: initial;
 }
 :v-deep(.van-address-list__bottom) {
@@ -155,5 +152,4 @@ export default {
 .van-action-bar {
   position: relative;
   padding-bottom: 0;
-}
-</style>
+}</style>

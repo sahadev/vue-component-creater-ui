@@ -1,19 +1,16 @@
 // 其它UI组件库应该在这里集成
 function loadVant() {
-  const vantLoadPromise = (() => import("vant"))();
   (() => import("vant/lib/index.css"))();
-  vantLoadPromise.then((vantModule) => {
-    self.globalApp.use(vantModule);
-  });
+  const vantLoadPromise = (() => import("vant"))();
+  return vantLoadPromise;
 }
 
 function loadAntD() {
-  const vantLoadPromise = (() => import("ant-design-vue"))();
   (() => import("ant-design-vue/dist/antd.css"))();
-  vantLoadPromise.then((vantModule) => {
-    self.globalApp.use(vantModule);
-  });
+  const vantLoadPromise = (() => import("ant-design-vue"))();
+  return vantLoadPromise;
 }
 
-loadAntD();
-loadVant();
+export default function loadCompontents() {
+  return Promise.all([loadAntD(), loadVant()]);
+}
