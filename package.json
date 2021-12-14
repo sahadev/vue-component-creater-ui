@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "vite --port 8008",
     "serve": "vite --port 8008",
-    "build:release": "vue-cli-service build",
+    "build:release": "vite build --base=https://static.imonkey.xueersi.com/vcc3/",
     "build": "vue-cli-service build --report --target lib --name vcc './src/components-v2/VCC.vue' && node ./src/script/distClear.js",
     "build:win": "vue-cli-service build --report --target lib --name vcc ./src/components-v2/VCC.vue && node ./src/script/distClear.js",
     "compileAndbuild:dev": "npm run compileComponent && vue-cli-service build",
