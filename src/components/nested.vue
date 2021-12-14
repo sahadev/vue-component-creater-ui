@@ -1,5 +1,5 @@
 <template>
-  <draggable class="dragArea" tag="ul" :list="data" @start="onStartDrag" @choose="onClick"
+  <draggable class="dragArea" tag="ul" :list="data" @start="onStartDrag" @choose="onClick" :group="{ name: 'g1' }"
     @end="onEndDrag">
     <template #item="{ element }">
       <li class="itemArea">
@@ -28,13 +28,13 @@ export default {
   computed: {
   },
   methods: {
-    getRawComponentKey, 
+    getRawComponentKey,
     getRawComponentContent,
     onStartDrag(event) {
       event.item.classList.add("is-dragging");
     },
     onClick(event) {
-      if(this.$store.state.currentEditComp){
+      if (this.$store.state.currentEditComp) {
         this.$store.state.currentEditComp.item.classList.remove("is-dragging");
       }
 
