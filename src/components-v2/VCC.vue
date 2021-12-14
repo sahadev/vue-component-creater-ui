@@ -23,6 +23,8 @@
     </div>
 
     <div class="copy">
+      <el-link :underline="false" href="https://vcc3.sahadev.tech/" style="color: red; margin-right: 10px;" class="animate__animated animate__headShake animate__infinite">
+        👉🏻 尝试拥有更多组件库的Vue3版本</el-link>
       <div>
         <el-alert title="遇到问题？" type="info">
           <el-link :underline="false" @click="help" style="font-size: 12px; margin-top: 5px;">点击我查看帮助文档</el-link>
@@ -68,7 +70,7 @@ import { splitInit } from "../libs/split-init";
 // 这个文件不可以进行懒加载，它会导致运行时不可点击的行为，具体原因未知
 import { MainPanelProvider } from "../libs/main-panel";
 import { initContainerForLine } from "@/utils/lineHelper";
-
+import 'animate.css';
 const keymaster = require('keymaster');
 
 export default {
@@ -405,6 +407,10 @@ export default {
   font-size: 14px;
   color: #000;
   margin: 0 2px;
+}
+
+:root {
+  --animate-duration: 1.5s;
 }
 
 .in-element {
