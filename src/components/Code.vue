@@ -4,9 +4,10 @@
     <CodeEditor v-if="codeDialogVisible" style="max-height: 65vh;" ref="codeEditor" :initCode="outputCode"
       mode="text/html"></CodeEditor>
     <div style="color: #666; font-size: 12px; text-align:center; margin: 5px;">使用代码前请确认相应的组件库已集成至项目</div>
-    <div style="text-aligin:center;">
+    <div style="text-align:center;">
       <el-row>
         <el-col :span="12">
+          输出形式：
           <el-radio-group v-model="outputMode">
             <el-radio label="vue">Vue</el-radio>
             <el-radio label="html">单页Html</el-radio>
@@ -79,7 +80,12 @@ export default {
       let blob = new Blob([this.outputCode], {
         type: "text/plain;charset=utf-8",
       });
-      saveAs(blob, "VueComponent.vue");
+
+      if (this.isVueMode) {
+        saveAs(blob, "VueComponent.vue");
+      } else {
+        saveAs(blob, "vcc.html");
+      }
     },
 
   },
