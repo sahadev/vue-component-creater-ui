@@ -129,9 +129,14 @@ export class MainPanelProvider {
     }
 
     saveJSCode(code) {
-        this.externalJS = code;
+        this.saveJSCodeOnly(code);
         this.codeGenerator.setExternalJS(code);
         this.reRender();
+    }
+
+    saveJSCodeOnly(code) {
+        this.externalJS = code || {};
+        return this;
     }
 
     /**

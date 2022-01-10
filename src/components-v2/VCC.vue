@@ -23,7 +23,8 @@
     </div>
 
     <div class="copy">
-      <el-link :underline="false" href="https://vcc3.sahadev.tech/" style="color: red; margin-right: 10px;" class="animate__animated animate__headShake animate__infinite">
+      <el-link :underline="false" href="https://vcc3.sahadev.tech/" style="color: red; margin-right: 10px;"
+        class="animate__animated animate__headShake animate__infinite">
         👉🏻 尝试拥有更多组件库的Vue3版本</el-link>
       <div>
         <el-alert title="遇到问题？" type="info">
@@ -54,7 +55,7 @@
       <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" :visible.sync="structureVisible"
         @codeRefresh="generateVueCode" @onLevelChange="onLevelChange">
       </code-structure>
-      <CodeEditor :codeDialogVisible.sync="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
+      <CodeEditor :codeDialogVisible.sync="jsDialogVisible" @saveJSCode="saveJSCode" ref="codeEditor"></CodeEditor>
       <VueEditor :vueDialogVisible.sync="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
     </div>
 
@@ -96,7 +97,10 @@ export default {
       iconCode: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-working-outline.svg"),
       iconClear: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/trash-outline.svg"),
 
-      viewMode: false
+      viewMode: false,
+
+      codeRawVueInfo: "",
+      JSCode: ""
     };
   },
   watch: {
@@ -111,8 +115,12 @@ export default {
       }
     },
     initCodeEntity(newVal) {
-      if (newVal) {
-        this.mainPanelProvider.render(newVal);
+      if (newVal.JSCode) {
+        this.mainPanelProvider.saveJSCode(this.convertLogicCode(newVal.JSCode));
+      }
+
+      if (newVal.codeStructure) {
+        this.mainPanelProvider.render(newVal.codeStructure);
       }
     }
   },
@@ -135,6 +143,17 @@ export default {
   updated() { },
   destoryed() { },
   methods: {
+    convertLogicCode(JSCode) {
+      try {
+          const JSCodeInfo = eval(`(function(){return ${JSCode.replace(/\s+/g, "")}})()`);
+          // 保留JS代码
+          this.JSCode = JSCode;
+          this.$refs.codeEditor.updateLogicCode(JSCode);
+          return JSCodeInfo;
+        } catch (e) { 
+          console.warn(`外部逻辑代码解析出错，解析的逻辑代码为: ${JSCode}, Error: ${e}`);
+        }
+    },
 
     initShortcut() {
       keymaster('⌘+z, ctrl+z', () => {
@@ -163,12 +182,23 @@ export default {
         if (this.$refs.codeStructure) {
           this.$refs.codeStructure.updateCode(codeRawVueInfo);
         }
-        this.$emit('updateCodeEntity', codeRawVueInfo);
+        this.codeRawVueInfo = codeRawVueInfo;
+
+        this.notifyParent();
       }).onNodeDeleted(() => {
         this.currentEditRawInfo = null;
       }).onSelectElement(rawInfo => {
         this.currentEditRawInfo = rawInfo;
-      }).render(this.initCodeEntity ? this.initCodeEntity : this.getFakeData());
+      }).saveJSCodeOnly(this.convertLogicCode(this.initCodeEntity.JSCode))
+      .render(this.initCodeEntity.codeStructure ? this.initCodeEntity.codeStructure : this.getFakeData());
+    },
+
+    // 通知父组件
+    notifyParent() {
+      this.$emit('updateCodeEntity', {
+        codeRawVueInfo: this.codeRawVueInfo,
+        JSCode: this.JSCode
+      });
     },
 
     // 指向将要插入哪个元素之前
@@ -238,8 +268,11 @@ export default {
       this.mainPanelProvider.undo();
     },
 
-    saveJSCode(code) {
+    saveJSCode({ JSCodeInfo: code, JSCode }) {
       this.mainPanelProvider.saveJSCode(code);
+      // 保留JS代码
+      this.JSCode = JSCode;
+      this.notifyParent();
     },
 
     codeParseSucess(vueCodeEntity) {

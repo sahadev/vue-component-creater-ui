@@ -83,9 +83,10 @@ export default {
   updated() { },
   destoryed() { },
   methods: {
-    // 在此自动生成
-    request() {
-      // 网络请求，可选
+    updateLogicCode(newCode) {
+      if (newCode) {
+        this.code = newCode;
+      }
     },
     handleClose() {
       this.$emit("update:codeDialogVisible", false);
@@ -93,11 +94,14 @@ export default {
     onSave() {
       const code = this.$refs.codeEditor.getEditorCode();
       // 去掉注释
-      const temp = code.replace(/.+\*\/\s*/gs, "");
+      const temp = code.replace(/.+\*\/\s*/gs, "").replace(/\s+/g, "");
       try {
         // 转换为对象
         const JSCodeInfo = eval(`(function(){return ${temp}})()`);
-        this.$emit("saveJSCode", JSCodeInfo);
+        this.$emit("saveJSCode", {
+          JSCodeInfo,
+          JSCode: temp
+        });
         this.handleClose();
         this.error = '';
       } catch (error) {
