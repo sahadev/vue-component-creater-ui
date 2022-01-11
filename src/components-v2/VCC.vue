@@ -76,7 +76,14 @@ const keymaster = require('keymaster');
 
 export default {
   name: "vcc",
-  props: ['initCodeEntity'],
+  props: {
+    initCodeEntity: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    }
+  },
   components: {
     RawComponents: () => import("../components/RawComponents"),
     ToolsBar: () => import("./ToolsBar"),
@@ -189,7 +196,7 @@ export default {
         this.currentEditRawInfo = null;
       }).onSelectElement(rawInfo => {
         this.currentEditRawInfo = rawInfo;
-      }).saveJSCodeOnly(this.convertLogicCode(this.initCodeEntity.JSCode))
+      }).saveJSCodeOnly(this.convertLogicCode(this.initCodeEntity.JSCode ? this.initCodeEntity.JSCode : ''))
       .render(this.initCodeEntity.codeStructure ? this.initCodeEntity.codeStructure : this.getFakeData());
     },
 
