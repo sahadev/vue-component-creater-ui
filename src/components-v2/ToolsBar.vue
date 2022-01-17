@@ -16,7 +16,7 @@
       </el-col>
       <el-col :span="3">
         <div style="display:inline-block;">
-          <el-link type="primary" @click="onEditModeChange">{{editMode ? 'View' : 'Edit'}}
+          <el-link :type="editMode? 'primary': 'danger'" @click="onEditModeChange">{{editMode ? 'View' : 'Edit'}}
             Mode</el-link>
         </div>
       </el-col>

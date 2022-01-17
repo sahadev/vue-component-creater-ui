@@ -130,7 +130,7 @@ export class MainPanelProvider {
 
     saveJSCode(code) {
         this.saveJSCodeOnly(code);
-        this.codeGenerator.setExternalJS(code);
+        this.codeGenerator && this.codeGenerator.setExternalJS(code);
         this.reRender();
     }
 
@@ -287,7 +287,12 @@ export class MainPanelProvider {
     enableEditMode() {
         const renderControlPanel = this.getControlPanelRoot();
         // 加一个延迟的作用是：给el-table这种绘制需要时间的组件留出充足的时间，否则会造成el-table渲染不到页面上
-        setTimeout(() => {
+        
+        if (this.enableDelayTask) {
+            clearTimeout(this.enableDelayTask);
+        }
+        
+        this.enableDelayTask = setTimeout(() => {
             // 这种方式可以禁用原节点所有的事件
             const elClone = renderControlPanel.cloneNode(true);
             renderControlPanel.parentNode.replaceChild(elClone, renderControlPanel);

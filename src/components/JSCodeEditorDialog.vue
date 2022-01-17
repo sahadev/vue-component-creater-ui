@@ -16,6 +16,9 @@
 import dedent from 'dedent'
 import CodeEditor from './CodeEditor.vue'
 
+import prettier from "prettier/standalone";
+import babel from "prettier/parser-babel";
+
 export default {
   props: ['codeDialogVisible'],
   components: {
@@ -85,7 +88,10 @@ export default {
   methods: {
     updateLogicCode(newCode) {
       if (newCode) {
-        this.code = newCode;
+        const pre = "const a = ";
+        this.code = prettier.format(pre + newCode, {
+          plugins: [babel],
+        }).replace(pre, "");
       }
     },
     handleClose() {

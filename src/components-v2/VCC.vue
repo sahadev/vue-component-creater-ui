@@ -123,7 +123,7 @@ export default {
     },
     initCodeEntity(newVal) {
       if (newVal.JSCode) {
-        this.mainPanelProvider.saveJSCode(this.convertLogicCode(newVal.JSCode));
+        this.mainPanelProvider.saveJSCodeOnly(this.convertLogicCode(newVal.JSCode));
       }
 
       if (newVal.codeStructure) {
@@ -141,6 +141,7 @@ export default {
   mounted() {
     Promise.all([import("../map/load")])
       .then(res => {
+        this.$emit("onLoadFinish");
         this.init();
       });
     splitInit();
@@ -155,7 +156,9 @@ export default {
           const JSCodeInfo = eval(`(function(){return ${JSCode.replace(/\s+/g, "")}})()`);
           // 保留JS代码
           this.JSCode = JSCode;
-          this.$refs.codeEditor.updateLogicCode(JSCode);
+          if (this.$refs.codeEditor) {
+            this.$refs.codeEditor.updateLogicCode(JSCode);
+          }
           return JSCodeInfo;
         } catch (e) { 
           console.warn(`外部逻辑代码解析出错，解析的逻辑代码为: ${JSCode}, Error: ${e}`);
