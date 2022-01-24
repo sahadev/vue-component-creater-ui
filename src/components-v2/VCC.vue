@@ -51,7 +51,7 @@
       <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" v-model="structureVisible"
         @reRender="render">
       </code-structure>
-      <CodeEditor v-model:codeDialogVisible="jsDialogVisible" @saveJSCode="saveJSCode"></CodeEditor>
+      <CodeEditor v-model:codeDialogVisible="jsDialogVisible" @saveJSCode="saveJSCode" ref="codeEditor"></CodeEditor>
       <VueEditor v-model:vueDialogVisible="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
     </div>
 
@@ -77,7 +77,14 @@ import keymaster from "keymaster"
 
 export default {
   name: "vcc",
-  props: ['initCodeEntity'],
+  props: {
+    initCodeEntity: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    }
+  },
   emits: ['updateCodeEntity'],
   components: {
     RawComponents: defineAsyncComponent(() => import("@/components/RawComponents.vue")),
@@ -99,7 +106,10 @@ export default {
       iconCode: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-working-outline.svg"),
       iconClear: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/trash-outline.svg"),
 
-      editMode: true
+      editMode: true,
+
+      codeRawVueInfo: "",
+      JSCode: ""
     };
   },
   watch: {
@@ -114,8 +124,12 @@ export default {
       }
     },
     initCodeEntity(newVal) {
-      if (newVal) {
-        this.mainPanelProvider.render(newVal);
+      if (newVal.JSCode) {
+        this.mainPanelProvider.saveJSCodeOnly(this.convertLogicCode(newVal.JSCode));
+      }
+
+      if (newVal.codeStructure) {
+        this.mainPanelProvider.render(newVal.codeStructure);
       }
     }
   },
@@ -129,6 +143,7 @@ export default {
   mounted() {
     Promise.all([import("../map/load")])
       .then(res => {
+        this.$emit("onLoadFinish");
         this.init();
       });
     splitInit();
@@ -138,6 +153,19 @@ export default {
   updated() { },
   destoryed() { },
   methods: {
+    convertLogicCode(JSCode) {
+      try {
+          const JSCodeInfo = eval(`(function(){return ${JSCode.replace(/\s+/g, "")}})()`);
+          // 保留JS代码
+          this.JSCode = JSCode;
+          if (this.$refs.codeEditor) {
+            this.$refs.codeEditor.updateLogicCode(JSCode);
+          }
+          return JSCodeInfo;
+        } catch (e) { 
+          console.warn(`外部逻辑代码解析出错，解析的逻辑代码为: ${JSCode}, Error: ${e}`);
+        }
+    },
 
     initShortcut() {
       keymaster('⌘+z, ctrl+z', () => {
@@ -173,12 +201,23 @@ export default {
         if (this.$refs.codeStructure) {
           this.$refs.codeStructure.updateCode(codeRawVueInfo);
         }
-        this.$emit('updateCodeEntity', codeRawVueInfo);
+        this.codeRawVueInfo = codeRawVueInfo;
+
+        this.notifyParent();
       }).onNodeDeleted(() => {
         this.currentEditRawInfo = null;
       }).onSelectElement(rawInfo => {
         this.currentEditRawInfo = rawInfo;
-      }).render(this.initCodeEntity ? this.initCodeEntity : this.getFakeData());
+      }).saveJSCodeOnly(this.convertLogicCode(this.initCodeEntity.JSCode ? this.initCodeEntity.JSCode : ''))
+      .render(this.initCodeEntity.codeStructure ? this.initCodeEntity.codeStructure : this.getFakeData());
+    },
+
+    // 通知父组件
+    notifyParent() {
+      this.$emit('updateCodeEntity', {
+        codeRawVueInfo: this.codeRawVueInfo,
+        JSCode: this.JSCode
+      });
     },
 
     // 指向将要插入哪个元素之前
@@ -247,8 +286,11 @@ export default {
       this.mainPanelProvider.undo();
     },
 
-    saveJSCode(code) {
+    saveJSCode({ JSCodeInfo: code, JSCode }) {
       this.mainPanelProvider.saveJSCode(code);
+      // 保留JS代码
+      this.JSCode = JSCode;
+      this.notifyParent();
     },
 
     /**
@@ -442,6 +484,10 @@ export default {
   font-size: 14px;
   color: #000;
   margin: 0 2px;
+}
+
+:root {
+  --animate-duration: 1.5s;
 }
 
 .in-element {

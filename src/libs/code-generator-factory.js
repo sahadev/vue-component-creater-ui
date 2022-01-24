@@ -33,7 +33,7 @@ export function createNewCodeGenerator() {
                     const kav = methodItem.split(":");
                     const key = kav[0];
                     // 这里获取的是原始data数据
-                    if (window.methodSourceMap[key]) {
+                    if (window.methodSourceMap && window.methodSourceMap[key]) {
                         return `${key}: ${window.methodSourceMap[key]}`;
                     } else {
                         return methodItem;
