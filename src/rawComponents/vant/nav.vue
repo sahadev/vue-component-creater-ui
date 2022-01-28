@@ -145,10 +145,8 @@ export default {
 }
 :v-deep(.van-submit-bar) {
   position: initial;
-}
-</style>
-
-<style>
+}</style>
+  <style>
 .van-action-bar {
   position: relative;
   padding-bottom: 0;
@@ -156,5 +154,4 @@ export default {
 
 .van-submit-bar {
   z-index: 0;
-}
-</style>
+}  </style>

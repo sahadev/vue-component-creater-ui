@@ -37,7 +37,7 @@
       <el-tooltip effect="dark" content="查看实时代码" placement="top-start">
         <img class="round-icon" :src="iconCode" alt="" @click="codeDialogVisible = true">
       </el-tooltip>
-      <el-popconfirm confirmButtonText="确认" cancelButtonText="点错了" icon="el-icon-info" iconColor="red"
+      <el-popconfirm confirmButtonText="确认" cancelButtonText="点错了" iconColor="red"
         title="点我将清空所有编辑的内容, 确认吗?" @confirm="clear">
         <template #reference>
           <img class="round-icon" :src="iconClear" alt="">
@@ -49,7 +49,7 @@
       <lc-code :rawCode="code" v-model:codeDialogVisible="codeDialogVisible">
       </lc-code>
       <code-structure @save="onSaveAttr" @remove="onRemove" ref="codeStructure" v-model="structureVisible"
-        @reRender="render">
+        @reRender="render" :initStructure="codeRawVueInfo">
       </code-structure>
       <CodeEditor v-model:codeDialogVisible="jsDialogVisible" @saveJSCode="saveJSCode" ref="codeEditor"></CodeEditor>
       <VueEditor v-model:vueDialogVisible="vueDialogVisible" @codeParseSucess="codeParseSucess"></VueEditor>
@@ -85,7 +85,7 @@ export default {
       }
     }
   },
-  emits: ['updateCodeEntity'],
+  emits: ['updateCodeEntity', 'onLoadFinish'],
   components: {
     RawComponents: defineAsyncComponent(() => import("@/components/RawComponents.vue")),
     ToolsBar: defineAsyncComponent(() => import("./ToolsBar")),
@@ -108,7 +108,7 @@ export default {
 
       editMode: true,
 
-      codeRawVueInfo: "",
+      codeRawVueInfo: null,
       JSCode: ""
     };
   },
@@ -135,7 +135,8 @@ export default {
   },
   computed: {
   },
-  beforeCreate() { },
+  beforeCreate() {
+  },
   created() {
     this.mainPanelProvider = new MainPanelProvider();
   },
@@ -155,16 +156,16 @@ export default {
   methods: {
     convertLogicCode(JSCode) {
       try {
-          const JSCodeInfo = eval(`(function(){return ${JSCode.replace(/\s+/g, "")}})()`);
-          // 保留JS代码
-          this.JSCode = JSCode;
-          if (this.$refs.codeEditor) {
-            this.$refs.codeEditor.updateLogicCode(JSCode);
-          }
-          return JSCodeInfo;
-        } catch (e) { 
-          console.warn(`外部逻辑代码解析出错，解析的逻辑代码为: ${JSCode}, Error: ${e}`);
+        const JSCodeInfo = eval(`(function(){return ${JSCode.replace(/\s+/g, "")}})()`);
+        // 保留JS代码
+        this.JSCode = JSCode;
+        if (this.$refs.codeEditor) {
+          this.$refs.codeEditor.updateLogicCode(JSCode);
         }
+        return JSCodeInfo;
+      } catch (e) {
+        console.warn(`外部逻辑代码解析出错，解析的逻辑代码为: ${JSCode}, Error: ${e}`);
+      }
     },
 
     initShortcut() {
@@ -209,7 +210,7 @@ export default {
       }).onSelectElement(rawInfo => {
         this.currentEditRawInfo = rawInfo;
       }).saveJSCodeOnly(this.convertLogicCode(this.initCodeEntity.JSCode ? this.initCodeEntity.JSCode : ''))
-      .render(this.initCodeEntity.codeStructure ? this.initCodeEntity.codeStructure : this.getFakeData());
+        .render(this.initCodeEntity.codeStructure ? this.initCodeEntity.codeStructure : this.getFakeData());
     },
 
     // 通知父组件

@@ -1,17 +1,13 @@
 import { createStore } from 'vuex'
 
-const store = createStore({
+export const store = createStore({
   state() {
     return {
-      count: 0,
       currentEditComp: null,
       renderCount: 0
     }
   },
   mutations: {
-    increment(state) {
-      state.count++
-    },
     storeCurrentEditComp(state, newComp) {
       state.currentEditComp = newComp;
     },
@@ -20,8 +16,3 @@ const store = createStore({
     }
   }
 })
-
-export default function loadStore(app) {
-  app.use(store);
-  return app;
-}

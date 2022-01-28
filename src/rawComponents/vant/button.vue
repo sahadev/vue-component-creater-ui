@@ -30,8 +30,7 @@
                       <van-cell title="单元格" value="内容" label="描述信息" lc_id="wCy+AFO6oA"></van-cell>
                   </van-cell>
               </van-cell-group>
-              <br>
-              <van-cell-group inset lc-mark lc_id="GDUu8grqyq">
+              <br lc_id="Bc72f94saa"/>              <van-cell-group inset lc-mark lc_id="GDUu8grqyq">
                   <van-cell title="单元格" value="内容" lc_id="R/yvDgWEzu">
                       <van-cell title="单元格" value="内容" label="描述信息" lc_id="nH8Z1dpWkB"></van-cell>
                   </van-cell>

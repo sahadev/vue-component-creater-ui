@@ -36,23 +36,22 @@
           </div>
           <div lc_id="U4YG27qq4s">
               <div class="demonstration-element" lc_id="tI02wMGVyX">NavMenu 导航菜单</div>
-              <el-menu lc-mark :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" lc_id="m4VKXvGyLa">
-                  <el-menu-item index="1" lc_id="5Rt63GCCjB">处理中心</el-menu-item>
-                  <el-menu-item index="4" lc_id="TDeTJ2Uw0j">
-                      <a target="_blank" lc_id="zY0ygk/pmh">订单管理</a>
-                  </el-menu-item>
-                  <el-submenu index="2" lc_id="9HfPjJr/VE">
-                      <template #title lc_id="dvfriNTe67">我的工作台</template>
-                      <el-menu-item index="2-1" lc_id="6fDR/35Dcb">选项1</el-menu-item>
-                      <el-menu-item index="2-2" lc_id="inF9AUVbOa">选项2</el-menu-item>
-                      <el-menu-item index="2-3" lc_id="ox0EdtlU3E">选项3</el-menu-item>
-                      <el-submenu index="2-4" lc_id="QjzqxCifDT">
-                          <template #title lc_id="NIvxdQ77F4">选项4</template>
-                          <el-menu-item index="2-4-1" lc_id="mpWID+cqPv">选项1</el-menu-item>
-                          <el-menu-item index="2-4-2" lc_id="zdDrVca5k3">选项2</el-menu-item>
-                          <el-menu-item index="2-4-3" lc_id="BD0q7ZSrK5">选项3</el-menu-item>
-                      </el-submenu>
-                  </el-submenu>
+              <el-menu lc-mark :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" @select="handleSelect" lc_id="ihtDhkfBO3">
+                  <el-menu-item index="1" lc_id="VejVEahyRO">Processing Center</el-menu-item>
+                  <el-sub-menu index="2" lc_id="b9dDZDEyzu">
+                      <template #title lc_id="EOLCWq1ax8">Workspace</template>
+                      <el-menu-item index="2-1" lc_id="waSAqnTnUK">item one</el-menu-item>
+                      <el-menu-item index="2-2" lc_id="x7OA9OoX9M">item two</el-menu-item>
+                      <el-menu-item index="2-3" lc_id="XoUxBjhh8r">item three</el-menu-item>
+                      <el-sub-menu index="2-4" lc_id="kVYGkptqy3">
+                          <template #title lc_id="TZAoib4i41">item four</template>
+                          <el-menu-item index="2-4-1" lc_id="KPPi+2aCzR">item one</el-menu-item>
+                          <el-menu-item index="2-4-2" lc_id="9HsVuJIBXT">item two</el-menu-item>
+                          <el-menu-item index="2-4-3" lc_id="pb1fYeVfpT">item three</el-menu-item>
+                      </el-sub-menu>
+                  </el-sub-menu>
+                  <el-menu-item index="3" disabled lc_id="OYs/KISq4y">Info</el-menu-item>
+                  <el-menu-item index="4" lc_id="POtcpYxQZ9">Orders</el-menu-item>
               </el-menu>
           </div>
           <div lc_id="Hr+gUUgFTD">
@@ -82,9 +81,7 @@
           <div lc_id="q1K7UjfQRh">
               <div class="demonstration-element" lc_id="QRo+LiBcqY">Dropdown 下拉菜单</div>
               <el-dropdown lc-mark lc_id="eEugqtt2Ed">
-                  <span class="el-dropdown-link" lc_id="T9RXOuEAsg">
-下拉菜单                      <i class="el-icon-arrow-down el-icon--right" lc_id="CptOnFiM0H"></i>
-                  </span>
+                  <span class="el-dropdown-link" lc_id="T9RXOuEAsg">下拉菜单</span>
                   <template #dropdown lc_id="Jgi+BtUZkP">
                       <el-dropdown-menu lc_id="fyNKB1+0hw">
                           <el-dropdown-item lc_id="nCNWPghXw7">黄金糕</el-dropdown-item>
@@ -252,10 +249,10 @@ export default {
     format(percentage) {
       return percentage === 100 ? "满" : `${percentage}%`;
     },
-    handleNodeClick() {},
-    handleSelect() {},
-    handleClick() {},
-    goBack2() {},
+    handleNodeClick() { },
+    handleSelect() { },
+    handleClick() { },
+    goBack2() { },
     handleChange3(val) {
       console.log(val);
     },

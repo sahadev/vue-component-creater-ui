@@ -71,13 +71,15 @@ export class MainPanelProvider {
         if (this.editMode) {
             // 渲染当前代码
             const readyForMoutedElement = this.createMountedElement();
-            createBaseAppAsync(componentOptions).then(app => app.mount(readyForMoutedElement));
+            createBaseAppAsync(componentOptions).then(app => {
+                app.mount(readyForMoutedElement)
+                // 开启编辑模式
+                this.enableEditMode();
+            });
             
             // 拍平数据结构
             this.flatDataStructure(rawDataStructure);
     
-            // 开启编辑模式
-            this.enableEditMode();
         } else {
             // 渲染当前代码
             createBaseAppAsync(componentOptions).then(app => app.mount(this.mountedEle));

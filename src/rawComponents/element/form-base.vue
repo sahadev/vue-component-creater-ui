@@ -67,11 +67,6 @@
                       </template>
                   </el-upload>
               </div>
-              <div lc-mark style="max-width:400px;font-size:12px;" lc_id="KzLuue+H7z">
-用户头像上传:                  <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" lc_id="1eXpUahgcu">
-                      <img v-if="imageUrl" :src="imageUrl" class="avatar" lc_id="6Ax8qNsE2Z"/>                      <i v-else class="el-icon-plus avatar-uploader-icon" lc_id="lqybUMnnYf"></i>
-                  </el-upload>
-              </div>
               <div lc-mark style="max-width:400px;font-size:12px;" lc_id="NwHRrU2JEM">
 图片列表缩略图:                  <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" list-type="picture" lc_id="+hJ7DSkPgT">
                       <el-button size="small" type="primary" lc_id="y3uZKsl9b/">点击上传</el-button>

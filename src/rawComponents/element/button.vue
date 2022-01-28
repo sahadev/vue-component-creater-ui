@@ -35,15 +35,8 @@
           <div lc_id="fiJ0b+a2C7">
               <div class="demonstration-element" lc_id="NadQOxXAQD">Button 按钮组</div>
               <el-button-group lc-mark lc_id="zPylslsF8c">
-                  <el-button type="primary" icon="el-icon-arrow-left" lc_id="YcgENB34wv">上一页</el-button>
-                  <el-button type="primary" lc_id="7ZtWxMoRg5">
-下一页                      <i class="el-icon-arrow-right el-icon--right" lc_id="nhJ1UtAuzb"></i>
-                  </el-button>
-              </el-button-group>
-              <el-button-group lc-mark lc_id="8NQc5ZELeT">
-                  <el-button type="primary" icon="el-icon-edit" lc_id="rBWkIADCIC"></el-button>
-                  <el-button type="primary" icon="el-icon-share" lc_id="aZ8b7GZRtx"></el-button>
-                  <el-button type="primary" icon="el-icon-delete" lc_id="6htBQsITGM"></el-button>
+                  <el-button type="primary" lc_id="YcgENB34wv">上一页</el-button>
+                  <el-button type="primary" lc_id="7ZtWxMoRg5">下一页</el-button>
               </el-button-group>
           </div>
           <div lc_id="x1oSPpUpOu">

@@ -1,5 +1,5 @@
 <template>
-  <vcc :initCodeEntity="codeInfoEntity" @updateCodeEntity="onCodeUpdate"></vcc>
+  <vcc :initCodeEntity="codeInfoEntity" @updateCodeEntity="onCodeUpdate" @onLoadFinish="onLoadFinish"></vcc>
 </template>
 
 <script>
@@ -39,6 +39,9 @@ export default {
       // 编辑后新的代码结构
       // codeRawVueInfo为template对象表示结构
       // JSCode为显式输入的JS逻辑
+    },
+    onLoadFinish(){
+      
     }
   }
 }

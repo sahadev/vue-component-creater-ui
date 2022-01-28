@@ -1,6 +1,5 @@
 <template>
-  <el-dialog title="JS逻辑编辑" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose"
-    :center=true>
+  <el-dialog title="JS逻辑编辑" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
     <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/javascript"></CodeEditor>
 
     <div style="padding: 10px; display:flex;justify-content: flex-end;align-items: center;">
@@ -11,7 +10,12 @@
 
       <div style="margin-left: 5px;">
         <el-link href="https://vcc.sahadev.tech/doc/#/improve/logic?id=%e9%80%bb%e8%be%91%e6%a8%a1%e6%9d%bf"
-          target="_blank" icon="el-icon-question">帮助与说明</el-link>
+          target="_blank">
+          <el-icon>
+            <question-filled />
+          </el-icon>
+          帮助与说明
+        </el-link>
         <div style="color: #6c6c6c; font-size:12px; margin-top:5px;">Tips: 建议看一下使用说明</div>
       </div>
     </div>

@@ -7,13 +7,18 @@ import {
   Delete,
   Refresh,
   Minus,
-} from "@element-plus/icons";
+} from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
 
 import APP from "./App.vue";
 import loadCompontents from "@/libs/UIComponentInit.js";
-import loadStore from "@/libs/store.js";
 
+/**
+ * 创建实例基础方法
+ * @param {*} renderComponent 
+ * @param {*} loadFinished 
+ * @returns 
+ */
 function loadTemplate(renderComponent, loadFinished = () => {}) {
   const app = createApp(renderComponent);
   app.use(ElementPlus);
@@ -27,10 +32,20 @@ function loadTemplate(renderComponent, loadFinished = () => {}) {
   return app;
 }
 
+/**
+ * 同步创建实例
+ * @param {*} renderComponent 
+ * @returns 
+ */
 function createBaseAppSync(renderComponent = {}) {
   return loadTemplate(renderComponent);
 }
 
+/**
+ * 异步创建实例
+ * @param {*} renderComponent 
+ * @returns 
+ */
 function createBaseAppAsync(renderComponent = {}) {
   return new Promise((resolve, reject) => {
     loadTemplate(renderComponent, (app) => {
@@ -43,12 +58,12 @@ const app = createBaseAppSync(APP);
 
 app.component("question-filled", QuestionFilled);
 app.component("circle-plus", CirclePlus);
-app.component("refresh", Refresh);
-app.component("delete", Delete);
+app.component("l-refresh", Refresh);
+app.component("l-delete", Delete);
 app.component("document-copy", DocumentCopy);
-app.component("minus", Minus);
+app.component("l-minus", Minus);
 
-loadStore(app).mount("#app");
+app.mount("#app");
 
 // 内部需要同样配置的全局Vue
 self.createBaseAppAsync = createBaseAppAsync;

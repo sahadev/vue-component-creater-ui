@@ -1,8 +1,8 @@
 <template>
   <el-drawer v-model="drawer" :with-header="false" size="70%" direction="btt">
-    <div class="container">
+    <div class="cs-container">
 
-      <div style="text-align: center;">组件结构检视图
+      <div class="center">组件结构检视图
         <br>
         <span style="font-size:12px;">Components
           Structure</span>
@@ -28,12 +28,13 @@
 </template>
 
 <script>
-import { isObject, getRawComponentKey, getRawComponentContent } from "@/utils/common";
+import { getRawComponentContent } from "@/utils/common";
 import nestedDraggable from './nested.vue'
 import { defineAsyncComponent } from 'vue'
+import { store as _store } from "@/libs/store.js";
 
 export default {
-  props: ['visible'],
+  props: ['visible', 'initStructure'],
   emits: ['onLevelChange', 'remove', 'save', 'update:visible', 'reRender'],
   components: {
     AttributeInput: defineAsyncComponent(() => import("@/components/AttributeInput.vue")),
@@ -50,6 +51,7 @@ export default {
   created() { },
   beforeMount() { },
   mounted() {
+    this.updateCode(this.initStructure);
   },
   beforeUpdate() { },
   updated() { },
@@ -70,15 +72,17 @@ export default {
     },
 
     updateCode(codeRawInfo) {
-      this._codeRawInfo = codeRawInfo;
-      const content = getRawComponentContent(codeRawInfo);
-      const children = content.__children;
-      this.treeData = children;
+      if (codeRawInfo) {
+        this._codeRawInfo = codeRawInfo;
+        const content = getRawComponentContent(codeRawInfo);
+        const children = content.__children;
+        this.treeData = children;
+      }
     },
 
   },
   watch: {
-    renderCount(){
+    renderCount() {
       // 这里利用了vuedraggable v-model的特性，它会更改对象本身的引用
       this.$emit('reRender', this._codeRawInfo);
     }
@@ -93,16 +97,16 @@ export default {
       }
     },
 
-    renderCount(){
-      return this.$store.state.renderCount;
+    renderCount() {
+      return _store.state.renderCount;
     },
 
     canInitShortcut() {
       return this.currentEditRawInfo !== null && this.drawer;
     },
     currentEditRawInfo() {
-      if (this.$store.state.currentEditComp) {
-        const vccData = this.$store.state.currentEditComp.vccData;
+      if (_store.state.currentEditComp) {
+        const vccData = _store.state.currentEditComp.vccData;
         return window.tree[vccData.lc_id];
       } else {
         return null;
@@ -116,15 +120,16 @@ export default {
 <style scoped>
 /*  在此自动生成 */
 
-center {
+.center {
   padding: 20px;
+  text-align: center;
 }
 
 :v-deep(.el-drawer__body) {
   height: 100%;
 }
 
-.container {
+.cs-container {
   height: 100%;
   display: flex;
   flex-direction: column;

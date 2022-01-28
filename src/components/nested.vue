@@ -1,10 +1,10 @@
 <template>
   <draggable class="dragArea" tag="ul" :list="data" @start="onStartDrag" @choose="onClick" :group="{ name: 'g1' }"
-    @end="onEndDrag">
+    :item-key="getItemKey" @end="onEndDrag">
     <template #item="{ element }">
       <li class="itemArea">
         <p>{{ getRawComponentKey(element) }}</p>
-        <nested-draggable :data="getRawComponentContent(element).__children" />
+        <nested-draggable :data="getChild(element)" />
       </li>
     </template>
   </draggable>
@@ -12,6 +12,8 @@
 <script>
 import draggable from "vuedraggable";
 import { getRawComponentKey, getRawComponentContent } from "@/utils/common";
+
+import { store as _store } from "@/libs/store.js";
 
 export default {
   props: {
@@ -28,25 +30,37 @@ export default {
   computed: {
   },
   methods: {
+    getItemKey(item) {
+      return getRawComponentContent(item).lc_id;
+    },
+    getChild(item) {
+      const content = getRawComponentContent(item);
+      // 适用于没有子节点的节点，例如div，通过这样的操作后可以往一个空的div中拖入内容
+      if (!content.__children) {
+        content.__children = [];
+      }
+      return content.__children;
+    },
+
     getRawComponentKey,
     getRawComponentContent,
     onStartDrag(event) {
       event.item.classList.add("is-dragging");
     },
     onClick(event) {
-      if (this.$store.state.currentEditComp) {
-        this.$store.state.currentEditComp.item.classList.remove("is-dragging");
+      if (_store.state.currentEditComp) {
+        _store.state.currentEditComp.item.classList.remove("is-dragging");
       }
 
       event.item.classList.add("is-dragging");
 
       event.vccData = getRawComponentContent(this.data[event.oldIndex]);
-      this.$store.commit('storeCurrentEditComp', event);
+      _store.commit('storeCurrentEditComp', event);
     },
     onEndDrag(event) {
       event.item.classList.remove("is-dragging");
 
-      this.$store.commit('onDragEnd');
+      _store.commit('onDragEnd');
     }
   },
 

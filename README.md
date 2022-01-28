@@ -106,7 +106,7 @@ npm i
 npm run dev
 ```
 
-运行完成后，就可以访问[http://localhost:8008/](http://localhost:8008/)预览效果了.
+运行完成后，就可以访问[http://localhost:9818/](http://localhost:9818/)预览效果了.
 
 ## 使用介绍
 

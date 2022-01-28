@@ -9,10 +9,10 @@
   ],
   "main": "./dist/vcc.umd.min.js",
   "scripts": {
-    "dev": "vite --port 8008",
-    "serve": "vite --port 8008",
+    "dev": "vite --port 9818",
+    "serve": "vite --port 9818",
     "build:release": "vite build --base=https://static.imonkey.xueersi.com/vcc3/",
-    "build": "vue-cli-service build --report --target lib --name vcc './src/components-v2/VCC.vue' && node ./src/script/distClear.js",
+    "build": "vue-cli-service build --report --target lib --name vcc './src/components-v2/VCC.vue'",
     "build:win": "vue-cli-service build --report --target lib --name vcc ./src/components-v2/VCC.vue && node ./src/script/distClear.js",
     "compileAndbuild:dev": "npm run compileComponent && vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -22,7 +22,7 @@
     "debugParser": "node ./src/test/parserJsCode.js"
   },
   "dependencies": {
-    "@element-plus/icons": "0.0.11",
+    "@element-plus/icons-vue": "^0.2.6",
     "@vitejs/plugin-vue": "^1.10.0",
     "@vue/compiler-sfc": "^3.2.22",
     "ant-design-vue": "^3.0.0-alpha.14",

@@ -14,23 +14,23 @@
             <el-input v-model="item.key" :placeholder="'key' + index" class="half-width"></el-input>
             <div class="split">:</div>
             <el-input v-model="item.value" :placeholder="'value' + index" class="half-width" style="flex-grow: 3;"></el-input>
-            <el-icon @click="deleteItem(index)" style="margin-left: 5px;"><minus /></el-icon>
+            <el-icon @click="deleteItem(index)" style="margin-left: 5px;"><l-minus /></el-icon>
           </div>
 
           <div class="quick-add-root">
             快速增加一些属性:
             <div style="margin-top: 5px;">
               <transition name="el-zoom-in-center">
-                <el-tag v-if="attributeKeys.indexOf('class') == -1" size="mini" type="success" @click="onClassClick"
+                <el-tag v-if="attributeKeys.indexOf('class') == -1" size="small" type="success" @click="onClassClick"
                   effect="dark">Class
                 </el-tag>
               </transition>
               <transition name="el-zoom-in-center">
-                <el-tag v-if="attributeKeys.indexOf('@click') == -1" size="mini" type="success" @click="onEventClick"
+                <el-tag v-if="attributeKeys.indexOf('@click') == -1" size="small" type="success" @click="onEventClick"
                   effect="dark">点击事件</el-tag>
               </transition>
               <transition name="el-zoom-in-center">
-                <el-tag v-if="!attributeKeys.includes('__text__')" size="mini" type="success" @click="onTextClick"
+                <el-tag v-if="!attributeKeys.includes('__text__')" size="small" type="success" @click="onTextClick"
                   effect="dark">文本内容</el-tag>
               </transition>
             </div>
@@ -52,12 +52,12 @@
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="保存属性 ctrl+s" placement="bottom">
         <el-button type="success" class="center" @click="save" circle>
-          <el-icon><refresh /></el-icon>
+          <el-icon><l-refresh /></el-icon>
         </el-button>
       </el-tooltip>
       <el-tooltip v-if="enableRemoveButton" class="item" effect="dark" content="移除该组件 ctrl+d" placement="bottom">
         <el-button type="danger" class="center" @click="remove" circle>
-          <el-icon><delete /></el-icon>
+          <el-icon><l-delete /></el-icon>
         </el-button>
       </el-tooltip>
       <el-tooltip v-if="enableBroButton" class="item" effect="dark" content="复制一个兄弟组件 ctrl+c" placement="bottom">
@@ -77,6 +77,7 @@
 import { getRawComponentKey, getRawComponentContent } from "@/utils/common";
 import { brotherEleEnum, copyBroCode } from "@/libs/bro-ele-config";
 import keymaster from "keymaster"
+import { store as _store } from "@/libs/store.js";
 
 export default {
   props: ['__rawVueInfo__', 'enableRemoveButton', 'shortcutInitMode'],// __rawVueInfo__为当前编辑的原始代码对象, shortcutInitMode快捷键的初始化方式
@@ -197,7 +198,7 @@ export default {
     },
     copyBro() {
       copyBroCode(this.__rawVueInfo__);
-      this.$store.commit('onDragEnd');
+      _store.commit('onDragEnd');
     },
     onShow() {
       // 这种方式适用于常规模式下的初始化，因为这个实例初始化后不会被销毁，一直常驻内存。但又不能受到其它实例销毁时的影响，所以需要明确的再次初始化。

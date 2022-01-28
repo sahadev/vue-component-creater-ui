@@ -4,7 +4,7 @@
     <nav style="display:flex;">
       <div :index="index + ''" v-for="(item, index) in iconArray" @click="onSelectElement(index)" :key="item.icon"
         :class="{'active':currentIndex === index}" class="main-icon-container">
-        <img v-if="item.enable" :src="item.icon" class="icon">
+        <img v-if="item.enable" :src="item.icon" class="l-icon">
         <el-tooltip v-else class="item" effect="dark" content="暂未开放，敬请期待" placement="right">
           <img :src="item.icon" class="icon" style="width: 34px;height: 34px;">
         </el-tooltip>
@@ -23,11 +23,11 @@
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item icon="el-icon-circle-check">基础组件数: {{ componentUnitNum }}
+                <el-dropdown-item>基础组件数: {{ componentUnitNum }}
                 </el-dropdown-item>
-                <el-dropdown-item icon="el-icon-document" command="lcg">LCG平台</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-document" command="help">说明文档</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-chat-line-round" command="chat">在线沟通</el-dropdown-item>
+                <el-dropdown-item command="lcg">LCG平台</el-dropdown-item>
+                <el-dropdown-item command="help">说明文档</el-dropdown-item>
+                <el-dropdown-item command="chat">在线沟通</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -38,7 +38,7 @@
     <nav v-if="currentSelectBrand.titleArray && currentSelectBrand.titleArray.length > 0">
       <div style="margin-bottom:10px;text-align:center;">
         <div style="padding:5px;font-size:12px;color:grey;">快速查找需要的</div>
-        <el-autocomplete class="inline-input" v-model="componentSearch" :fetch-suggestions="querySearch" size="mini"
+        <el-autocomplete class="inline-input" v-model="componentSearch" :fetch-suggestions="querySearch" size="small"
           placeholder="请输入..." @select="handleSelect"></el-autocomplete>
       </div>
       <div class="dismiss-scroll">
@@ -249,7 +249,7 @@ nav {
   }
 }
 
-.icon {
+.l-icon {
   width: 34px;
   height: 34px;
   border-radius: 5px;
