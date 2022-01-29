@@ -1,5 +1,5 @@
 {
-  "name": "lcg-vcc",
+  "name": "lcg-vcc3",
   "description": "Low Code Generator -> Vue Component Creater",
   "version": "0.5.3",
   "private": false,
@@ -7,13 +7,13 @@
     "low-code",
     "editor"
   ],
-  "main": "./dist/vcc.umd.min.js",
+  "main": "./dist/vcc3.umd.min.js",
   "scripts": {
     "dev": "vite --port 9818",
     "serve": "vite --port 9818",
     "build:release": "vite build --base=https://static.imonkey.xueersi.com/vcc3/",
-    "build": "vue-cli-service build --report --target lib --name vcc './src/components-v2/VCC.vue'",
-    "build:win": "vue-cli-service build --report --target lib --name vcc ./src/components-v2/VCC.vue && node ./src/script/distClear.js",
+    "build": "vue-cli-service build --report --target lib --name vcc3 './src/components-v2/VCC.vue'",
+    "build:win": "vue-cli-service build --report --target lib --name vcc3 ./src/components-v2/VCC.vue && node ./src/script/distClear.js",
     "compileAndbuild:dev": "npm run compileComponent && vue-cli-service build",
     "lint": "vue-cli-service lint",
     "build:prod": "vue-cli-service build --mode production",
