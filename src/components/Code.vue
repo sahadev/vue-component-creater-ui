@@ -6,20 +6,26 @@
     <div style="color: #666; font-size: 12px; text-align:center; margin: 5px;">使用代码前请确认相应的组件库已集成至项目</div>
     <div style="text-align:center;">
       <el-row>
-        <el-col :span="12">
+        <el-col :span="10">
           输出形式：
           <el-radio-group v-model="outputMode">
             <el-radio label="vue">Vue</el-radio>
             <el-radio label="html">单页Html</el-radio>
           </el-radio-group>
+
         </el-col>
-        <el-col :span="12">
+        <el-col :span="14" style="display: flex; align-items: center; justify-content: center;">
           <el-tooltip effect="dark" content="拷贝" placement="left">
             <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
           </el-tooltip>
           <el-tooltip effect="dark" content="下载" placement="right">
             <img class="round-icon" :src="iconDownload" alt="" @click="download">
           </el-tooltip>
+          <div style="display: inline-block;margin-left: 10px;">
+            <el-button size="small" type="danger" :loading="loading" @click="release">
+              一键部署至VCC静态页面托管服务</el-button>
+            <div v-if="accessUrl">部署成功：<a :href="accessUrl" target="_blank">{{accessUrl}}</a></div>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -36,6 +42,7 @@ import { saveAs } from "file-saver";
 
 import CodeEditor from './CodeEditor.vue'
 import singleIndexOutput from '../libs/singleIndexOutput.js';
+import { createUniqueId } from '@/utils/common';
 
 export default {
   props: ['rawCode', 'codeDialogVisible'],
@@ -49,6 +56,8 @@ export default {
       outputMode: "vue",
       iconCopy: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/copy-outline.svg"),
       iconDownload: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-download-outline.svg"),
+      loading: false,
+      accessUrl: ''
     };
   },
   beforeCreate() { },
@@ -59,9 +68,15 @@ export default {
   updated() { },
   destoryed() { },
   methods: {
-    // 在此自动生成
-    request() {
-      // 网络请求，可选
+    release() {
+      this.loading = true;
+      axios.post('https://apis.sahadev.tech/v1/file/upload', { "id": `index${createUniqueId()}`, "content": this.singleIndex }).then(res => {
+        this.accessUrl = res.data.data;
+        this.loading = false;
+      }).catch(err => {
+        this.loading = false;
+        this.$message.error('发布失败，可能服务暂时不可用.');
+      });
     },
     handleClose() {
       this.$emit("update:codeDialogVisible", false);
