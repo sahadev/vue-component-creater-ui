@@ -1,27 +1,39 @@
 <template>
   <el-dialog title="代码预览" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
     <!-- 这里加v-if是因为CodeEditor内部不支持watch数据监测 -->
-    <CodeEditor v-if="codeDialogVisible" style="max-height: 65vh;" ref="codeEditor" :initCode="outputCode"
+    <CodeEditor v-if="codeDialogVisible" style="max-height: 55vh;" ref="codeEditor" :initCode="outputCode"
       mode="text/html"></CodeEditor>
     <div style="color: #666; font-size: 12px; text-align:center; margin: 5px;">使用代码前请确认相应的组件库已集成至项目</div>
-    <div style="text-align:center;">
+    <div style="text-align:left;">
       <el-row>
-        <el-col :span="10">
+        <el-col :span="6">
           输出形式：
-          <el-radio-group v-model="outputMode">
+          <el-radio-group v-model="outputMode" style="display: flex; flex-direction: column;">
             <el-radio label="vue">Vue</el-radio>
             <el-radio label="html">单页Html</el-radio>
           </el-radio-group>
-
         </el-col>
-        <el-col :span="14" style="display: flex; align-items: center; justify-content: center;">
-          <el-tooltip effect="dark" content="拷贝" placement="left">
-            <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
-          </el-tooltip>
-          <el-tooltip effect="dark" content="下载" placement="right">
-            <img class="round-icon" :src="iconDownload" alt="" @click="download">
-          </el-tooltip>
-          <div style="display: inline-block;margin-left: 10px;">
+
+        <el-col :span="6" v-if="outputMode === 'html'">
+          选择所使用的组件库：
+          <el-checkbox-group v-model="checkList" style="display: flex; flex-direction: column;">
+            <el-checkbox label="ele">Element UI</el-checkbox>
+            <el-checkbox label="antd">Ant Design</el-checkbox>
+            <el-checkbox label="vant">Vant</el-checkbox>
+          </el-checkbox-group>
+        </el-col>
+        <el-col :span="10" style="display: flex; flex-direction: column;">
+          代码获取方式：
+          <div style="margin-top: 10px;">
+            <el-tooltip effect="dark" content="拷贝" placement="left">
+              <img class="round-icon" :src="iconCopy" alt="" @click="copyCheck">
+            </el-tooltip>
+            <el-tooltip effect="dark" content="下载" placement="right">
+              <img class="round-icon" :src="iconDownload" alt="" @click="download">
+            </el-tooltip>
+          </div>
+          <div style="margin-top: 10px;" v-if="outputMode === 'html'">
+            <el-input v-model="fileName" placeholder="部署文件名" style="width: 150px; margin-right: 10px;" size="small"></el-input>
             <el-button size="small" type="danger" :loading="loading" @click="release">
               一键部署至VCC静态页面托管服务</el-button>
             <div v-if="accessUrl">部署成功：<a :href="accessUrl" target="_blank">{{accessUrl}}</a></div>
@@ -57,7 +69,9 @@ export default {
       iconCopy: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/copy-outline.svg"),
       iconDownload: ("https://static.imonkey.xueersi.com/download/vcc-resource/icon/code-download-outline.svg"),
       loading: false,
-      accessUrl: ''
+      accessUrl: '',
+      fileName: '',
+      checkList: ['ele']
     };
   },
   beforeCreate() { },
@@ -70,7 +84,7 @@ export default {
   methods: {
     release() {
       this.loading = true;
-      axios.post('https://apis.sahadev.tech/v1/file/upload', { "id": `index${createUniqueId()}`, "content": this.singleIndex }).then(res => {
+      axios.post('https://apis.sahadev.tech/v1/file/upload', { "id": `index${this.fileName ? this.fileName : createUniqueId()}`, "content": this.singleIndex }).then(res => {
         this.accessUrl = res.data.data;
         this.loading = false;
       }).catch(err => {
