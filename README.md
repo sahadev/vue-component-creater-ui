@@ -31,6 +31,9 @@ npm run dev
 [【拖拽式 Vue 组件代码生成平台(LCG)介绍视频-哔哩哔哩】https://b23.tv/FInuZ8](https://b23.tv/FInuZ8)
 [【LCG 近期功能更新介绍-哔哩哔哩】https://b23.tv/SAHwVq](https://b23.tv/SAHwVq)
 
+### 功能更新日志
+- 2022年03月16日 支持生成单页Html，支持Vue2以及Vue3，并支持一键部署至VCC服务器。
+
 ## 贡献
 
 1. Fork 仓库
