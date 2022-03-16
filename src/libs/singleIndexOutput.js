@@ -1,39 +1,105 @@
-import { parseComponent } from 'vue-template-compiler/browser';
+import { parseComponent } from "vue-template-compiler/browser";
+import ejs from "ejs";
 
-const outputVue2Template = `<!DOCTYPE html>
+const outputVueTemplate = `
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>VCC预览</title>
-  <!-- import CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-  <style stype="text/css">#styleTemplate</style>
+  <title>页面预览</title>
+  <style stype="text/css">
+    <%= style %>
+  </style>
+  <% for(var i = 0; i < cssLibs.length; ++i) { %>
+  <link href="<%= cssLibs[i] %>" rel="stylesheet"><% } %>
 </head>
 <body>
   <div id="app">
-    #templateHolder
+    <%- templateHolder %>
   </div>
 </body>
-  <!-- import Vue before Element -->
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-  <!-- import JavaScript -->
-  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script>
-    new Vue(#logicHolder).$mount("#app");
-  </script>
-</html>`
+<% for(var i = 0; i < scriptLibs.length; ++i) { %>
+<script src="<%= scriptLibs[i] %>"></script><% } %>
+<script>
 
-export default function (vueCode) {
+  <% if(vue3) {%>Vue.createApp(<%-logicHolder%>)<% for(var i = 0; i < vue3UseLib.length; ++i) { %>
+      .use(<%= vue3UseLib[i] %>)<%}%>
+      .mount("#app"); %>
+  <% } else {%>new Vue(<%- logicHolder %>).$mount("#app")<%}%>
+</script>
+</html>`;
+
+const libAddressMap = {
+  vue: {
+    js: ["https://cdn.bootcdn.net/ajax/libs/vue/3.2.31/vue.global.min.js"],
+    css: "",
+  },
+  ele: {
+    js: ["https://cdn.bootcdn.net/ajax/libs/element-plus/2.1.0/index.full.min.js"],
+    css: "https://cdn.bootcdn.net/ajax/libs/element-plus/2.1.0/theme-chalk/index.min.css",
+    libName: "ElementPlus",
+  },
+  antd: {
+    js: [
+      "https://cdn.bootcdn.net/ajax/libs/dayjs/1.10.8/dayjs.min.js",
+      "https://cdn.bootcdn.net/ajax/libs/ant-design-vue/3.0.0-alpha.14/antd.min.js",
+    ],
+    css: "https://cdn.bootcdn.net/ajax/libs/ant-design-vue/3.0.0-alpha.14/antd.min.css",
+    libName: "antd",
+  },
+  vant: {
+    js: ["https://cdn.bootcdn.net/ajax/libs/vant/3.3.7/vant.min.js"],
+    css: "https://cdn.bootcdn.net/ajax/libs/vant/3.3.7/index.min.css",
+    libName: "vant",
+  },
+};
+
+export default function (vueCode, dependenciesLibs, vue3 = true) {
   const { template, script, styles, customBlocks } = parseComponent(vueCode);
 
   let newScript = script.content.replace(/\s*export default\s*/, "");
 
-  let output = outputVue2Template;
+  const tempDependenciesLibs = dependenciesLibs.slice();
+  const tempLibAddressMap = vue3 ? libAddressMap: libAddressMapForVue2
 
-  output = output.replace("#templateHolder", template.content);
-  output = output.replace("#logicHolder", newScript);
-  output = output.replace("#styleTemplate", styles[0].content);
+  tempDependenciesLibs.unshift("vue");
+
+  const output = ejs.render(outputVueTemplate, {
+    cssLibs: tempDependenciesLibs.map((item) => tempLibAddressMap[item].css).filter((item) => !!item),
+    scriptLibs: tempDependenciesLibs
+      .map((item) => tempLibAddressMap[item].js)
+      .flat()
+      .filter((item) => !!item),
+    vue3,
+    vue3UseLib: tempDependenciesLibs
+      .filter((item) => item != "vue")
+      .map((item) => tempLibAddressMap[item].libName),
+    style: styles[0].content,
+    templateHolder: template.content,
+    logicHolder: newScript,
+  });
 
   return output;
 }
 
+const libAddressMapForVue2 = {
+  vue: {
+    js: ["https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"],
+    css: "",
+  },
+  ele: {
+    js: ["https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/index.min.js"],
+    css: "https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/theme-chalk/index.min.css",
+  },
+  antd: {
+    js: [
+      "https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js",
+      "https://cdn.bootcdn.net/ajax/libs/ant-design-vue/1.7.8/antd.js",
+    ],
+    css: "https://cdn.bootcdn.net/ajax/libs/ant-design-vue/1.7.8/antd.css",
+  },
+  vant: {
+    js: ["https://cdn.bootcdn.net/ajax/libs/vant/2.12.44/vant.min.js"],
+    css: "https://cdn.bootcdn.net/ajax/libs/vant/2.12.44/index.min.css",
+  },
+};

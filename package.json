@@ -32,6 +32,7 @@
     "crypto-random-string": "^3.3.1",
     "css": "^3.0.0",
     "css-scoped": "^1.0.0",
+    "ejs": "^3.1.6",
     "element-plus": "^1.2.0-beta.3",
     "escodegen": "^2.0.0",
     "espree": "^7.3.0",

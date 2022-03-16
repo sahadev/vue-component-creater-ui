@@ -6,7 +6,7 @@
     <div style="color: #666; font-size: 12px; text-align:center; margin: 5px;">使用代码前请确认相应的组件库已集成至项目</div>
     <div style="text-align:left;">
       <el-row>
-        <el-col :span="6">
+        <el-col :span="5">
           输出形式：
           <el-radio-group v-model="outputMode" style="display: flex; flex-direction: column;">
             <el-radio label="vue">Vue</el-radio>
@@ -14,13 +14,20 @@
           </el-radio-group>
         </el-col>
 
-        <el-col :span="6" v-if="outputMode === 'html'">
+        <el-col :span="5" v-if="outputMode === 'html'">
           选择所使用的组件库：
           <el-checkbox-group v-model="checkList" style="display: flex; flex-direction: column;">
             <el-checkbox label="ele">Element UI</el-checkbox>
             <el-checkbox label="antd">Ant Design</el-checkbox>
             <el-checkbox label="vant">Vant</el-checkbox>
           </el-checkbox-group>
+        </el-col>
+        <el-col :span="4" v-if="outputMode === 'html'">
+          选择Vue版本：
+          <el-radio-group v-model="vueVersion" style="display: flex; flex-direction: column;">
+            <el-radio label="2">Vue 2</el-radio>
+            <el-radio label="3">Vue 3</el-radio>
+          </el-radio-group>
         </el-col>
         <el-col :span="10" style="display: flex; flex-direction: column;">
           代码获取方式：
@@ -33,7 +40,8 @@
             </el-tooltip>
           </div>
           <div style="margin-top: 10px;" v-if="outputMode === 'html'">
-            <el-input v-model="fileName" placeholder="部署文件名" style="width: 150px; margin-right: 10px;" size="small"></el-input>
+            <el-input v-model="fileName" placeholder="部署文件名" style="width: 150px; margin-right: 10px;" size="small">
+            </el-input>
             <el-button size="small" type="danger" :loading="loading" @click="release">
               一键部署至VCC静态页面托管服务</el-button>
             <div v-if="accessUrl">部署成功：<a :href="accessUrl" target="_blank">{{accessUrl}}</a></div>
@@ -71,7 +79,8 @@ export default {
       loading: false,
       accessUrl: '',
       fileName: '',
-      checkList: ['ele']
+      checkList: ['ele'],
+      vueVersion: '3'
     };
   },
   beforeCreate() { },
@@ -150,7 +159,7 @@ export default {
     },
 
     singleIndex() {
-      const htmlCode = singleIndexOutput(this.rawCode);
+      const htmlCode = singleIndexOutput(this.rawCode, this.checkList, this.vueVersion === '3');
       try {
         return prettier.format(htmlCode, {
           parser: "html",
