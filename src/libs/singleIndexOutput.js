@@ -3,10 +3,13 @@ import ejs from "ejs";
 
 const outputVueTemplate = `
 <!DOCTYPE html>
+<!-- 此页面通过VCC进行搭建: https://vcc3.sahadev.tech/ -->
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>页面预览</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page</title>
   <style stype="text/css">
     <%= style %>
   </style>
