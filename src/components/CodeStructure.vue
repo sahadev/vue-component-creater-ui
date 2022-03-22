@@ -55,7 +55,7 @@ export default {
   },
   beforeUpdate() { },
   updated() { },
-  destoryed() { },
+  destroyed() { },
   methods: {
 
     onNodeClick(nodeInfo) {

@@ -30,7 +30,7 @@ export default {
   },
   beforeUpdate() { },
   updated() { },
-  destoryed() { },
+  destroyed() { },
   methods: {
     request() { },
     onButtonClick() { },

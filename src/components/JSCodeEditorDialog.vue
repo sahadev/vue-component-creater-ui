@@ -79,7 +79,7 @@ export default {
   mounted() { },
   beforeUpdate() { },
   updated() { },
-  destoryed() { },
+  destroyed() { },
   methods: {
     updateLogicCode(newCode) {
       if (newCode) {

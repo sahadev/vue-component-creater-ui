@@ -39,7 +39,7 @@ export default {
   mounted() { },
   beforeUpdate() { },
   updated() { },
-  destoryed() { },
+  destroyed() { },
   methods: {
     request() { },
     onButtonClick() { },

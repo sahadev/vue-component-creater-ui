@@ -152,7 +152,7 @@ export default {
   },
   beforeUpdate() { },
   updated() { },
-  destoryed() { },
+  destroyed() { },
   methods: {
     convertLogicCode(JSCode) {
       try {

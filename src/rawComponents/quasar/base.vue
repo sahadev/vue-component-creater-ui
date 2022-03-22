@@ -36,7 +36,7 @@ export default {
   mounted() { },
   beforeUpdate() { },
   updated() { },
-  destoryed() { },
+  destroyed() { },
   methods: {
     // 在此自动生成
     request() {

@@ -89,7 +89,7 @@ export default {
   mounted() { },
   beforeUpdate() { },
   updated() { },
-  destoryed() { },
+  destroyed() { },
   methods: {
     release() {
       this.loading = true;

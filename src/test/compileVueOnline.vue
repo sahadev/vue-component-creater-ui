@@ -36,7 +36,7 @@ export default {
   },
   beforeUpdate: () => { },
   updated: () => { },
-  destoryed: () => { },
+  destroyed: () => { },
   methods: {
     async compile() {
       const obj = await html2Json(this.code);

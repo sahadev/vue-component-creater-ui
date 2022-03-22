@@ -42,7 +42,7 @@ export default {
   mounted() { },
   beforeUpdate() { },
   updated() { },
-  destoryed() { },
+  destroyed() { },
   methods: {
     handleClose() {
       this.$emit("update:vueDialogVisible", false);
