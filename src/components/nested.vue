@@ -1,6 +1,6 @@
 <template>
   <draggable class="dragArea" tag="ul" :list="data" @start="onStartDrag" @choose="onClick" :group="{ name: 'g1' }"
-    :item-key="getItemKey" @end="onEndDrag">
+    v-bind="dragOptions" :item-key="getItemKey" @end="onEndDrag">
     <template #item="{ element }">
       <li class="itemArea">
         <p>{{ getRawComponentKey(element) }}</p>
@@ -28,6 +28,14 @@ export default {
   },
 
   computed: {
+    dragOptions() {
+        return {
+          animation: 200,
+          group: "description",
+          disabled: false,
+          ghostClass: "ghost"
+        };
+      }
   },
   methods: {
     getItemKey(item) {
@@ -78,6 +86,11 @@ export default {
   padding-inline-start: 30px;
   padding-right: 2px;
   padding-bottom: 2px;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
 }
 
 p {
