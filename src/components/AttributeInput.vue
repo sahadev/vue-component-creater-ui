@@ -22,16 +22,16 @@
             <div style="margin-top: 5px;">
               <transition name="el-zoom-in-center">
                 <el-tag v-if="attributeKeys.indexOf('class') == -1" size="small" type="success" @click="onClassClick"
-                  effect="dark">Class
+                  effect="dark" class="tag">Class
                 </el-tag>
               </transition>
               <transition name="el-zoom-in-center">
                 <el-tag v-if="attributeKeys.indexOf('@click') == -1" size="small" type="success" @click="onEventClick"
-                  effect="dark">点击事件</el-tag>
+                  effect="dark" class="tag">点击事件</el-tag>
               </transition>
               <transition name="el-zoom-in-center">
                 <el-tag v-if="!attributeKeys.includes('__text__')" size="small" type="success" @click="onTextClick"
-                  effect="dark">文本内容</el-tag>
+                  effect="dark" class="tag">文本内容</el-tag>
               </transition>
             </div>
           </div>
@@ -262,7 +262,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .container {
   padding: 10px;
   width: 50%;
@@ -291,6 +291,14 @@ export default {
   border-radius: 5px;
   font-size: 12px;
   color: gray;
+
+  .tag {
+    margin-right: 5px;
+  }
+
+  .tag:last-child{
+    margin-right: 0;
+  }
 }
 
 .split {
