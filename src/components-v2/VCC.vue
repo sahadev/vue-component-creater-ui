@@ -174,6 +174,10 @@ export default {
         return false
       });
 
+      keymaster('⌘+y, ctrl+y', () => {
+        this.redo()();
+        return false
+      });
 
       keymaster('esc', () => {
         this.editMode = true;

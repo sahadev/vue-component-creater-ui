@@ -4,25 +4,24 @@
     <el-row :gutter="22">
       <el-col :span="3">
         <div class="edit">
-          <el-tooltip class="item" effect="dark" content="ctrl + z" placement="bottom-start">
-            <el-link type="primary" @click="$emit('undo')" style="margin-right: 3px;">Undo</el-link>
+          <el-tooltip class="item" effect="dark" content="快捷键Ctrl+Z" placement="bottom-start">
+            <el-link type="primary" @click="$emit('undo')" style="margin-right: 3px;">撤销</el-link>
           </el-tooltip>
-          <el-link type="primary" @click="$emit('redo')">Redo</el-link>
+          <el-tooltip class="item" effect="dark" content="快捷键Ctrl+Y" placement="bottom-start">
+            <el-link type="primary" @click="$emit('redo')">重做</el-link>
+          </el-tooltip>
         </div>
       </el-col>
       <el-col :span="3">
-        <el-link type="primary" @click="onPreviewModeChange">{{previewMode ? 'Desktop' : 'Mobile'}}
-          Mode</el-link>
+        <el-link type="primary" @click="onPreviewModeChange">{{previewMode ? '桌面' : '手机'}}模式</el-link>
       </el-col>
       <el-col :span="3">
         <div style="display:inline-block;">
-          <el-link :type="editMode? 'primary': 'danger'" @click="onEditModeChange">{{editMode ? 'View' : 'Edit'}}
-            Mode</el-link>
+          <el-link :type="editMode? 'primary': 'danger'" @click="onEditModeChange">{{editMode ? '预览' : '编辑'}}模式</el-link>
         </div>
       </el-col>
       <el-col :span="10">
-        <el-link type="primary" @click="$emit('structureVisible')">Inspect Components
-          Structure</el-link>
+        <el-link type="primary" @click="$emit('structureVisible')">组件结构检视图</el-link>
       </el-col>
       <el-col :span="3">
         <a class="github-button" href="https://github.com/sahadev/vue-component-creater-ui" data-icon="octicon-star"
