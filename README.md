@@ -4,7 +4,7 @@ VCC(Vue Compontent Creator)是 Low Code Generator 中独立的 Vue 组件代码�
 
 **通过它可以通过拖拽快速完成 Vue 组件代码骨架的搭建。详见后文视频介绍链接。**
 
-> 点击这里快速预览效果：[https://vcc3.sahadev.tech/](https://vcc3.sahadev.tech/) 当前已经升级至 Vue3 + Vite。
+> 点击这里快速预览效果：[https://vcc3.surge.tech/](https://vcc3.surge.tech/) 当前已经升级至 Vue3 + Vite。
 
 #### 使用示例
 
