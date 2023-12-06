@@ -1,8 +1,8 @@
 <template lc_id="Bb1LYS7hJm">
   <div class="echart-class" lc_id="OT0KmxfA/e">
-    <div style="font-size: 12px;">
+    <div style="font-size: 12px">
       Tips: Vcc使用的是vue-echarts，因此实际使用时也需要将vue-echarts集成至项目中使用。
-      另外由于渲染器本身的原因，在将eChart拖入到面板之后，<span style="color:red;">会有无法正常展示的问题</span>。
+      另外由于渲染器本身的原因，在将eChart拖入到面板之后，<span style="color: red">会有无法正常展示的问题</span>。
       代码本身是没有问题的，在预览模式下也可以正常渲染。
     </div>
     <v-chart

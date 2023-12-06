@@ -6,8 +6,9 @@
  * 
  */
 import { parseComponent } from 'vue-template-compiler/browser';
-import { merge, insertPresetAttribute, getSplitTag, replaceRowID, updateLinkTree, findCodeElemNode, findRawVueInfo, removeAllID } from "@/utils/forCode";
-import { getRawComponentContent, getRawComponentKey, isObject } from '@/utils/common';
+import { merge, insertPresetAttribute, getSplitTag, replaceRowID, updateLinkTree, findCodeElemNode, findRawVueInfo } from "@/utils/forCode";
+import { initElement } from '../utils/initRawComponent';
+import { getRawComponentContent, getRawComponentKey, isObject, deleteNodeFromParent, isRawComponents, isActiveComponents } from '@/utils/common';
 import { createNewCodeGenerator } from "@/libs/code-generator-factory";
 import EventEmitter from 'eventemitter3'
 import { cloneDeep } from 'lodash-es';
@@ -164,6 +165,8 @@ export class MainPanelProvider {
                 event.stopPropagation();
                 this.markElement(element);
             })
+
+            initElement(element);
         })
 
         this.initDropEvent();
@@ -249,14 +252,20 @@ export class MainPanelProvider {
 
             const newDropObj = JSON.parse(rawInfo);
 
-            // 插入预设属性
-            insertPresetAttribute(newDropObj);
+            if (isRawComponents(newDropObj)) {
 
-            // 使新拖入的代码与原来的做脱离
-            replaceRowID(newDropObj, '');
+                // 插入预设属性
+                insertPresetAttribute(newDropObj);
 
-            // 更新到一个Map上面，维持引用，由于render中统一做了处理，所以这段代码是可以删除的 2021年02月04日11:59:10
-            updateLinkTree(newDropObj);
+                // 使新拖入的代码与原来的做脱离
+                replaceRowID(newDropObj, '');
+
+                // 更新到一个Map上面，维持引用，由于render中统一做了处理，所以这段代码是可以删除的 2021年02月04日11:59:10
+                updateLinkTree(newDropObj);
+            } else if (isActiveComponents(newDropObj)) {
+                // 移动的情况
+                deleteNodeFromParent(newDropObj);
+            }
 
             // 更新代码结构关系
             const codeTargetElement = findCodeElemNode(this.currentPointDropInfo.target);

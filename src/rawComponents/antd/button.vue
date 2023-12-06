@@ -6,7 +6,7 @@
                   <a-button lc-mark type="primary" lc_id="nAzBA7pWsh">Primary Button</a-button>
                   <a-button lc-mark lc_id="rMeh8dMkYC">Default Button</a-button>
                   <a-button lc-mark type="dashed" lc_id="5+qgpMthx2">Dashed Button</a-button>
-                  <a-button lc-mark type="text" lc_id="UoFnE3nJv9">Text Button</a-button>
+                  <a-button lc-mark text lc_id="UoFnE3nJv9">Text Button</a-button>
                   <a-button lc-mark type="link" lc_id="kIu/utVuLA">Link Button</a-button>
                   <a-button lc-mark type="primary" danger lc_id="BQ4AmOTe8D">Primary</a-button>
                   <a-button lc-mark danger lc_id="98eGo5RB7m">Default</a-button>

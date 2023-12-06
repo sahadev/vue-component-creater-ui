@@ -4,6 +4,7 @@
     <lc-table></lc-table>
     <lc-form ></lc-form>
     <lc-image></lc-image>
+    <lc-menu></lc-menu>
     <lc-form-base></lc-form-base>
     <lc-dialog></lc-dialog>
     <lc-icon ></lc-icon>
@@ -23,6 +24,7 @@ import formBase from "./form-base";
 import dialog from "./dialog";
 import image from "./image";
 import final from "./final";
+import menu from './menu.vue';
 
 import { deepLCEle } from "@/utils/initRawComponent";
 
@@ -48,6 +50,7 @@ export default {
     "lc-dialog": dialog,
     "lc-image": image,
     "lc-final": final,
+    "lc-menu": menu
   },
 };
 </script>

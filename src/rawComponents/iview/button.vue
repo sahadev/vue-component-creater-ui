@@ -5,7 +5,7 @@
               <button lc-mark lc_id="x3FZbZaIxW">Default</button>
               <button lc-mark type="primary" lc_id="45rexSehQc">Primary</button>
               <button lc-mark type="dashed" lc_id="fKbsFbKR2b">Dashed</button>
-              <button lc-mark type="text" lc_id="tFTgyHpo+y">Text</button>
+              <button lc-mark text lc_id="tFTgyHpo+y">Text</button>
               <button lc-mark type="info" lc_id="hUGfSo7waH">Info</button>
               <button lc-mark type="success" lc_id="BgKXbY5mGG">Success</button>
               <button lc-mark type="warning" lc_id="X6QHL5F0XR">Warning</button>

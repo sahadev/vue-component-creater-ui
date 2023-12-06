@@ -3,7 +3,7 @@
           <div lc_id="tWzGb0zt3I">
               <div class="demonstration-element" @click="dialogVisible = true" lc_id="cjFRJjmxCw">Dialog 对话框</div>
               <div lc-mark lc_id="dIDt4KsNEb">
-                  <el-button type="text" lc_id="cmG1+fI232">直接拖我看结果</el-button>
+                  <el-button text lc_id="cmG1+fI232">直接拖我看结果</el-button>
                   <el-dialog title="提示" v-model="dialogVisible" width="30%" :before-close="handleClose" lc_id="W4ORswcE/n">
                       <span lc_id="8Sb2dnGlHq">这是一段信息</span>
                       <span footer class="dialog-footer" lc_id="To3nLHp/kA">

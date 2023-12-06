@@ -8,7 +8,7 @@ const TOP = 1,
 import { findCodeElemNode, findRawVueInfo } from "@/utils/forCode";
 import { getRawComponentContent } from "@/utils/common";
 
-export function initContainerForLine(targetElement, _currentPointer = () => {}) {
+export function initContainerForLine(targetElement, _currentPointer = () => { }) {
   const crossX = document.querySelector(".x");
 
   const currentPointer = (...args) => {
@@ -42,14 +42,16 @@ export function initContainerForLine(targetElement, _currentPointer = () => {}) 
     if (parentElementNode) {
       const parentRawInfo = findRawVueInfo(parentElementNode);
 
-      const attributes = getRawComponentContent(parentRawInfo);
-      if (attributes) {
-        const childrenArray = attributes.__children;
+      if (parentRawInfo) {
+        const attributes = getRawComponentContent(parentRawInfo);
+        if (attributes) {
+          const childrenArray = attributes.__children;
 
-        const index = childrenArray.findIndex((item) => {
-          return getRawComponentContent(item).lc_id == lc_id;
-        });
-        return index;
+          const index = childrenArray.findIndex((item) => {
+            return getRawComponentContent(item).lc_id == lc_id;
+          });
+          return index;
+        }
       }
     }
     return -1;

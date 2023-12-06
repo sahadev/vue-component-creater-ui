@@ -29,8 +29,8 @@
           </div>
           <div lc_id="RdvVbD8tRt">
               <div class="demonstration-element" lc_id="MCe1tz7lec">Button 文字按钮</div>
-              <el-button lc-mark type="text" lc_id="VzeBeEyMRU">文字按钮</el-button>
-              <el-button lc-mark type="text" disabled lc_id="gGBAHuLrE2">文字按钮</el-button>
+              <el-button lc-mark text lc_id="VzeBeEyMRU">文字按钮</el-button>
+              <el-button lc-mark text disabled lc_id="gGBAHuLrE2">文字按钮</el-button>
           </div>
           <div lc_id="fiJ0b+a2C7">
               <div class="demonstration-element" lc_id="NadQOxXAQD">Button 按钮组</div>

@@ -220,7 +220,7 @@ export default {
       const checkResult = brotherEleEnum().find(item => {
         return item.name == this.componentName;
       });
-      return checkResult && checkResult.length != 0;
+      return checkResult && false;
     },
     attributeList() {
       const result = [];

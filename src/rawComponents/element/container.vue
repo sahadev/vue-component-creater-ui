@@ -62,28 +62,28 @@
                   <el-col :sm="12" :lg="6" lc_id="deKtOM/g2K">
                       <el-result icon="success" lc-mark title="成功提示" subtitle="请根据提示进行操作" lc_id="iF6n6EUcmn">
                           <template #extra lc_id="iJQp/8XeSP">
-                              <el-button type="primary" size="medium" lc_id="UCFmR9EP+q">返回</el-button>
+                              <el-button type="primary" size="default" lc_id="UCFmR9EP+q">返回</el-button>
                           </template>
                       </el-result>
                   </el-col>
                   <el-col :sm="12" :lg="6" lc_id="1smWMRRuZr">
                       <el-result icon="warning" lc-mark title="警告提示" subtitle="请根据提示进行操作" lc_id="NIEZCy3gG0">
                           <template #extra lc_id="c6Unj7eQIv">
-                              <el-button type="primary" size="medium" lc_id="MDEtfbmEZd">返回</el-button>
+                              <el-button type="primary" size="default" lc_id="MDEtfbmEZd">返回</el-button>
                           </template>
                       </el-result>
                   </el-col>
                   <el-col :sm="12" :lg="6" lc_id="2zio5J9ljq">
                       <el-result icon="error" lc-mark title="错误提示" subtitle="请根据提示进行操作" lc_id="kLASzKidTD">
                           <template #extra lc_id="rnIhJqKRjQ">
-                              <el-button type="primary" size="medium" lc_id="MhrCBFBHlN">返回</el-button>
+                              <el-button type="primary" size="default" lc_id="MhrCBFBHlN">返回</el-button>
                           </template>
                       </el-result>
                   </el-col>
                   <el-col :sm="12" :lg="6" lc_id="h7xNXozZ0s">
                       <el-result icon="info" lc-mark title="信息提示" subtitle="请根据提示进行操作" lc_id="aDXqAjXsST">
                           <template #extra lc_id="nHgp3LGSea">
-                              <el-button type="primary" size="medium" lc_id="VURe3Zlhq0">返回</el-button>
+                              <el-button type="primary" size="default" lc_id="VURe3Zlhq0">返回</el-button>
                           </template>
                       </el-result>
                   </el-col>

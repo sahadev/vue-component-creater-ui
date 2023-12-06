@@ -66,18 +66,6 @@ export function initElementHoverAction(element) {
 
     element.addEventListener('mouseover', event => {
         event.stopPropagation();
-
-        checkIsInVaildElement(event).then((callbackInfo) => {
-            currentBroInfo = callbackInfo;
-            const rect = callbackInfo.target.getBoundingClientRect();
-            addBroIcon.style = `left:${rect.right + 0}px;top:${rect.top}px;`
-        }, () => {
-            setTimeout(() => {
-                if (!isInBroIcon) {
-                    addBroIcon.style = "top:-100px;"
-                }
-            });
-        })
     })
 
     return function () {

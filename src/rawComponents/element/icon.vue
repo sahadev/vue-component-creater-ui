@@ -107,7 +107,7 @@
                   <template #header lc_id="fcNx1E9u+l">
                       <div class="clearfix" lc_id="JjiI6DiLa8">
                           <span lc_id="HyznGRyy1o">卡片名称</span>
-                          <el-button style="float: right; padding: 3px 0" type="text" lc_id="2BV+GEiJPf">操作按钮</el-button>
+                          <el-button style="float: right; padding: 3px 0" text lc_id="2BV+GEiJPf">操作按钮</el-button>
                       </div>
                       <div v-for="o in 4" :key="o" class="text item" lc_id="WrqZOeR62/">{{ "列表内容 " + o }}</div>
                   </template>
