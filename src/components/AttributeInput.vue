@@ -10,7 +10,7 @@
     <div style="margin-top: 20px;">
       <div name="1" v-show="!editMode">
         <div>
-          <div class="item" v-for="(item, index) in localAttributes" :key="item.key">
+          <div class="item" v-for="(item, index) in localAttributes" :key="index">
             <el-input v-model="item.key" :placeholder="'key' + index" class="half-width" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
             <div class="split">:</div>
             <el-input v-model="item.value" type="textarea" :placeholder="'value' + index" class="half-width" style="flex-grow: 4;" :autosize="{ minRows: 2, maxRows: 4}"></el-input>

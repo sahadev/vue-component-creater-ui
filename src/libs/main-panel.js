@@ -49,7 +49,7 @@ export class MainPanelProvider {
         let code = this.codeGenerator.outputVueCodeWithJsonObj(rawDataStructure);
 
         // 将xxx: () => {} 转换为xxx(){}
-        code = code.replace(/:\s*\(([\w\s]*)\)\s*=>/g,"\($1\)");
+        code = code.replace(/:\s*\(([\w\s]*)\)\s*=>/g, "\($1\)");
 
         // 生成展示代码
         let codeForShow = code.replace(/\s{1}lc_id=".+?"/g, '');
@@ -67,19 +67,19 @@ export class MainPanelProvider {
         const componentOptions = (new Function(`return ${newScript}`))();
 
         componentOptions.template = template.content;
-        
+
         if (this.editMode) {
             // 渲染当前代码
             const readyForMoutedElement = this.createMountedElement();
             createBaseAppAsync(componentOptions).then(app => {
                 app.mount(readyForMoutedElement)
-                // 开启编辑模式
+                // 开启编辑模式，这个方式会导致正常渲染的事件被中断， 例如EChart的加载渲染。
                 this.enableEditMode();
             });
-            
+
             // 拍平数据结构
             this.flatDataStructure(rawDataStructure);
-    
+
         } else {
             // 渲染当前代码
             createBaseAppAsync(componentOptions).then(app => app.mount(this.mountedEle));
@@ -280,11 +280,11 @@ export class MainPanelProvider {
     enableEditMode() {
         const renderControlPanel = this.getControlPanelRoot();
         // 加一个延迟的作用是：给el-table这种绘制需要时间的组件留出充足的时间，否则会造成el-table渲染不到页面上
-        
+
         if (this.enableDelayTask) {
             clearTimeout(this.enableDelayTask);
         }
-        
+
         this.enableDelayTask = setTimeout(() => {
             // 这种方式可以禁用原节点所有的事件
             const elClone = renderControlPanel.cloneNode(true);

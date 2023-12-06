@@ -47,9 +47,11 @@
 </template>
 
 <script>
+
 export default {
   props: [],
-  components: { },
+  components: { 
+  },
   data() {
     return {
       previewMode: false,

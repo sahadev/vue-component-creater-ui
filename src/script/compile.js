@@ -14,7 +14,7 @@ glob(
   {
     cwd: componentsPath,
     absolute: true,
-    ignore: ["**/element/index.vue", "**/vant/index.vue", "**/iview/index.vue", "**/antd/index.vue"],
+    ignore: ["**/element/index.vue", "**/vant/index.vue", "**/iview/index.vue", "**/antd/index.vue", "**/echart/index.vue"],
   },
   function (er, files) {
     console.info(`正在对${files.length}个文件进行编译...`);

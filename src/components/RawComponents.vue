@@ -50,7 +50,7 @@
       </div>
     </nav>
 
-    <div style="overflow:scroll;padding:0 10px;">
+    <div style="overflow:scroll;padding:0 10px;width: 100%;">
       <keep-alive>
         <component :is="currentSelectBrand.componentName" @mounted='onMouted(currentIndex)'></component>
       </keep-alive>
@@ -99,6 +99,14 @@ export default {
       }, {
         icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/quasar-n.png'),
         enable: false
+      }, {
+        icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/pie.png'),
+        clickCallback: this.onSelectElement, 
+        className: "demonstration-echart", 
+        selectIndex: 0, 
+        componentName: 'echart', 
+        enable: true, 
+        titleArray: [], 
       }, {
         icon: ('https://static.imonkey.xueersi.com/download/vcc-resource/logo/antd-n.svg'), // 组件库导航图标
         clickCallback: this.onSelectElement, // 图标点击回调
@@ -220,7 +228,8 @@ export default {
     // iview,
     // quasar,
     ele: defineAsyncComponent(() => import("../rawComponents/element/index.vue")),
-    antd: defineAsyncComponent(() => import("../rawComponents/antd"))
+    antd: defineAsyncComponent(() => import("../rawComponents/antd")),
+    echart: defineAsyncComponent(() => import("../rawComponents/echart"))
   },
 
 };

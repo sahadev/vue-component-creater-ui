@@ -13,15 +13,18 @@ import "element-plus/dist/index.css";
 import APP from "./App.vue";
 import loadCompontents from "@/libs/UIComponentInit.js";
 
+import Chart from './rawComponents/echart/init';
+
 /**
  * 创建实例基础方法
  * @param {*} renderComponent 
  * @param {*} loadFinished 
  * @returns 
  */
-function loadTemplate(renderComponent, loadFinished = () => {}) {
+function loadTemplate(renderComponent, loadFinished = () => { }) {
   const app = createApp(renderComponent);
   app.use(ElementPlus);
+  app.component('VChart', Chart);
   loadCompontents().then((modules) => {
     for (let index = 0; index < modules.length; index++) {
       const module = modules[index];
