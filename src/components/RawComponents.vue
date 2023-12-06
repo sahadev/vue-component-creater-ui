@@ -139,7 +139,7 @@ export default {
 
     handleCommand(command) {
       if (command === 'help') {
-        window.open('/doc')
+        window.open('https://vcc3-docs.surge.sh/#/')
       } else if (command === 'chat') {
         window.open('https://gitter.im/low_code_generator/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link')
       } else if (command == 'lcg') {

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="代码预览" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
+  <el-dialog title="代码预览" v-model="dialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
     <!-- 这里加v-if是因为CodeEditor内部不支持watch数据监测 -->
     <CodeEditor v-if="codeDialogVisible" style="max-height: 55vh;" ref="codeEditor" :initCode="outputCode"
       mode="text/html"></CodeEditor>
@@ -144,6 +144,14 @@ export default {
       return this.isVueMode ? this.prettyCode : this.singleIndex;
     },
 
+    dialogVisible:{
+      get(){
+        return this.codeDialogVisible;
+      },
+      set (){ 
+        this.$emit('update:codeDialogVisible', false)
+      }
+    },
 
     prettyCode() {
       try {

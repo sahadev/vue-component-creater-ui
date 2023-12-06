@@ -116,10 +116,10 @@ export default {
     currentEditRawInfo(newValue) {
       const attributeContainter = document.querySelector(".attribute");
       if (newValue) {
-        attributeContainter.style = "right:10px; display:block;";
+        attributeContainter.style = "right:10px;";
         this.$refs['attributeInput'].onShow();
       } else {
-        attributeContainter.style = "right: calc(-300px - 20px); display:none;";
+        attributeContainter.style = "right: var(--init-right)";
         this.$refs['attributeInput'].onHide();
       }
     },
@@ -309,7 +309,7 @@ export default {
     },
 
     help() {
-      window.open('/doc')
+      window.open('https://vcc3-docs.surge.sh/#/')
     }
   },
   fillter: {},
@@ -339,15 +339,19 @@ export default {
 }
 
 .attribute {
-  width: 300px;
+
+  --init-right:calc(-500px - 20px);
+  width: 400px;
   border-radius: 10px;
   margin-left: 10px;
   position: absolute;
-  right: calc(-300px - 20px);
+  right:var(--init-right) ;
   top: 10px;
   background: white;
   max-height: calc(80% - 20px);
-  transition: right 0.5s;
+  transition-property: right;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
   overflow: scroll;
   z-index: 2;
 }
@@ -388,6 +392,7 @@ export default {
   margin-left: 10px;
   border: 0px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .icon-js {

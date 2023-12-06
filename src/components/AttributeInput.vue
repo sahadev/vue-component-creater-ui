@@ -10,10 +10,10 @@
     <div style="margin-top: 20px;">
       <div name="1" v-show="!editMode">
         <div>
-          <div class="item" v-for="(item, index) in localAttributes" :key="index">
-            <el-input v-model="item.key" :placeholder="'key' + index" class="half-width"></el-input>
+          <div class="item" v-for="(item, index) in localAttributes" :key="item.key">
+            <el-input v-model="item.key" :placeholder="'key' + index" class="half-width" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
             <div class="split">:</div>
-            <el-input v-model="item.value" :placeholder="'value' + index" class="half-width" style="flex-grow: 3;"></el-input>
+            <el-input v-model="item.value" type="textarea" :placeholder="'value' + index" class="half-width" style="flex-grow: 4;" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
             <el-icon @click="deleteItem(index)" style="margin-left: 5px;"><l-minus /></el-icon>
           </div>
 
@@ -270,8 +270,7 @@ export default {
 }
 
 .half-width {
-  width: 0%;
-  flex-grow: 2;
+  width: 100px;
 }
 
 .center {

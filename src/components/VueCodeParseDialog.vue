@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="Vue二次编辑" v-model="vueDialogVisible" width="70%" top="10vh" :before-close="handleClose"
+  <el-dialog title="Vue二次编辑" v-model="dialogVisible" width="70%" top="10vh" :before-close="handleClose"
     :center=true>
     <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/html"></CodeEditor>
 
@@ -45,7 +45,7 @@ export default {
   destroyed() { },
   methods: {
     handleClose() {
-      this.$emit("update:vueDialogVisible", false);
+      this.dialogVisible = false;
     },
     async compile() {
       try {
@@ -81,6 +81,17 @@ export default {
   watch: {
   },
   computed: {
+
+
+    dialogVisible:{
+      get(){
+        return this.vueDialogVisible;
+      },
+      set (){ 
+        this.$emit('update:vueDialogVisible', false)
+      }
+    },
+
   },
   fillter: {},
 };

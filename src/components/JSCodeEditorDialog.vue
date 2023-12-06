@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="JS逻辑编辑" v-model="codeDialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
+  <el-dialog title="JS逻辑编辑"  v-model="dialogVisible" width="70%" top="10vh" :before-close="handleClose" :center=true>
     <CodeEditor style="max-height: 65vh;" ref="codeEditor" :initCode="code" mode="text/javascript"></CodeEditor>
 
     <div style="padding: 10px; display:flex;justify-content: flex-end;align-items: center;">
@@ -9,7 +9,7 @@
       </div>
 
       <div style="margin-left: 5px;">
-        <el-link href="https://vcc.sahadev.tech/doc/#/improve/logic?id=%e9%80%bb%e8%be%91%e6%a8%a1%e6%9d%bf"
+        <el-link href="https://vcc3-docs.surge.sh/#/improve/logic?id=%e9%80%bb%e8%be%91%e6%a8%a1%e6%9d%bf"
           target="_blank">
           <el-icon>
             <question-filled />
@@ -114,6 +114,14 @@ export default {
   watch: {
   },
   computed: {
+    dialogVisible:{
+      get(){
+        return this.codeDialogVisible;
+      },
+      set (){ 
+        this.$emit('update:codeDialogVisible', false)
+      }
+    }
   },
   fillter: {},
 };
