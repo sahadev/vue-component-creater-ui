@@ -31,8 +31,12 @@ npm run dev
 [【拖拽式 Vue 组件代码生成平台(LCG)介绍视频-哔哩哔哩】https://b23.tv/FInuZ8](https://b23.tv/FInuZ8)
 [【LCG 近期功能更新介绍-哔哩哔哩】https://b23.tv/SAHwVq](https://b23.tv/SAHwVq)
 
+### 说明文档
+[https://vcc3-docs.surge.sh/#/](https://vcc3-docs.surge.sh/#/)
+
 ### 功能更新日志
 - 2022年03月16日 支持生成单页Html，支持Vue2以及Vue3，并支持一键部署至VCC服务器。
+- 2023年12月06日 更新Element组件库版本、更新Vue框架版本。
 
 ## 贡献
 
@@ -54,10 +58,6 @@ npm run dev
 
 可以通过sahadev@foxmail.com给我发送邮件，我会及时回复的。
 
-或者加群和大家一起讨论吧：
-
-<img width="300" src="https://static.imonkey.xueersi.com/vcc/wechat_group.jpg">
-
-如果遇到群二维码过期的情况，可以加我微信：SAHADEV-smile，我拉你入群。加我微信时请备注 VCC。
+或者加群和大家一起讨论吧! 可以加我微信：SAHADEV-smile，我拉你入群。加我微信时请备注 VCC。
 
 另外我也特别希望可以和大家一起做这个项目。这个项目目前主要面对的是前端开发者。后期可以面向后端开发者与产品与 UE。
