@@ -8,7 +8,8 @@ VCC(Vue Compontent Creator)是 Low Code Generator 中独立的 Vue 组件代码�
 
 #### 使用示例
 
-请移步至使用Demo：[https://github.com/sahadev/vcc3-use-demo](https://github.com/sahadev/vcc3-use-demo)
+请移步至使用 Demo：[https://github.com/sahadev/vcc3-use-demo](https://github.com/sahadev/vcc3-use-demo)
+
 ## 本地如何运行此项目
 
 首先进行安装:
@@ -32,11 +33,17 @@ npm run dev
 [【LCG 近期功能更新介绍-哔哩哔哩】https://b23.tv/SAHwVq](https://b23.tv/SAHwVq)
 
 ### 说明文档
+
 [https://vcc3-docs.surge.sh/#/](https://vcc3-docs.surge.sh/#/)
 
 ### 功能更新日志
-- 2022年03月16日 支持生成单页Html，支持Vue2以及Vue3，并支持一键部署至VCC服务器。
-- 2023年12月06日 更新Element组件库版本、更新Vue框架版本。
+
+- 2022 年 03 月 16 日 支持生成单页 Html，支持 Vue2 以及 Vue3，并支持一键部署至 VCC 服务器。
+- 2023 年 12 月 06 日 更新 Element 组件库版本、更新 Vue 框架版本。
+
+### 核心仓库
+
+VCC 依赖于一个核心的代码转换库：[vue-component-code-creater](https://github.com/sahadev/vue-component-code-creater)，通过这个库来完成 Vue 文件的解析和 Vue 文件的生成。如果需要更改核心实现，可通过此库提供的源码进行修改。
 
 ## 贡献
 

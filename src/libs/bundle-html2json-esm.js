@@ -51,13 +51,16 @@ function parseHtml(htmlData) {
         lastAccessStack.pop();
         currentAccessObject = lastAccessStack[lastAccessStack.length - 1];
       },
-      onend(){
+      onend() {
         resolve(root);
       },
 
       onerror(error) {
         reject(error);
       }
+    }, {
+      lowerCaseAttributeNames: false,
+      lowerCaseTags: false,
     });
     parser.write(
       htmlData
