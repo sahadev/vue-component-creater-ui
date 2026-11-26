@@ -103,8 +103,82 @@ function buttonGroups(spec: ComponentSpec): SampleGroup[] {
   ];
 }
 
+/** 用一份节点模板派生出若干命名组 */
+function presetGroups(
+  spec: ComponentSpec,
+  presets: { titleZh: string; titleEn: string; props: PropRecord }[],
+): SampleGroup[] {
+  return presets.map(({ titleZh, titleEn, props }) => {
+    const node = createNodeFromSpec(spec);
+    if (node.kind === 'component') Object.assign(node.props, props);
+    return {
+      specKey: `${spec.library}:${spec.tag}:${titleZh}`,
+      titleZh,
+      titleEn,
+      category: spec.category,
+      variants: [{ label: titleZh, node }],
+    };
+  });
+}
+
+/** 一个组件按枚举出多组同款示例，每组文案自定义（原版“默认链接 / 主要链接…”那种） */
+function labelledVariants(
+  spec: ComponentSpec,
+  titleZh: string,
+  titleEn: string,
+  entries: { type: string; text: string }[],
+): SampleGroup[] {
+  return [
+    {
+      specKey: `${spec.library}:${spec.tag}:${titleZh}`,
+      titleZh,
+      titleEn,
+      category: spec.category,
+      variants: entries.map(({ type, text }) => {
+        const node = createNodeFromSpec(spec);
+        if (node.kind === 'component') {
+          if (type) node.props.type = type;
+          else delete node.props.type;
+          for (const child of node.children) {
+            if (child.kind === 'text') child.text = text;
+          }
+        }
+        return { label: text, node };
+      }),
+    },
+  ];
+}
+
 const GROUP_OVERRIDES: Record<string, (spec: ComponentSpec) => SampleGroup[]> = {
+  'element-plus:el-link': (spec) =>
+    labelledVariants(spec, '文字链接', 'Link', [
+      { type: '', text: '默认链接' },
+      { type: 'primary', text: '主要链接' },
+      { type: 'success', text: '成功链接' },
+      { type: 'warning', text: '警告链接' },
+      { type: 'danger', text: '危险链接' },
+      { type: 'info', text: '信息链接' },
+    ]),
+  'element-plus:el-tag': (spec) =>
+    labelledVariants(spec, '标签', 'Tag', [
+      { type: 'primary', text: '标签一' },
+      { type: 'success', text: '标签二' },
+      { type: 'warning', text: '标签三' },
+      { type: 'danger', text: '标签四' },
+      { type: 'info', text: '标签五' },
+    ]),
   'element-plus:el-button': buttonGroups,
+  'element-plus:el-button-group': (spec) => presetGroups(spec, [
+    { titleZh: '按钮组', titleEn: 'Button', props: {} },
+  ]),
+  'element-plus:el-table': (spec) => presetGroups(spec, [
+    { titleZh: '表格', titleEn: 'Table', props: {} },
+    { titleZh: '动态表格 👍', titleEn: 'Table', props: { border: true } },
+  ]),
+  'element-plus:el-form': (spec) => presetGroups(spec, [
+    { titleZh: '行内表单', titleEn: 'Form', props: { inline: true } },
+    { titleZh: '表单', titleEn: 'Form', props: {} },
+  ]),
 };
 
 export function buildSampleGroups(library: LibraryId): SampleGroup[] {
@@ -119,7 +193,7 @@ export function buildSampleGroups(library: LibraryId): SampleGroup[] {
         {
           specKey: `${spec.library}:${spec.tag}`,
           titleZh: spec.name,
-          titleEn: spec.tag,
+          titleEn: spec.nameEn ?? spec.tag,
           category: spec.category,
           variants: buildVariants(spec),
         },

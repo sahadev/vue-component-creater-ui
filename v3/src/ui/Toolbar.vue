@@ -15,48 +15,59 @@ const emit = defineEmits<{
 
 <template>
   <div class="top-tools-bar">
-    <div class="tools-row">
-      <div class="tools-cell">
-        <button type="button" class="link" title="ctrl + z" @click="emit('undo')">Undo</button>
-        <button type="button" class="link" @click="emit('redo')">Redo</button>
-      </div>
+    <!-- 原版就是 el-row :gutter=22 + el-col 3/3/3/10/3，这里照抄 -->
+    <el-row :gutter="22">
+      <el-col :span="3">
+        <div class="tools-cell">
+          <button type="button" class="link" title="ctrl + z" @click="emit('undo')">Undo</button>
+          <button type="button" class="link" @click="emit('redo')">Redo</button>
+        </div>
+      </el-col>
 
-      <div class="tools-cell">
-        <button type="button" class="link link--stack" @click="emit('togglePreview')">
-          <span>{{ props.previewMode ? 'Desktop' : 'Mobile' }}</span>
-          <span>Mode</span>
-        </button>
-      </div>
+      <el-col :span="3">
+        <div class="tools-cell">
+          <button type="button" class="link link--stack" @click="emit('togglePreview')">
+            <span>{{ props.previewMode ? 'Desktop' : 'Mobile' }}</span>
+            <span>Mode</span>
+          </button>
+        </div>
+      </el-col>
 
-      <div class="tools-cell">
-        <button
-          type="button"
-          class="link link--stack"
-          :class="{ 'link--danger': !props.editMode }"
-          @click="emit('toggleEdit')"
-        >
-          <span>{{ props.editMode ? 'View' : 'Edit' }}</span>
-          <span>Mode</span>
-        </button>
-      </div>
+      <el-col :span="3">
+        <div class="tools-cell">
+          <button
+            type="button"
+            class="link link--stack"
+            :class="{ 'link--danger': !props.editMode }"
+            @click="emit('toggleEdit')"
+          >
+            <span>{{ props.editMode ? 'View' : 'Edit' }}</span>
+            <span>Mode</span>
+          </button>
+        </div>
+      </el-col>
 
-      <div class="tools-cell tools-cell--wide">
-        <button type="button" class="link" @click="emit('openStructure')">
-          Inspect Components Structure
-        </button>
-      </div>
+      <el-col :span="10">
+        <div class="tools-cell">
+          <button type="button" class="link" @click="emit('openStructure')">
+            Inspect Components Structure
+          </button>
+        </div>
+      </el-col>
 
-      <div class="tools-cell tools-cell--end">
-        <a
-          class="star"
-          href="https://github.com/sahadev/vue-component-creater-ui"
-          target="_blank"
-          rel="noreferrer"
-        >
-          ★ Star
-        </a>
-      </div>
-    </div>
+      <el-col :span="3">
+        <div class="tools-cell tools-cell--end">
+          <a
+            class="star"
+            href="https://github.com/sahadev/vue-component-creater-ui"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Star
+          </a>
+        </div>
+      </el-col>
+    </el-row>
 
     <a
       class="github-corner"
@@ -83,25 +94,19 @@ const emit = defineEmits<{
 <style scoped>
 .top-tools-bar {
   position: relative;
-  padding: 12px 14px;
+  padding: 5px 10px 8px;
   font-size: 14px;
   font-weight: 500;
+  line-height: 22px;
   color: #606266;
   background-color: white;
   border-bottom: 1px solid #f0f0f0;
 }
 
-.tools-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 46px;
-  font-size: 15px;
-}
-
 .tools-cell {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0;
   white-space: nowrap;
 }
 
@@ -112,12 +117,15 @@ const emit = defineEmits<{
   line-height: 1.25;
 }
 
-.tools-cell--wide {
-  flex: 1;
+/* 按钮在纵向 flex 里会被拉满，宽度要贴住文字 */
+.tools-cell .link {
+  align-self: flex-start;
 }
 
 .tools-cell--end {
   margin-right: 46px;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .link {
@@ -127,6 +135,7 @@ const emit = defineEmits<{
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
+  line-height: 22px;
   color: #409eff;
   cursor: pointer;
 }
@@ -135,12 +144,17 @@ const emit = defineEmits<{
   text-decoration: underline;
 }
 
+.link + .link {
+  margin-left: 3px;
+}
+
 .link--danger {
   color: #f56c6c;
 }
 
 .star {
   font-size: 14px;
+  line-height: 17px;
   color: #409eff;
   text-decoration: none;
 }

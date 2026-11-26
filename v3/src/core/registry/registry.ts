@@ -22,6 +22,8 @@ export interface ComponentSpec {
   library: LibraryId;
   tag: string;
   name: string;
+  /** 英文名，用于左栏分类项的副标题（旧版是 Button/Link/Tag 这种） */
+  nameEn?: string;
   category: string;
   acceptsChildren: boolean;
   props: PropSchema[];
@@ -29,6 +31,8 @@ export interface ComponentSpec {
   defaultProps?: PropRecord;
   /** 拖入时是否自动带一个子文本节点 */
   defaultText?: string;
+  /** 拖入时自动带的子结构（表格、表单这类靠子节点才成立） */
+  defaultChildren?: () => SceneNode[];
   /**
    * 能否脱离父组件单独渲染。
    * el-option 这类必须在 el-select 里，单独渲染会直接抛错，
@@ -88,9 +92,11 @@ export function createNodeFromSpec(spec: ComponentSpec): ComponentNode {
   }
   Object.assign(props, spec.defaultProps ?? {});
 
-  const children: SceneNode[] = spec.defaultText
-    ? [{ kind: 'text', id: newNodeId(), text: spec.defaultText }]
-    : [];
+  const children: SceneNode[] = spec.defaultChildren
+    ? spec.defaultChildren()
+    : spec.defaultText
+      ? [{ kind: 'text', id: newNodeId(), text: spec.defaultText }]
+      : [];
 
   return {
     kind: 'component',

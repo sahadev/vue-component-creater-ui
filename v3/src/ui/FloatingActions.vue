@@ -17,16 +17,17 @@ function clear() {
 
 <template>
   <div class="floating">
-    <el-alert class="floating__alert" title="遇到问题？" type="info" :closable="false">
+    <div class="tip">
+      <div class="tip__title">遇到问题？</div>
       <a
-        class="floating__link"
+        class="tip__link"
         href="https://github.com/sahadev/vue-component-creater-ui"
         target="_blank"
         rel="noreferrer"
       >
         点击我查看帮助文档
       </a>
-    </el-alert>
+    </div>
 
     <el-tooltip effect="dark" content="二次编辑 Vue 代码" placement="top-start">
       <button type="button" class="round round--text" @click="emit('openVue')">Vue</button>
@@ -54,23 +55,31 @@ function clear() {
   right: 20px;
   bottom: 20px;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
   z-index: 3;
 }
 
-.floating__alert {
-  width: 220px;
-  padding: 6px 10px;
+.tip {
+  width: 156px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  background: #f4f4f5;
+  border-radius: 4px;
+  line-height: 14px;
 }
 
-.floating__link {
-  font-size: 12px;
+.tip__title {
+  font-size: 13px;
+  color: #909399;
+}
+
+.tip__link {
+  font-size: 13px;
   color: #409eff;
   text-decoration: none;
 }
 
-.floating__link:hover {
+.tip__link:hover {
   text-decoration: underline;
 }
 
@@ -80,7 +89,8 @@ function clear() {
   border-radius: 20px;
   border: 0;
   background: #4dba87;
-  padding: 0;
+  padding: 10px 0;
+  margin-left: 10px;
   box-sizing: border-box;
   cursor: pointer;
   color: #fff;
@@ -88,8 +98,8 @@ function clear() {
 
 .round--text {
   font-family: var(--vcc-font);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 20px;
   text-align: center;
 }

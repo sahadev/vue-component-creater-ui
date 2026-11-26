@@ -110,7 +110,6 @@ function onClick(event: MouseEvent) {
 <style scoped>
 .vcc-canvas {
   min-height: 100%;
-  padding: 10px;
   position: relative;
 }
 

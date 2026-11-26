@@ -121,7 +121,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 }
 
 .base-component-container {
-  flex: 0 0 700px;
+  flex: 0 0 722px;
   background: white;
   border-right: 1px solid #f0f0f0;
 }
@@ -149,7 +149,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
   width: 100%;
   overflow: auto;
   box-sizing: border-box;
-  background-color: #f5f5f5;
+  background-color: #fff;
   padding: 10px;
   transition: width 1s;
 }

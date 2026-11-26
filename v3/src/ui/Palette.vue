@@ -6,6 +6,7 @@ import { writePayload } from '../render/dnd';
 import { acceptsChildren } from '../core/capabilities';
 import type { LibraryId, SceneNode } from '../core/types';
 
+import htmlLogo from '../assets/logo/html-n.png';
 import elementLogo from '../assets/logo/element-n.png';
 import vantLogo from '../assets/logo/vant-n.png';
 import iviewLogo from '../assets/logo/iview-n.png';
@@ -21,17 +22,19 @@ interface Brand {
 }
 
 const brands: Brand[] = [
-  { id: 'html', label: 'Vue', kind: 'vue', enabled: true },
+  { id: 'html', label: '原生标签', kind: 'img', src: htmlLogo, enabled: true },
   { id: 'element-plus', label: 'Element Plus', kind: 'img', src: elementLogo, enabled: true },
-  { id: 'vant', label: 'Vant', kind: 'img', src: vantLogo, enabled: false },
-  { id: null, label: 'ECharts', kind: 'echarts', enabled: false },
+  { id: 'vant', label: 'Vant', kind: 'img', src: vantLogo, enabled: true },
   { id: null, label: 'iView', kind: 'img', src: iviewLogo, enabled: false },
   { id: null, label: 'Quasar', kind: 'img', src: quasarLogo, enabled: false },
+  { id: null, label: 'ECharts', kind: 'echarts', enabled: false },
   { id: 'ant-design-vue', label: 'Ant Design Vue', kind: 'img', src: antdLogo, enabled: false },
 ];
 
 const activeBrand = ref<LibraryId>('element-plus');
 const activeGroup = ref<string | null>(null);
+const initialGroup = buildSampleGroups('element-plus')[0];
+activeGroup.value = initialGroup?.specKey ?? null;
 const scroller = ref<HTMLElement | null>(null);
 
 const groups = computed<SampleGroup[]>(() => buildSampleGroups(activeBrand.value));
@@ -47,7 +50,8 @@ const totalComponents = computed(() => {
 function selectBrand(brand: Brand) {
   if (!brand.enabled || !brand.id) return;
   activeBrand.value = brand.id;
-  activeGroup.value = null;
+  const first = buildSampleGroups(brand.id)[0];
+  activeGroup.value = first?.specKey ?? null;
   scroller.value?.scrollTo({ top: 0 });
 }
 
@@ -160,30 +164,31 @@ function onDragStart(event: DragEvent, node: SceneNode) {
 
 /* ---- 品牌列 ---- */
 .brand-bar {
-  width: 56px;
-  flex: 0 0 56px;
+  width: 58px;
+  flex: 0 0 58px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-right: 1px solid #f0f0f0;
-  padding-top: 8px;
 }
 
 .brand {
-  width: 46px;
-  height: 46px;
-  margin: 3px 0;
+  width: 54px;
+  height: 54px;
+  padding: 10px;
+  margin: 0;
   border: 0;
-  border-radius: 5px;
+  border-radius: 0;
   background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 0;
   cursor: pointer;
 }
 
 .brand:hover {
-  background: #f5f7fa;
+  background: #ecf5ff;
 }
 
 .brand.is-active {
@@ -194,20 +199,22 @@ function onDragStart(event: DragEvent, node: SceneNode) {
 
 .brand.is-disabled {
   cursor: not-allowed;
-  opacity: 0.55;
 }
 
 .brand__logo {
   width: 34px;
   height: 34px;
+  border-radius: 5px;
   object-fit: contain;
 }
 
 .brand__rainbow {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: conic-gradient(#e74c3c, #f39c12, #2ecc71, #3498db, #9b59b6, #e74c3c);
+  background: conic-gradient(from 200deg, #2ec7c9, #34a853, #fbbc05, #ea4335, #9b59b6, #2ec7c9);
+  -webkit-mask: radial-gradient(circle, transparent 34%, #000 35%);
+  mask: radial-gradient(circle, transparent 34%, #000 35%);
 }
 
 .brand-bar__bottom {
@@ -215,45 +222,56 @@ function onDragStart(event: DragEvent, node: SceneNode) {
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
-  padding-bottom: 12px;
+  padding: 20px 0;
   position: relative;
 }
 
 .brand-bar__title {
   position: absolute;
-  left: 2px;
-  bottom: 40px;
+  left: -17px;
+  bottom: 20px;
+  height: 80px;
+  line-height: 80px;
   transform: rotate(-90deg) translateY(29px);
-  transform-origin: 0 50%;
+  transform-origin: 0% 50%;
   white-space: nowrap;
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 700;
   color: #4dba87;
   pointer-events: none;
 }
 
 .brand-bar__help {
-  font-size: 18px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #4dba87;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
   font-weight: 700;
-  color: #4dba87;
+  line-height: 1;
   cursor: pointer;
 }
 
 /* ---- 分类导航 ---- */
 .category-nav {
-  width: 165px;
-  flex: 0 0 165px;
+  width: 141px;
+  flex: 0 0 141px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #f0f0f0;
 }
 
 .category-nav__hint {
-  padding: 8px 10px;
+  height: 63px;
+  padding: 8px 10px 0;
   text-align: center;
   font-size: 12px;
+  line-height: 18px;
   color: gray;
-  border-bottom: 1px solid #f5f5f5;
 }
 
 .category-nav__list {
@@ -262,9 +280,11 @@ function onDragStart(event: DragEvent, node: SceneNode) {
 }
 
 .category {
-  padding: 8px 12px;
-  border-left: 3px solid transparent;
+  width: 130px;
+  padding: 10px 15px;
+  line-height: 22px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .category:hover {
@@ -272,26 +292,28 @@ function onDragStart(event: DragEvent, node: SceneNode) {
 }
 
 .category.is-active {
-  background: #f2f2f2;
-  border-left-color: #13ce66;
+  border-right: 3px solid #13ce66;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 12%), 0 0 6px rgb(0 0 0 / 4%);
 }
 
 .category__zh {
-  font-size: 14px;
-  color: #303133;
+  font-size: 16px;
+  line-height: 25px;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 .category__en {
   font-size: 12px;
-  color: #909399;
+  line-height: 19px;
+  color: #808080;
 }
 
 /* ---- 示例区 ---- */
 .sample-pane {
   flex: 1;
-  min-width: 320px;
+  min-width: 0;
   overflow-y: auto;
-  padding: 8px 10px 40px;
+  padding: 6px 14px 40px 10px;
 }
 
 .group + .group {
@@ -304,9 +326,8 @@ function onDragStart(event: DragEvent, node: SceneNode) {
   gap: 6px;
   font-size: 13px;
   color: #606266;
-  padding: 4px 0;
+  padding: 0 0 4px 8px;
   border-left: 3px solid #13ce66;
-  padding-left: 8px;
   margin-bottom: 6px;
 }
 

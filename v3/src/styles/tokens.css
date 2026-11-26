@@ -43,5 +43,6 @@ body {
   font-family: var(--vcc-font);
   color: var(--vcc-text);
   background: var(--vcc-bg);
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.5715;
 }
