@@ -10,6 +10,8 @@ beforeEach(() => {
   installBuiltinSpecs();
   setActivePinia(createPinia());
   window.history.replaceState(null, '', '/');
+  // 这些用例针对空画布，先把初始欢迎内容清掉
+  useEditorStore().reset(createEmptyDocument('test'));
 });
 
 function firstChild(store: ReturnType<typeof useEditorStore>): ElementNode {

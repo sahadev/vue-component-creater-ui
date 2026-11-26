@@ -42,7 +42,8 @@ describe('CanvasRoot', () => {
     const button = wrapper.find('[data-vcc-id="btn"]');
     expect(button.exists()).toBe(true);
     expect(button.attributes('data-vcc-id')).toBe('btn');
-    expect(wrapper.find('[data-vcc-id="label"]').text()).toBe('保存');
+    // 文本节点不参与命中测试，所以没有 data-vcc-id，只验证内容渲染出来了
+    expect(wrapper.text()).toContain('保存');
     expect(wrapper.find('[data-vcc-id="root"]').exists()).toBe(true);
   });
 

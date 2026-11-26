@@ -9,3 +9,19 @@ export function createIdFactory(prefix = ''): () => string {
 }
 
 export const newNodeId: () => string = createIdFactory();
+
+/** 深拷贝节点并给整棵子树换新 id */
+export function cloneWithFreshIds<T extends { id: string; children?: unknown[] }>(node: T): T {
+  const copy = structuredClone(node);
+  const walk = (target: { id: string; children?: unknown[] }) => {
+    target.id = newNodeId();
+    const children = target.children;
+    if (Array.isArray(children)) {
+      for (const child of children) {
+        if (child && typeof child === 'object') walk(child as { id: string; children?: unknown[] });
+      }
+    }
+  };
+  walk(copy);
+  return copy;
+}

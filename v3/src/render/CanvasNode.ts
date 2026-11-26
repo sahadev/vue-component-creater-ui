@@ -1,4 +1,4 @@
-import { h, type VNode } from 'vue';
+import { h, resolveDynamicComponent, type Component, type VNode } from 'vue';
 import type { SceneNode } from '../core/types';
 import { toCanvasProps } from './canvas-props';
 
@@ -23,13 +23,20 @@ export function renderCanvasNode(node: SceneNode, state: CanvasRenderState): VNo
   }
 
   if (node.kind === 'text') {
-    return h('span', { ...marks, class: 'vcc-text' }, node.text);
+    // 文本不参与命中测试：点它应该选中父节点，文本内容在属性面板里以 __text__ 编辑，
+    // 与旧版语义一致（旧版把文本存在父节点的 __text__ 属性上）。
+    return h('span', { class: 'vcc-text' }, node.text);
   }
 
   const children = node.children.map((child) => renderCanvasNode(child, state));
-  return h(
-    node.tag,
-    { ...toCanvasProps(node), ...marks },
-    children.length > 0 ? children : undefined,
-  );
+  // 注意：h() 收到字符串 tag 时只会创建原生元素，不会去查已注册组件。
+  // 必须走 resolveDynamicComponent，否则所有组件库组件都会退化成未知自定义元素。
+  const component = (resolveDynamicComponent(node.tag) ?? node.tag) as string | Component;
+  const props = { ...toCanvasProps(node), ...marks };
+
+  // 原生元素吃 VNode 数组；组件必须吃 slots 对象，否则数组会被当成 slot 的值。
+  if (typeof component === 'string') {
+    return h(component, props, children.length > 0 ? children : undefined);
+  }
+  return h(component, props, children.length > 0 ? { default: () => children } : undefined);
 }

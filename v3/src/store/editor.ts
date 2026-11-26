@@ -8,10 +8,7 @@ import { defineStore } from 'pinia';
 import { computed, ref, shallowRef } from 'vue';
 import type { NodePath, PropRecord, SceneNode, VccDocument } from '../core/types';
 import { isContainer } from '../core/types';
-import {
-  createEmptyDocument,
-  syncUrl,
-} from '../core/document';
+import { createStarterDocument, syncUrl } from '../core/document';
 import {
   findPath,
   getNode,
@@ -23,18 +20,12 @@ import {
   updateText,
 } from '../core/tree';
 import { normalizeAttrs } from '../core/attrs';
-import { newNodeId } from '../core/ids';
+import { cloneWithFreshIds } from '../core/ids';
 
 const HISTORY_LIMIT = 100;
 
-/** 深拷贝出来的节点必须换新 id，否则选中和查找会撞 */
-function reassignIds(node: SceneNode): void {
-  node.id = newNodeId();
-  if (isContainer(node)) node.children.forEach(reassignIds);
-}
-
 export const useEditorStore = defineStore('editor', () => {
-  const doc = shallowRef<VccDocument>(createEmptyDocument());
+  const doc = shallowRef<VccDocument>(createStarterDocument());
   const selectedId = ref<string | null>(null);
   const viewportWidth = ref(375);
   const hoverId = ref<string | null>(null);
@@ -152,9 +143,7 @@ export const useEditorStore = defineStore('editor', () => {
   function duplicate(id: string): string | null {
     const path = findPath(doc.value, id);
     if (!path || path.length === 0) return null;
-    const source = getNode(doc.value, path);
-    const copy = structuredClone(source);
-    reassignIds(copy);
+    const copy = cloneWithFreshIds(getNode(doc.value, path) as SceneNode & { children?: unknown[] }) as SceneNode;
     commit(insertNode(doc.value, path.slice(0, -1), path[path.length - 1]! + 1, copy));
     selectedId.value = copy.id;
     return copy.id;

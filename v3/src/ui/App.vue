@@ -121,7 +121,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 }
 
 .base-component-container {
-  flex: 0 0 240px;
+  flex: 0 0 700px;
   background: white;
   border-right: 1px solid #f0f0f0;
 }
@@ -144,17 +144,32 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 }
 
 .render-control-panel {
+  position: relative;
   height: 100%;
   width: 100%;
   overflow: auto;
   box-sizing: border-box;
-  background-color: white;
+  background-color: #f5f5f5;
   padding: 10px;
   transition: width 1s;
 }
 
 .render-control-panel[data-width='mobile'] {
   width: 375px;
+  background-color: #fff;
+}
+
+/* 编辑区水印，和原版一致 */
+.render-control-panel::after {
+  content: '编辑区域';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  font-size: 40px;
+  color: #d6d6d6;
+  pointer-events: none;
 }
 
 .fullscreen {

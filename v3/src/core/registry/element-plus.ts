@@ -91,6 +91,7 @@ export const elementPlusSpecs: ComponentSpec[] = [
     name: '选项',
     category: '表单',
     acceptsChildren: false,
+    standalone: false,
     props: [
       { key: 'label', label: '文案', editor: 'text', default: '选项' },
       { key: 'value', label: '值', editor: 'text', default: '1' },

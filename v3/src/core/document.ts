@@ -12,6 +12,35 @@ export const DOC_QUERY_KEY = 'd';
 export const VIEWPORT_QUERY_KEY = 'w';
 export const MAX_URL_LENGTH = 12000;
 
+/** 初始画布：和原版一致的三行欢迎内容，直接渲染在编辑区里 */
+export function createStarterDocument(): VccDocument {
+  return {
+    version: 1,
+    name: 'untitled',
+    root: {
+      kind: 'element',
+      id: newNodeId(),
+      tag: 'div',
+      props: {},
+      children: [
+        { kind: 'text', id: newNodeId(), text: 'Hello，欢迎使用LCG，请往此区域拖拽组件\n' },
+        { kind: 'text', id: newNodeId(), text: '这里的值声明于预设JS代码\n' },
+        {
+          kind: 'component',
+          id: newNodeId(),
+          library: 'element-plus',
+          tag: 'el-button',
+          props: { type: 'danger', size: 'small' },
+          children: [
+            { kind: 'text', id: newNodeId(), text: '开启预览模式后,点击我显示预设逻辑' },
+          ],
+        },
+      ],
+    },
+    styles: [],
+  };
+}
+
 export function createEmptyDocument(name = 'untitled'): VccDocument {
   return {
     version: 1,

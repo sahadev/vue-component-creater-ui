@@ -4,6 +4,7 @@ import { useEditorStore } from '../store/editor';
 import { findSpec, type PropEditor } from '../core/registry';
 import { formatFreeFormText, parseFreeFormText } from '../core/attrs';
 import { findPath, getNode } from '../core/tree';
+import { newNodeId } from '../core/ids';
 import type { PropValue } from '../core/types';
 
 const props = withDefaults(
@@ -29,6 +30,14 @@ interface Field {
   options?: { label: string; value: PropValue }[];
 }
 
+/** 组件/元素上的文本内容，按旧版习惯当成 __text__ 属性 */
+const textChild = computed(() => {
+  const current = node.value;
+  if (!current || current.kind === 'text') return null;
+  const child = current.children.find((item) => item.kind === 'text');
+  return child && child.kind === 'text' ? child : null;
+});
+
 const fields = computed<Field[]>(() => {
   const current = node.value;
   if (!current || current.kind === 'text') return [];
@@ -43,11 +52,16 @@ const fields = computed<Field[]>(() => {
     options: prop.options,
   }));
 
+  // props 里存在但 schema 没声明的，原样列出来，免得改不回来
   const undeclared: Field[] = Object.keys(current.props)
     .filter((key) => !schemaKeys.has(key))
     .map((key) => ({ key, label: key, editor: 'text' as PropEditor }));
 
-  return [...declared, ...undeclared];
+  const textField: Field[] = textChild.value
+    ? [{ key: '__text__', label: '__text__', editor: 'textarea' as PropEditor }]
+    : [];
+
+  return [...textField, ...declared, ...undeclared];
 });
 
 const freeMode = ref(false);
@@ -74,6 +88,7 @@ function readValue(key: string): PropValue | undefined {
 }
 
 function readText(key: string): string {
+  if (key === '__text__') return textChild.value?.text ?? '';
   const value = readValue(key);
   if (value === undefined) return '';
   return typeof value === 'string' ? value : JSON.stringify(value);
@@ -82,6 +97,10 @@ function readText(key: string): string {
 function commit(key: string, raw: unknown, editor: PropEditor) {
   const current = node.value;
   if (!current) return;
+  if (key === '__text__') {
+    if (textChild.value) store.setText(textChild.value.id, String(raw));
+    return;
+  }
   if (editor !== 'expr' && editor !== 'boolean' && raw === '') {
     store.updateProps(current.id, { [key]: undefined } as never);
     return;
@@ -89,15 +108,23 @@ function commit(key: string, raw: unknown, editor: PropEditor) {
   store.updateProps(current.id, { [key]: raw as PropValue });
 }
 
+function removeAttr(key: string) {
+  const current = node.value;
+  if (!current) return;
+  if (key === '__text__') {
+    if (textChild.value) store.removeById(textChild.value.id);
+    return;
+  }
+  store.updateProps(current.id, { [key]: undefined } as never);
+}
+
 function save() {
   const current = node.value;
   if (!current) return;
-
   if (current.kind === 'text') {
     if (current.text !== textValue.value) store.setText(current.id, textValue.value);
     return;
   }
-
   if (freeMode.value) {
     store.applyAttrs(current.id, parseFreeFormText(freeText.value));
   }
@@ -122,9 +149,27 @@ function remove() {
   if (current) store.removeById(current.id);
 }
 
-function copyBrother() {
+/** 快捷属性：原版那三个绿 tag */
+const quickAttrs = computed(() => {
   const current = node.value;
-  if (current) store.duplicate(current.id);
+  if (!current || current.kind === 'text') return [];
+  const keys = Object.keys(current.props);
+  const candidates = [
+    { key: 'class', label: 'Class' },
+    { key: '@click', label: '点击事件' },
+    { key: '__text__', label: '文本内容' },
+  ].filter((item) => item.key !== '__text__' || !textChild.value);
+  return candidates.filter((item) => !keys.includes(item.key));
+});
+
+function addQuickAttr(key: string) {
+  const current = node.value;
+  if (!current) return;
+  if (key === '__text__') {
+    store.appendChildOf(current.id, { kind: 'text', id: newNodeId(), text: '' });
+    return;
+  }
+  store.updateProps(current.id, { [key]: '' });
 }
 
 function isTypingTarget(target: EventTarget | null): boolean {
@@ -149,10 +194,6 @@ function onKeydown(event: KeyboardEvent) {
     if (isTypingTarget(event.target)) return;
     event.preventDefault();
     remove();
-  } else if (key === 'c') {
-    if (isTypingTarget(event.target)) return;
-    event.preventDefault();
-    copyBrother();
   }
 }
 
@@ -162,26 +203,18 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 
 <template>
   <el-card v-if="node" class="attr-card" :class="{ 'attr-card--compact': props.compact }" shadow="never">
-    <div class="attr-head">
-      <span class="attr-name">{{ spec?.name ?? (node.kind === 'text' ? '文本' : node.tag) }}</span>
-      <code class="attr-tag">{{ node.kind === 'text' ? 'text' : node.tag }}</code>
-    </div>
-
     <div class="attr-switch">
-      <el-switch
-        v-model="freeMode"
-        active-text="自由编辑"
-        inactive-text="约束编辑"
-        active-color="#13ce66"
-        inactive-color="#13ce66"
-      />
+      <span class="attr-switch__label">约束编辑</span>
+      <el-switch v-model="freeMode" active-color="#13ce66" inactive-color="#13ce66" size="small" />
+      <span class="attr-switch__label">自由编辑</span>
     </div>
 
     <div v-if="node.kind === 'text'" class="attr-body">
-      <label class="field">
-        <span class="field__label">文本</span>
-        <textarea v-model="textValue" class="field__input" rows="4" @change="save" />
-      </label>
+      <div class="row">
+        <span class="row__key">__text__</span>
+        <span class="row__colon">:</span>
+        <textarea v-model="textValue" class="row__value" rows="3" @change="save" />
+      </div>
     </div>
 
     <div v-else-if="freeMode" class="attr-body">
@@ -189,19 +222,18 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
         v-model="freeText"
         type="textarea"
         :autosize="{ minRows: 6 }"
-        placeholder="请输入属性, 以 key: value 的形式（每行一条）"
+        placeholder="请输入属性, 以 key: value 的形式（每行一条，冒号后要有空格）"
       />
     </div>
 
     <div v-else class="attr-body">
-      <label v-for="field in fields" :key="field.key" class="field">
-        <span class="field__label">
-          {{ field.label }}
-          <code v-if="field.label !== field.key" class="field__key">{{ field.key }}</code>
-        </span>
+      <div v-for="field in fields" :key="field.key" class="row">
+        <span class="row__key">{{ field.key }}</span>
+        <span class="row__colon">:</span>
 
         <el-select
           v-if="field.editor === 'select'"
+          class="row__value"
           :model-value="String(readValue(field.key) ?? '')"
           size="small"
           @update:model-value="commit(field.key, $event, field.editor)"
@@ -209,48 +241,75 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
           <el-option
             v-for="option in field.options"
             :key="String(option.value)"
-            :label="option.label"
+            :label="String(option.value) || option.label"
             :value="String(option.value)"
           />
         </el-select>
 
-        <el-switch
-          v-else-if="field.editor === 'boolean'"
-          :model-value="readValue(field.key) === true"
-          size="small"
-          @update:model-value="commit(field.key, $event, field.editor)"
-        />
+        <div v-else-if="field.editor === 'boolean'" class="row__value row__value--center">
+          <el-switch
+            :model-value="readValue(field.key) === true"
+            size="small"
+            @update:model-value="commit(field.key, $event, field.editor)"
+          />
+        </div>
 
         <el-input-number
           v-else-if="field.editor === 'number'"
+          class="row__value"
           :model-value="Number(readValue(field.key) ?? 0)"
           :controls="false"
           size="small"
           @update:model-value="commit(field.key, $event ?? 0, field.editor)"
         />
 
-        <el-input
+        <textarea
           v-else-if="field.editor === 'textarea'"
-          :model-value="readText(field.key)"
-          type="textarea"
-          :rows="3"
-          size="small"
-          @update:model-value="commit(field.key, $event, field.editor)"
+          class="row__value"
+          rows="2"
+          :value="readText(field.key)"
+          @change="commit(field.key, ($event.target as HTMLTextAreaElement).value, field.editor)"
         />
 
-        <el-input
+        <input
           v-else
-          :model-value="readText(field.key)"
-          size="small"
-          :placeholder="field.editor === 'expr' ? 'Vue 表达式，如 form.name' : ''"
-          @update:model-value="commit(field.key, $event, field.editor)"
+          class="row__value row__value--input"
+          type="text"
+          :value="readText(field.key)"
+          :placeholder="field.editor === 'expr' ? '如 {{ showValue }} 或 form.name' : ''"
+          @change="commit(field.key, ($event.target as HTMLInputElement).value, field.editor)"
         />
-      </label>
 
-      <div v-if="addOpen" class="attr-add">
-        <el-input v-model="newKey" size="small" placeholder="key" />
-        <el-input v-model="newValue" size="small" placeholder="value" @keyup.enter="commitNew" />
-        <el-button size="small" type="primary" @click="commitNew">加</el-button>
+        <button type="button" class="row__remove" title="删除该属性" @click="removeAttr(field.key)">
+          −
+        </button>
+      </div>
+
+      <div v-if="addOpen" class="row">
+        <input v-model="newKey" class="row__key row__key--input" placeholder="key" />
+        <span class="row__colon">:</span>
+        <input
+          v-model="newValue"
+          class="row__value row__value--input"
+          placeholder="value"
+          @keyup.enter="commitNew"
+        />
+        <button type="button" class="row__remove" @click="commitNew">✓</button>
+      </div>
+
+      <div v-if="quickAttrs.length > 0" class="quick">
+        <div class="quick__hint">快速增加一些属性:</div>
+        <div class="quick__tags">
+          <button
+            v-for="item in quickAttrs"
+            :key="item.key"
+            type="button"
+            class="quick__tag"
+            @click="addQuickAttr(item.key)"
+          >
+            {{ item.label }}
+          </button>
+        </div>
       </div>
     </div>
 
@@ -267,27 +326,20 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
       </el-tooltip>
       <el-tooltip effect="dark" content="移除该组件 ctrl+d" placement="bottom">
         <el-button type="danger" circle size="small" @click="remove">
-          <span class="glyph">×</span>
-        </el-button>
-      </el-tooltip>
-      <el-tooltip effect="dark" content="复制一个兄弟组件 ctrl+c" placement="bottom">
-        <el-button type="primary" circle size="small" @click="copyBrother">
-          <span class="glyph">⧉</span>
+          <span class="glyph">🗑</span>
         </el-button>
       </el-tooltip>
     </div>
     <p class="attr-hint">支持快捷键操作</p>
   </el-card>
 
-  <el-card v-else class="attr-card attr-card--empty" shadow="never">
-    请先选中要编辑的组件
-  </el-card>
+  <el-card v-else class="attr-card attr-card--empty" shadow="never">请先选中要编辑的组件</el-card>
 </template>
 
 <style scoped>
 .attr-card {
   border-radius: 10px;
-  border: 1px solid var(--vcc-border);
+  border: 1px solid #ebeef5;
 }
 
 .attr-card--compact {
@@ -303,79 +355,160 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--vcc-gap);
-  padding-bottom: var(--vcc-gap);
-  border-bottom: 1px solid var(--vcc-border);
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .attr-name {
   font-weight: 600;
 }
 
-.attr-tag,
-.field__key {
+.attr-tag {
   font-family: var(--vcc-mono);
   font-size: 11px;
-  color: var(--vcc-text-weak);
+  color: #a8abb2;
 }
 
 .attr-switch {
-  text-align: center;
-  padding: var(--vcc-gap) 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 0;
+  color: #409eff;
+  font-size: 13px;
+}
+
+.attr-switch__label {
+  color: #409eff;
 }
 
 .attr-body {
   display: flex;
   flex-direction: column;
-  gap: var(--vcc-gap);
+  gap: 8px;
 }
 
-.field {
+.row {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: flex-start;
+  gap: 6px;
 }
 
-.field__label {
+.row__key {
+  flex: 0 0 84px;
+  font-family: var(--vcc-mono);
   font-size: 12px;
-  color: var(--vcc-text-weak);
-  display: flex;
-  justify-content: space-between;
+  color: #606266;
+  text-align: right;
+  padding-top: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
 }
 
-.field__input {
-  width: 100%;
-  border: 1px solid var(--vcc-border);
-  border-radius: var(--vcc-radius-sm);
-  padding: 6px 8px;
+.row__key--input {
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  padding: 4px 6px;
+  text-align: left;
+}
+
+.row__colon {
+  padding-top: 6px;
+  color: #909399;
+}
+
+.row__value {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-family: var(--vcc-mono);
+  font-size: 12px;
+  color: #303133;
+  background: #fff;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.row__value:focus {
+  outline: none;
+  border-color: #13ce66;
+}
+
+.row__value--input {
+  height: 30px;
+}
+
+.row__value--center {
+  border: 0;
+  padding: 4px 0;
+}
+
+.row__remove {
+  flex: 0 0 20px;
+  border: 0;
+  background: transparent;
+  color: #909399;
+  font-size: 14px;
+  line-height: 30px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.row__remove:hover {
+  color: #f56c6c;
+}
+
+.quick {
+  border: 1px dashed #dcdfe6;
+  border-radius: 4px;
+  padding: 8px;
+  color: #909399;
+  font-size: 12px;
+}
+
+.quick__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.quick__tag {
+  border: 1px solid #13ce66;
+  border-radius: 4px;
+  background: #fff;
+  color: #13ce66;
   font-family: inherit;
   font-size: 12px;
-  color: var(--vcc-text);
-  resize: vertical;
+  padding: 1px 6px;
+  cursor: pointer;
 }
 
-.attr-add {
-  display: flex;
-  gap: 4px;
-  align-items: center;
+.quick__tag:hover {
+  background: #f0fbf5;
 }
 
 .attr-actions {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: var(--vcc-gap-lg);
+  gap: 14px;
+  margin-top: 14px;
 }
 
 .glyph {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1;
 }
 
 .attr-hint {
   text-align: center;
   font-size: 11px;
-  color: var(--vcc-text-weak);
-  margin: var(--vcc-gap) 0 0;
+  color: #909399;
+  margin: 6px 0 0;
 }
 </style>

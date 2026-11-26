@@ -7,6 +7,7 @@ import { findPath, getNode } from '../core/tree';
 import { modeFromPointer, resolveDrop } from '../core/drop';
 import { DND_MIME, readPayload } from './dnd';
 import { createNodeFromSpec, getSpec } from '../core/registry';
+import { cloneWithFreshIds } from '../core/ids';
 import type { LibraryId, NodePath } from '../core/types';
 
 const store = useEditorStore();
@@ -77,6 +78,11 @@ function onDrop(event: DragEvent) {
     return;
   }
 
+  if (payload.type === 'template') {
+    store.insertAt(parentPath, index, cloneWithFreshIds(payload.node));
+    return;
+  }
+
   const parentNode = getNode(store.doc, parentPath);
   store.moveNode(payload.id, parentNode.id, index);
 }
@@ -104,8 +110,7 @@ function onClick(event: MouseEvent) {
 <style scoped>
 .vcc-canvas {
   min-height: 100%;
-  background: #fff;
-  padding: 16px;
+  padding: 10px;
   position: relative;
 }
 
@@ -124,21 +129,29 @@ function onClick(event: MouseEvent) {
 }
 
 .vcc-canvas :deep([data-vcc-selected='true']) {
-  outline: 2px solid var(--vcc-accent) !important;
+  outline: 2px solid #13ce66 !important;
   outline-offset: -2px;
 }
 
+/* 空容器在画布上要看得见，否则拖进去的东西像丢了 */
+.vcc-canvas :deep([data-vcc-id]:empty) {
+  min-height: 24px;
+  min-width: 40px;
+  outline: 1px dashed #c0c4cc;
+  outline-offset: -1px;
+}
+
 .vcc-canvas :deep([data-vcc-drop='into']) {
-  outline: 2px solid var(--vcc-accent) !important;
-  background: color-mix(in srgb, var(--vcc-accent) 6%, transparent);
+  outline: 2px solid #13ce66 !important;
+  background: color-mix(in srgb, #13ce66 8%, transparent);
 }
 
 .vcc-canvas :deep([data-vcc-drop='before']) {
-  box-shadow: inset 0 3px 0 var(--vcc-accent);
+  box-shadow: inset 0 3px 0 #13ce66;
 }
 
 .vcc-canvas :deep([data-vcc-drop='after']) {
-  box-shadow: inset 0 -3px 0 var(--vcc-accent);
+  box-shadow: inset 0 -3px 0 #13ce66;
 }
 
 .vcc-canvas :deep([data-vcc-locked='true']) {

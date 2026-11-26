@@ -68,7 +68,6 @@ function selectRow(id: string) {
                 @click="selectRow(row.id)"
               >
                 <span class="tree__label">{{ row.label }}</span>
-                <code class="tree__tag">{{ row.node.kind === 'text' ? 'text' : row.node.tag }}</code>
               </button>
             </li>
           </ul>

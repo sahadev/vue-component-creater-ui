@@ -22,19 +22,21 @@ const emit = defineEmits<{
       </div>
 
       <div class="tools-cell">
-        <button type="button" class="link" @click="emit('togglePreview')">
-          {{ props.previewMode ? 'Desktop' : 'Mobile' }} Mode
+        <button type="button" class="link link--stack" @click="emit('togglePreview')">
+          <span>{{ props.previewMode ? 'Desktop' : 'Mobile' }}</span>
+          <span>Mode</span>
         </button>
       </div>
 
       <div class="tools-cell">
         <button
           type="button"
-          class="link"
+          class="link link--stack"
           :class="{ 'link--danger': !props.editMode }"
           @click="emit('toggleEdit')"
         >
-          {{ props.editMode ? 'View' : 'Edit' }} Mode
+          <span>{{ props.editMode ? 'View' : 'Edit' }}</span>
+          <span>Mode</span>
         </button>
       </div>
 
@@ -81,7 +83,7 @@ const emit = defineEmits<{
 <style scoped>
 .top-tools-bar {
   position: relative;
-  padding: 8px 10px;
+  padding: 12px 14px;
   font-size: 14px;
   font-weight: 500;
   color: #606266;
@@ -91,14 +93,23 @@ const emit = defineEmits<{
 
 .tools-row {
   display: flex;
-  align-items: center;
-  gap: 22px;
+  align-items: flex-start;
+  gap: 46px;
+  font-size: 15px;
 }
 
 .tools-cell {
   display: flex;
-  gap: 6px;
+  flex-direction: column;
+  gap: 2px;
   white-space: nowrap;
+}
+
+.link--stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.25;
 }
 
 .tools-cell--wide {
@@ -106,7 +117,7 @@ const emit = defineEmits<{
 }
 
 .tools-cell--end {
-  margin-right: 48px;
+  margin-right: 46px;
 }
 
 .link {
@@ -129,17 +140,13 @@ const emit = defineEmits<{
 }
 
 .star {
-  font-size: 13px;
-  color: #606266;
+  font-size: 14px;
+  color: #409eff;
   text-decoration: none;
-  border: 1px solid var(--vcc-border);
-  border-radius: 4px;
-  padding: 2px 8px;
 }
 
 .star:hover {
-  border-color: #4dba87;
-  color: #4dba87;
+  text-decoration: underline;
 }
 
 .github-corner {

@@ -29,6 +29,12 @@ export interface ComponentSpec {
   defaultProps?: PropRecord;
   /** 拖入时是否自动带一个子文本节点 */
   defaultText?: string;
+  /**
+   * 能否脱离父组件单独渲染。
+   * el-option 这类必须在 el-select 里，单独渲染会直接抛错，
+   * 所以示例区会跳过它们。
+   */
+  standalone?: boolean;
 }
 
 export type SpecKey = `${LibraryId}:${string}`;

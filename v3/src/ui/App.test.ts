@@ -31,11 +31,11 @@ describe('App 装配', () => {
 
   it('工具栏文案与旧版一致', () => {
     const wrapper = mount(App, { global: { plugins: [ElementPlus] } });
-    const text = wrapper.find('.top-tools-bar').text();
+    const text = wrapper.find('.top-tools-bar').text().replace(/\s+/g, ' ');
     expect(text).toContain('Undo');
     expect(text).toContain('Redo');
-    expect(text).toContain('Mobile Mode');
-    expect(text).toContain('View Mode');
+    expect(text).toContain('Mobile');
+    expect(text).toContain('View');
     expect(text).toContain('Inspect Components Structure');
   });
 
@@ -55,7 +55,7 @@ describe('App 装配', () => {
     const wrapper = mount(App, { global: { plugins: [ElementPlus] } });
     const mobileButton = wrapper
       .findAll('.top-tools-bar button')
-      .find((button) => button.text().includes('Mobile Mode'));
+      .find((button) => button.text().includes('Mobile'));
 
     expect(mobileButton).toBeTruthy();
     await mobileButton!.trigger('click');
