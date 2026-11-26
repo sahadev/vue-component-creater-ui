@@ -51,14 +51,21 @@
 cd v3
 pnpm install
 pnpm dev        # http://localhost:5173
-pnpm test       # 50 个用例，含真实挂载渲染
+pnpm test       # 54 个用例，含真实挂载渲染与整界面冒烟
 pnpm typecheck
 pnpm build
 ```
 
+## 界面
+
+界面沿用旧版布局：左侧组件库图标列 + 分类导航 + 组件列表，顶部 Undo/Redo / Mobile Mode / View Mode / Inspect Components Structure，右侧滑出式属性面板（自由编辑 / 约束编辑双模式 + 新增 / 保存 / 移除 / 复制兄弟四个动作），右下角 Vue / JS / 代码 / 清空四个浮圆，结构检视图从底部弹出。
+
+有一处没搬：旧的「二次编辑 Vue 代码」入口本质是把代码文本解析回结构，在新引擎里要反过来做成「导入代码生成结构」，目前点了只给说明。
+
 ## 尚未接入
 
 - 行内文本编辑、绝对定位/自由布局
+- Vue 代码导入（反向解析）
 - Ant Design Vue 与 Vant 的组件表（registry 已支持多库，只是还没录）
 - 样式面板（数据结构 `styles` 已就位，codegen 已能输出）
 - 组件级自定义属性（`static` 区之外的表达式面板）

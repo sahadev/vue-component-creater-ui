@@ -76,3 +76,35 @@ export function attrsFromProps(props: PropRecord): AttrEntry[] {
     value: typeof value === 'string' ? value : JSON.stringify(value),
   }));
 }
+
+/**
+ * 解析自由编辑模式的文本：每行一条 `key: value`。
+ * 认第一个「: 」而不是第一个冒号，避免把 style 里的值切断。
+ */
+export function parseFreeFormText(text: string): AttrEntry[] {
+  const entries: AttrEntry[] = [];
+  for (const rawLine of text.split('\n')) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith('#')) continue;
+    const separator = line.indexOf(':');
+    if (separator === -1) {
+      // 允许多个空格分隔，退而求其次
+      const loose = line.split(/\s{2,}/);
+      if (loose.length >= 2 && loose[0]) {
+        entries.push({ key: loose[0], value: loose.slice(1).join(' ') });
+      }
+      continue;
+    }
+    const key = line.slice(0, separator).trim();
+    const value = line.slice(separator + 1).trim();
+    if (key) entries.push({ key, value });
+  }
+  return entries;
+}
+
+/** 自由编辑模式的初始文本 */
+export function formatFreeFormText(props: PropRecord): string {
+  return Object.entries(props)
+    .map(([key, value]) => `${key}: ${typeof value === 'string' ? value : JSON.stringify(value)}`)
+    .join('\n');
+}

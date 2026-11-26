@@ -23,8 +23,15 @@ import {
   updateText,
 } from '../core/tree';
 import { normalizeAttrs } from '../core/attrs';
+import { newNodeId } from '../core/ids';
 
 const HISTORY_LIMIT = 100;
+
+/** 深拷贝出来的节点必须换新 id，否则选中和查找会撞 */
+function reassignIds(node: SceneNode): void {
+  node.id = newNodeId();
+  if (isContainer(node)) node.children.forEach(reassignIds);
+}
 
 export const useEditorStore = defineStore('editor', () => {
   const doc = shallowRef<VccDocument>(createEmptyDocument());
@@ -141,6 +148,18 @@ export const useEditorStore = defineStore('editor', () => {
     commit(updateText(doc.value, path, text));
   }
 
+  /** 复制一个兄弟节点，插在原节点之后 */
+  function duplicate(id: string): string | null {
+    const path = findPath(doc.value, id);
+    if (!path || path.length === 0) return null;
+    const source = getNode(doc.value, path);
+    const copy = structuredClone(source);
+    reassignIds(copy);
+    commit(insertNode(doc.value, path.slice(0, -1), path[path.length - 1]! + 1, copy));
+    selectedId.value = copy.id;
+    return copy.id;
+  }
+
   function renameNode(id: string, label: string) {
     const path = findPath(doc.value, id);
     if (!path) return;
@@ -179,6 +198,7 @@ export const useEditorStore = defineStore('editor', () => {
     insertAt,
     appendChildOf,
     removeById,
+    duplicate,
     moveNode,
     updateProps,
     applyAttrs,

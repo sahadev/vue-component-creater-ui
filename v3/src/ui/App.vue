@@ -1,18 +1,31 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useEditorStore } from '../store/editor';
 import Palette from './Palette.vue';
-import Outline from './Outline.vue';
-import Inspector from './Inspector.vue';
 import Toolbar from './Toolbar.vue';
-import CodePanel from './CodePanel.vue';
+import Inspector from './Inspector.vue';
+import FloatingActions from './FloatingActions.vue';
+import CodeDialog from './CodeDialog.vue';
+import JsDialog from './JsDialog.vue';
+import StructureDrawer from './StructureDrawer.vue';
 import Canvas from '../render/Canvas.vue';
+import CanvasRoot from '../render/CanvasRoot';
 
 const store = useEditorStore();
-const codeVisible = ref(false);
 
-const frameWidth = computed(() =>
-  store.viewportWidth > 0 ? `${store.viewportWidth}px` : '100%',
+const previewMode = ref(false);
+const editMode = ref(true);
+const codeVisible = ref(false);
+const jsVisible = ref(false);
+const vueVisible = ref(false);
+const structureVisible = ref(false);
+
+watch(
+  previewMode,
+  (mobile) => {
+    store.setViewportWidth(mobile ? 375 : 0);
+  },
+  { immediate: true },
 );
 
 function isTypingTarget(target: EventTarget | null): boolean {
@@ -31,6 +44,11 @@ function onKeydown(event: KeyboardEvent) {
     return;
   }
 
+  if (event.key === 'Escape' && !editMode.value) {
+    editMode.value = true;
+    return;
+  }
+
   if ((event.key === 'Backspace' || event.key === 'Delete') && !isTypingTarget(event.target)) {
     if (!store.selectedId) return;
     event.preventDefault();
@@ -43,71 +61,125 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown));
 </script>
 
 <template>
-  <div class="app">
-    <Toolbar :code-visible="codeVisible" @toggle-code="codeVisible = !codeVisible" />
-
-    <div class="app__body">
+  <div class="vcc-root">
+    <nav class="base-component-container">
       <Palette />
+    </nav>
 
-      <main class="app__stage">
-        <div class="app__frame" :data-frame-width="frameWidth">
-          <Canvas :key="`${store.viewportWidth}`" />
+    <div class="main-container">
+      <Toolbar
+        :preview-mode="previewMode"
+        :edit-mode="editMode"
+        @undo="store.undo()"
+        @redo="store.redo()"
+        @toggle-preview="previewMode = !previewMode"
+        @toggle-edit="editMode = !editMode"
+        @open-structure="structureVisible = true"
+      />
+
+      <div class="preview-container">
+        <div class="render-control-panel" :data-width="previewMode ? 'mobile' : 'full'">
+          <Canvas />
         </div>
-      </main>
+      </div>
 
-      <CodePanel v-if="codeVisible" class="app__code" />
-      <Outline />
       <Inspector />
+    </div>
+
+    <FloatingActions
+      @open-vue="vueVisible = true"
+      @open-js="jsVisible = true"
+      @open-code="codeVisible = true"
+    />
+
+    <CodeDialog v-model:visible="codeVisible" />
+    <JsDialog v-model:visible="jsVisible" />
+    <StructureDrawer v-model:visible="structureVisible" />
+
+    <el-dialog v-model="vueVisible" title="二次编辑 Vue 代码" width="480px">
+      <p class="vcc-note">
+        旧版这个入口是把粘贴进来的 Vue 代码解析回结构。新引擎里结构才是源头，这条路径要反过来做成「导入代码 →
+        生成结构」，目前还没接入。
+      </p>
+    </el-dialog>
+
+    <div v-if="!editMode" class="fullscreen">
+      <div class="fullscreen__hint">按下 ESC 退出预览模式</div>
+      <div class="fullscreen__canvas">
+        <CanvasRoot :doc="store.doc" :state="{ selectedId: null, dropTargetId: null, dropMode: null }" />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.app {
-  height: 100%;
+.vcc-root {
   display: flex;
-  flex-direction: column;
+  height: 100%;
+  background: #f0f0f0;
   overflow: hidden;
 }
 
-.app__body {
-  flex: 1;
-  display: flex;
-  min-height: 0;
+.base-component-container {
+  flex: 0 0 240px;
+  background: white;
+  border-right: 1px solid #f0f0f0;
 }
 
-.app__stage {
+.main-container {
+  position: relative;
   flex: 1;
   min-width: 0;
-  overflow: auto;
-  padding: var(--vcc-gap-lg);
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+}
+
+.preview-container {
+  flex: 1;
+  min-height: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  background: #f0f0f0;
 }
 
-.app__frame {
+.render-control-panel {
+  height: 100%;
   width: 100%;
-  max-width: 100%;
-  background: var(--vcc-surface);
-  border-radius: var(--vcc-radius);
-  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
-  overflow: hidden;
+  overflow: auto;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 10px;
+  transition: width 1s;
 }
 
-.app__frame[data-frame-width='375px'] {
+.render-control-panel[data-width='mobile'] {
   width: 375px;
-  flex: 0 0 375px;
 }
 
-.app__frame[data-frame-width='768px'] {
-  width: 768px;
-  flex: 0 0 768px;
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  background: white;
+  overflow: auto;
 }
 
-.app__code {
-  width: 420px;
-  flex: 0 0 420px;
-  border-left: 1px solid var(--vcc-border);
+.fullscreen__hint {
+  margin: 20px;
+  font-weight: bold;
+}
+
+.fullscreen__canvas {
+  border: 1px dashed rgb(126 126 128);
+  border-radius: 10px;
+  margin: 20px;
+  padding: 10px;
+}
+
+.vcc-note {
+  line-height: 1.7;
+  color: var(--vcc-text-weak);
+  margin: 0;
 }
 </style>
