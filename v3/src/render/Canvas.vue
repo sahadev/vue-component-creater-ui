@@ -1,0 +1,152 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useEditorStore } from '../store/editor';
+import CanvasRoot from './CanvasRoot';
+import type { DropMode } from './CanvasNode';
+import { findPath, getNode } from '../core/tree';
+import { modeFromPointer, resolveDrop } from '../core/drop';
+import { DND_MIME, readPayload } from './dnd';
+import { createNodeFromSpec, getSpec } from '../core/registry';
+import type { LibraryId, NodePath } from '../core/types';
+
+const store = useEditorStore();
+
+const dropTargetId = ref<string | null>(null);
+const dropMode = ref<DropMode | null>(null);
+const isDraggingOver = ref(false);
+
+const canvasState = computed(() => ({
+  selectedId: store.selectedId,
+  dropTargetId: dropTargetId.value,
+  dropMode: dropMode.value,
+}));
+
+function hitTest(target: EventTarget | null): HTMLElement | null {
+  if (!(target instanceof HTMLElement)) return null;
+  return target.closest('[data-vcc-id]');
+}
+
+function pathOf(el: HTMLElement): NodePath | null {
+  const id = el.dataset.vccId;
+  return id ? findPath(store.doc, id) : null;
+}
+
+function clearDropState() {
+  dropTargetId.value = null;
+  dropMode.value = null;
+  isDraggingOver.value = false;
+}
+
+function onDragOver(event: DragEvent) {
+  if (!event.dataTransfer?.types.includes(DND_MIME)) return;
+  event.preventDefault();
+  isDraggingOver.value = true;
+
+  const el = hitTest(event.target);
+  if (!el) {
+    dropTargetId.value = null;
+    dropMode.value = null;
+    return;
+  }
+  dropTargetId.value = el.dataset.vccId ?? null;
+  dropMode.value = modeFromPointer(el.getBoundingClientRect(), event.clientY);
+}
+
+function onDragLeave(event: DragEvent) {
+  const el = hitTest(event.target);
+  const related = event.relatedTarget;
+  if (el && related instanceof Node && el.contains(related)) return;
+  if (!el) clearDropState();
+}
+
+function onDrop(event: DragEvent) {
+  event.preventDefault();
+
+  const payload = readPayload(event);
+  const el = hitTest(event.target);
+  const targetPath = el ? pathOf(el) : null;
+  const { parentPath, index } = resolveDrop(store.doc, targetPath, dropMode.value);
+  clearDropState();
+
+  if (!payload) return;
+
+  if (payload.type === 'spec') {
+    const spec = getSpec(payload.library as LibraryId, payload.tag);
+    if (!spec) return;
+    store.insertAt(parentPath, index, createNodeFromSpec(spec));
+    return;
+  }
+
+  const parentNode = getNode(store.doc, parentPath);
+  store.moveNode(payload.id, parentNode.id, index);
+}
+
+function onClick(event: MouseEvent) {
+  const el = hitTest(event.target);
+  store.select(el?.dataset.vccId ?? null);
+}
+</script>
+
+<template>
+  <div
+    class="vcc-canvas"
+    :class="{ 'is-dragging-over': isDraggingOver }"
+    @click="onClick"
+    @dragover="onDragOver"
+    @dragleave="onDragLeave"
+    @dragend="clearDropState"
+    @drop="onDrop"
+  >
+    <CanvasRoot :doc="store.doc" :state="canvasState" />
+  </div>
+</template>
+
+<style scoped>
+.vcc-canvas {
+  min-height: 100%;
+  background: #fff;
+  padding: 16px;
+  position: relative;
+}
+
+.vcc-canvas.is-dragging-over {
+  outline: 2px dashed var(--vcc-accent);
+  outline-offset: -4px;
+}
+
+.vcc-canvas :deep([data-vcc-id]) {
+  position: relative;
+}
+
+.vcc-canvas :deep([data-vcc-id]:hover) {
+  outline: 1px dashed var(--vcc-border-strong);
+  outline-offset: -1px;
+}
+
+.vcc-canvas :deep([data-vcc-selected='true']) {
+  outline: 2px solid var(--vcc-accent) !important;
+  outline-offset: -2px;
+}
+
+.vcc-canvas :deep([data-vcc-drop='into']) {
+  outline: 2px solid var(--vcc-accent) !important;
+  background: color-mix(in srgb, var(--vcc-accent) 6%, transparent);
+}
+
+.vcc-canvas :deep([data-vcc-drop='before']) {
+  box-shadow: inset 0 3px 0 var(--vcc-accent);
+}
+
+.vcc-canvas :deep([data-vcc-drop='after']) {
+  box-shadow: inset 0 -3px 0 var(--vcc-accent);
+}
+
+.vcc-canvas :deep([data-vcc-locked='true']) {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.vcc-canvas :deep(.vcc-text) {
+  white-space: pre-wrap;
+}
+</style>

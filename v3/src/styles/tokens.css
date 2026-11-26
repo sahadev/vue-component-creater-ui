@@ -1,0 +1,44 @@
+/* 唯一一套样式机制：设计令牌 + 组件内 scoped。
+   不允许行内样式，不允许追加 <style> 到 head。 */
+:root {
+  --vcc-bg: #f5f6f8;
+  --vcc-surface: #ffffff;
+  --vcc-border: #e4e6eb;
+  --vcc-border-strong: #c4c8d0;
+  --vcc-text: #1f2329;
+  --vcc-text-weak: #6b7280;
+  --vcc-accent: #2f6fed;
+  --vcc-accent-weak: #eaf0fe;
+  --vcc-danger: #d93f37;
+
+  --vcc-radius: 8px;
+  --vcc-radius-sm: 4px;
+  --vcc-gap: 8px;
+  --vcc-gap-lg: 16px;
+
+  --vcc-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --vcc-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --vcc-header-height: 48px;
+  --vcc-panel-width: 240px;
+  --vcc-inspector-width: 300px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--vcc-font);
+  color: var(--vcc-text);
+  background: var(--vcc-bg);
+  font-size: 13px;
+}
