@@ -25,8 +25,9 @@ const pageErrors = [];
 page.on('pageerror', (error) => pageErrors.push(error.message));
 
 const wait = (ms = 700) => page.waitForTimeout(ms);
-const canvas = () => page.locator('.vcc-canvas');
-const nodeCount = () => page.locator('.vcc-canvas [data-vcc-id]').count();
+const canvas = () => page.locator('#render-control-panel');
+// lc_id 是新旧两版都有的节点标识，data-vcc-id 只存在于新引擎
+const nodeCount = () => page.locator('#render-control-panel [lc_id]').count();
 
 async function reload() {
   pageErrors.length = 0;
@@ -46,21 +47,19 @@ async function openCodeDialog() {
   await wait(1300);
 }
 
-/** 按 DOM 层级读出画布结构，用来断言插入位置 */
+/** 读出画布结构：每个节点的 id 与它最近的带 lc_id 的祖先。新旧两版通用 */
 async function outline() {
   return page.evaluate(() => {
-    const read = (el) =>
-      Array.from(el.children)
-        .filter((child) => child.hasAttribute('data-vcc-id'))
-        .map((child) => ({ tag: child.tagName.toLowerCase(), children: read(child) }));
-    const root = document.querySelector('.vcc-canvas');
-    return root ? read(root) : [];
+    const nodes = Array.from(document.querySelectorAll('#render-control-panel [lc_id]'));
+    return nodes.map((el) => {
+      const parent = el.parentElement?.closest('[lc_id]');
+      return `${el.getAttribute('lc_id')}<${parent ? parent.getAttribute('lc_id') : 'root'}`;
+    });
   });
 }
 
 /** 点画布外空白，触发旧界面挂在 body 上的「取消选中」 */
 async function clickEmpty() {
-  // 旧界面的「取消选中」挂在 body 上，直接对 body 派发点击最贴近用户点空白
   await page.evaluate(() => document.body.click());
   await wait(500);
 }
@@ -78,7 +77,7 @@ check('A1', '四个区域都在', (await page.locator('.base-component-container
   && (await canvas().count()) === 1
   && (await page.locator('.top-tools-bar').count()) === 1
   && (await page.locator('.copy').count()) === 1);
-check('A2', '画布显示欢迎内容', (await canvas().innerText()).includes('欢迎使用VCC编辑器'));
+check('A2', '画布显示欢迎内容', (await canvas().innerText()).includes('欢迎使用'));
 check('A3', '加载无未捕获异常', pageErrors.length === 0, pageErrors[0] || '');
 check('A4', '默认停在原生标签库', (await page.locator('.second-nav').count()) === 0
   && (await page.locator('.base-component-container [lc-mark]').count()) > 0);
@@ -142,11 +141,11 @@ if (navCount > 3) {
 await reload();
 await pickLibrary(1);
 const base = await nodeCount();
-await dropSample(0, '.vcc-canvas');
+await dropSample(0, '#render-control-panel');
 check('D1', '拖到画布空白新增节点', (await nodeCount()) > base, `${base} → ${await nodeCount()}`);
 
 // 找一个容器节点做落点实验
-const dropTarget = '.vcc-canvas [data-vcc-id]';
+const dropTarget = '#render-control-panel [lc_id]';
 const targetBox = await page.locator(dropTarget).nth(1).boundingBox();
 if (targetBox) {
   const beforeInto = await outline();
@@ -173,50 +172,53 @@ const buttonSample = (await page.locator('.base-component-container [lc-mark]').
   .findIndex((text) => text.includes('默认按钮') || text.includes('按钮'));
 if (buttonSample >= 0) {
   const beforeD5 = await nodeCount();
-  await dropSample(buttonSample, '.vcc-canvas [data-vcc-id]');
+  await dropSample(buttonSample, '#render-control-panel [lc_id]');
   check('D5', '不可接子节点的落点不报错', (await nodeCount()) >= beforeD5 && pageErrors.length === 0,
     pageErrors[0] || '');
 } else {
   check('D5', '不可接子节点的落点不报错', false, '找不到按钮示例');
 }
 
-// D6：画布内移动（先放两个组件，再拖最后一个到最前，看顺序是否变化）
-await dropSample(0, '.vcc-canvas');
-await dropSample(1, '.vcc-canvas');
+// D6：画布内移动（拖最后一个节点到第一个节点的上沿，顺序必然变化）
+await dropSample(0, '#render-control-panel');
+await dropSample(1, '#render-control-panel');
 await clickEmpty();
 const idsBeforeMove = await page.evaluate(() =>
-  Array.from(document.querySelectorAll('.vcc-canvas [data-vcc-id]')).map((el) => el.getAttribute('lc_id')),
+  Array.from(document.querySelectorAll('#render-control-panel [lc_id]')).map((el) => el.getAttribute('lc_id')),
 );
-await page.locator('.vcc-canvas [data-vcc-id]').last().dragTo(page.locator('.vcc-canvas'), {
-  targetPosition: { x: 150, y: 2 },
-});
+await page.locator('#render-control-panel [lc_id]').last().dragTo(
+  page.locator('#render-control-panel [lc_id]').first(),
+  { targetPosition: { x: 20, y: 2 } },
+);
 await wait(1100);
 const idsAfterMove = await page.evaluate(() =>
-  Array.from(document.querySelectorAll('.vcc-canvas [data-vcc-id]')).map((el) => el.getAttribute('lc_id')),
+  Array.from(document.querySelectorAll('#render-control-panel [lc_id]')).map((el) => el.getAttribute('lc_id')),
 );
 check(
   'D6',
   '画布内拖动改变顺序',
   idsBeforeMove.length === idsAfterMove.length && idsBeforeMove.join() !== idsAfterMove.join(),
-  `${idsBeforeMove.join()} → ${idsAfterMove.join()}`,
+  `${idsBeforeMove.length} 个节点`,
 );
 
 // ---------------------------------------------------------------- E 选中
 await clickEmpty();
-await page.locator('.vcc-canvas [data-vcc-id]').first().click();
+await page.locator('#render-control-panel [lc_id]').first().click();
 await wait(700);
-check('E1', '点节点出现选中框', (await page.locator('.vcc-canvas [data-vcc-selected]').count()) > 0);
+const panelAfterClick = await page.locator('.attribute').evaluate((el) => getComputedStyle(el).right).catch(() => 'missing');
+check('E1', '点节点后面板滑出（等于选中）', panelAfterClick === '10px', `right=${panelAfterClick}`);
 
 await clickEmpty();
 await wait(600);
-check('E2', '点空白清除选中', (await page.locator('.vcc-canvas [data-vcc-selected]').count()) === 0);
+const panelAfterEmpty = await page.locator('.attribute').evaluate((el) => getComputedStyle(el).right).catch(() => 'missing');
+check('E2', '点空白后面板收回（等于取消选中）', panelAfterEmpty !== '10px', `right=${panelAfterEmpty}`);
 
 // ---------------------------------------------------------------- F 属性面板
 await reload();
 const panelRight = await page.locator('.attribute').evaluate((el) => getComputedStyle(el).right);
 check('F1', '未选中时面板停在屏幕外', panelRight !== '10px', `right=${panelRight}`);
 
-await page.locator('.vcc-canvas [data-vcc-id]').first().click();
+await page.locator('#render-control-panel [lc_id]').first().click();
 await wait(800);
 const openRight = await page.locator('.attribute').evaluate((el) => getComputedStyle(el).right);
 check('F2', '选中后面板滑出', openRight === '10px', `right=${openRight}`);
@@ -300,7 +302,7 @@ if (freeVisible) {
 await reload();
 await pickLibrary(1);
 const beforeDelete = await nodeCount();
-await dropSample(0, '.vcc-canvas');
+await dropSample(0, '#render-control-panel');
 const afterDropNodes = await nodeCount();
 await page.locator('.attribute-container .el-button--danger').click();
 await wait(900);
@@ -308,7 +310,7 @@ check('F11', '删除按钮移除节点', (await nodeCount()) < afterDropNodes, `
 
 // F12：画布属性面板只有 新增/保存/删除 三个按钮，复制兄弟在结构抽屉的属性面板里
 await reload();
-await page.locator('.vcc-canvas [data-vcc-id]').first().click();
+await page.locator('#render-control-panel [lc_id]').first().click();
 await wait(700);
 const panelButtons = await page.locator('.attribute-container .el-button').count();
 check('F12', '画布属性面板是三个动作按钮', panelButtons === 3, `按钮数=${panelButtons}`);
@@ -316,7 +318,7 @@ check('F12', '画布属性面板是三个动作按钮', panelButtons === 3, `按
 // ---------------------------------------------------------------- G 工具栏
 await reload();
 await pickLibrary(1);
-await dropSample(0, '.vcc-canvas');
+await dropSample(0, '#render-control-panel');
 const afterDrop = await nodeCount();
 await page.locator('.top-tools-bar').getByText('Undo').click();
 await wait(800);
