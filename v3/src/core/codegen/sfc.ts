@@ -190,9 +190,13 @@ export function generateSfc(doc: VccDocument, options: SfcOptions = {}): string 
     ? `\n<style${scoped ? ' scoped' : ''}>\n${styles}\n</style>\n`
     : '';
 
-  const scriptBody = script.trim()
-    ? `\n${script.trim()}\n`
-    : '\n// 在这里追加组件逻辑\n';
+  /**
+   * 注意这里的形态：导出产物必须能被旧导出流水线（vue-template-compiler 的
+   * parseComponent）解析，它认不出 <script setup>，会得到 script = null，
+   * 后面的单页 HTML 导出就会崩。所以统一生成 Options API 的 export default。
+   */
+  const body = script.trim();
+  const defaultExport = body === '' ? '{}' : body.startsWith('{') ? body : `{ ${body} }`;
 
-  return `<template>\n${template}\n</template>\n\n<script setup lang="ts">${scriptBody}</script>\n${styleBlock}`;
+  return `<template>\n${template}\n</template>\n\n<script>\nexport default ${defaultExport}\n</script>\n${styleBlock}`;
 }

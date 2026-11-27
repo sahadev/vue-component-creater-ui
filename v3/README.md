@@ -51,6 +51,7 @@
 cd v3
 pnpm install
 pnpm dev        # http://localhost:5173
+pnpm e2e        # 界面交互验收，需先 pnpm dev（用系统 Chrome）
 pnpm test       # 54 个用例，含真实挂载渲染与整界面冒烟
 pnpm typecheck
 pnpm build

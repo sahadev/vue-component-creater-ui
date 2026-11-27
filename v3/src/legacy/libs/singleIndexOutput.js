@@ -58,7 +58,11 @@ const libAddressMap = {
 };
 
 export default function (vueCode, dependenciesLibs, vue3 = true) {
-  const { template, script, styles, customBlocks } = parseComponent(vueCode);
+  const parsed = parseComponent(vueCode);
+  if (!parsed || !parsed.template || !parsed.script) {
+    throw new Error('代码结构不完整：需要 template 和 script 两个块才能导出单页 HTML');
+  }
+  const { template, script, styles } = parsed;
 
   let newScript = script.content.replace(/\s*export default\s*/, "");
 
@@ -77,7 +81,7 @@ export default function (vueCode, dependenciesLibs, vue3 = true) {
     vue3UseLib: tempDependenciesLibs
       .filter((item) => item != "vue")
       .map((item) => tempLibAddressMap[item].libName),
-    style: styles[0].content,
+    style: styles[0] ? styles[0].content : '',
     templateHolder: template.content,
     logicHolder: newScript,
   });
