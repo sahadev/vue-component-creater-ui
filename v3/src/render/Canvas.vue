@@ -5,7 +5,7 @@ import CanvasRoot from './CanvasRoot';
 import type { DropMode } from './CanvasNode';
 import { findPath, getNode } from '../core/tree';
 import { modeFromPointer, resolveDrop } from '../core/drop';
-import { DND_MIME, hasLegacyPayload, readPayload } from './dnd';
+import { DND_MIME, hasLegacyPayload, readPayload, writePayload } from './dnd';
 import { createNodeFromSpec, getSpec } from '../core/registry';
 import { cloneWithFreshIds } from '../core/ids';
 import type { LibraryId, NodePath } from '../core/types';
@@ -89,6 +89,14 @@ function onDrop(event: DragEvent) {
   store.moveNode(payload.id, parentNode.id, index);
 }
 
+/** 画布内的节点本身也是拖拽源：拖自己 = 移动 */
+function onDragStart(event: DragEvent) {
+  const el = hitTest(event.target);
+  const id = el?.dataset.vccId;
+  if (!id) return;
+  writePayload(event, { type: 'node', id });
+}
+
 function onClick(event: MouseEvent) {
   const el = hitTest(event.target);
   const id = el?.dataset.vccId ?? null;
@@ -104,6 +112,7 @@ function onClick(event: MouseEvent) {
     class="vcc-canvas"
     :class="{ 'is-dragging-over': isDraggingOver }"
     @click="onClick"
+    @dragstart="onDragStart"
     @dragover="onDragOver"
     @dragleave="onDragLeave"
     @dragend="clearDropState"

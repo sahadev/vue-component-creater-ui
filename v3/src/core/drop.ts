@@ -23,8 +23,14 @@ export function resolveDrop(
   targetPath: NodePath | null,
   mode: DropMode | null,
 ): DropResolution {
-  if (!targetPath || targetPath.length === 0) {
+  // 没有落点 → 追加到根末尾；落点就是根（path 为空）则要按上下沿决定插到首尾
+  if (targetPath === null) {
     return { parentPath: [], index: doc.root.children.length };
+  }
+  if (targetPath.length === 0) {
+    return mode === 'before'
+      ? { parentPath: [], index: 0 }
+      : { parentPath: [], index: doc.root.children.length };
   }
 
   const effectiveMode: DropMode =

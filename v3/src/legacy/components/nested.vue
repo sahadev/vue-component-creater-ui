@@ -1,6 +1,6 @@
 <template>
   <ul class="dragArea">
-    <li v-for="(element, index) in data" :key="index" class="itemArea">
+    <li v-for="(element, index) in data" :key="index" class="itemArea" @click.stop="onNodeSelect(element)">
       <p>{{ getRawComponentKey(element) }}</p>
       <nested-draggable :data="getChild(element)" />
     </li>
@@ -35,6 +35,11 @@ export default {
       }
   },
   methods: {
+    // 原版靠拖拽库的 @choose 同步当前选中项，换掉库之后要自己补回来
+    onNodeSelect(element) {
+      const content = getRawComponentContent(element);
+      if (content) _store.commit('storeCurrentEditComp', { vccData: content });
+    },
     getItemKey(item) {
       return getRawComponentContent(item).lc_id;
     },

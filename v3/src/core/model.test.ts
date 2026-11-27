@@ -125,3 +125,20 @@ describe('document 序列化', () => {
     expect(isValidDocument(createEmptyDocument())).toBe(true);
   });
 });
+
+describe('resolveDrop 的根节点落点', () => {
+  it('拖到根节点上沿插到第一位', () => {
+    const doc = makeDoc();
+    expect(resolveDrop(doc, [], 'before')).toEqual({ parentPath: [], index: 0 });
+  });
+
+  it('拖到根节点中部追加到末尾', () => {
+    const doc = makeDoc();
+    expect(resolveDrop(doc, [], 'into')).toEqual({ parentPath: [], index: 2 });
+  });
+
+  it('没有落点时追加到末尾', () => {
+    const doc = makeDoc();
+    expect(resolveDrop(doc, null, null)).toEqual({ parentPath: [], index: 2 });
+  });
+});

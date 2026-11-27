@@ -6,6 +6,8 @@ export interface CanvasRenderState {
   selectedId: string | null;
   dropTargetId: string | null;
   dropMode: DropMode | null;
+  /** 画布里的节点要能当拖拽源（旧版给每个元素都设了 draggable） */
+  draggable?: boolean;
 }
 
 export type DropMode = 'into' | 'before' | 'after';
@@ -16,6 +18,7 @@ export type DropMode = 'into' | 'before' | 'after';
 export function renderCanvasNode(node: SceneNode, state: CanvasRenderState): VNode {
   // lc_id 是旧界面工具函数（lineHelper / common.js / 结构树）认的标识
   const marks: Record<string, unknown> = { 'data-vcc-id': node.id, lc_id: node.id };
+  if (state.draggable) marks.draggable = 'true';
 
   if (state.selectedId === node.id) marks['data-vcc-selected'] = 'true';
   if (node.meta?.locked) marks['data-vcc-locked'] = 'true';

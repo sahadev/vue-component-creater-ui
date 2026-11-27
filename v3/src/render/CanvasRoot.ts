@@ -13,7 +13,7 @@ export const CanvasRoot = defineComponent({
     state: { type: Object as PropType<CanvasRenderState>, required: true },
   },
   setup(props) {
-    return () => renderCanvasNode(props.doc.root, props.state);
+    return () => renderCanvasNode(props.doc.root, { ...props.state, draggable: true });
   },
 });
 
