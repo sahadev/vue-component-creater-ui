@@ -1,0 +1,4 @@
+/* 旧界面带来的全局样式：结构树、代码高亮、nestable */
+@import './halower-tree.min.css';
+@import './prism.css';
+@import './nestable.css';

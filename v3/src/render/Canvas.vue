@@ -5,7 +5,7 @@ import CanvasRoot from './CanvasRoot';
 import type { DropMode } from './CanvasNode';
 import { findPath, getNode } from '../core/tree';
 import { modeFromPointer, resolveDrop } from '../core/drop';
-import { DND_MIME, readPayload } from './dnd';
+import { DND_MIME, hasLegacyPayload, readPayload } from './dnd';
 import { createNodeFromSpec, getSpec } from '../core/registry';
 import { cloneWithFreshIds } from '../core/ids';
 import type { LibraryId, NodePath } from '../core/types';
@@ -39,7 +39,9 @@ function clearDropState() {
 }
 
 function onDragOver(event: DragEvent) {
-  if (!event.dataTransfer?.types.includes(DND_MIME)) return;
+  // 新示例区用自定义 MIME，旧界面的活文档示例只写 text/plain，两种都要接
+  const supported = event.dataTransfer?.types.includes(DND_MIME) || hasLegacyPayload(event);
+  if (!supported) return;
   event.preventDefault();
   isDraggingOver.value = true;
 
@@ -89,7 +91,11 @@ function onDrop(event: DragEvent) {
 
 function onClick(event: MouseEvent) {
   const el = hitTest(event.target);
-  store.select(el?.dataset.vccId ?? null);
+  const id = el?.dataset.vccId ?? null;
+  // 旧界面在 body 上挂了「点空白取消选中」，命中元素时必须阻止冒泡，
+  // 否则刚选中就被清掉（旧引擎里也是这么做的）
+  if (id) event.stopPropagation();
+  store.select(id);
 }
 </script>
 

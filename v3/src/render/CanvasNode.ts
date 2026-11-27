@@ -14,7 +14,8 @@ export type DropMode = 'into' | 'before' | 'after';
  * 结构 → VNode。整个画布就是这一层递归，没有代码文本、没有 eval、没有二次挂载。
  */
 export function renderCanvasNode(node: SceneNode, state: CanvasRenderState): VNode {
-  const marks: Record<string, unknown> = { 'data-vcc-id': node.id };
+  // lc_id 是旧界面工具函数（lineHelper / common.js / 结构树）认的标识
+  const marks: Record<string, unknown> = { 'data-vcc-id': node.id, lc_id: node.id };
 
   if (state.selectedId === node.id) marks['data-vcc-selected'] = 'true';
   if (node.meta?.locked) marks['data-vcc-locked'] = 'true';

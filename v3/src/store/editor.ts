@@ -4,8 +4,7 @@
  * 撤销栈保存文档快照——因为树更新是不可变的，快照之间共享未改动部分，
  * 不需要深拷贝。之前那套「每次改动全量深拷贝 + cloneNode 替换 DOM」的代价没有了。
  */
-import { defineStore } from 'pinia';
-import { computed, ref, shallowRef } from 'vue';
+import { computed, reactive, ref, shallowRef } from 'vue';
 import type { NodePath, PropRecord, SceneNode, VccDocument } from '../core/types';
 import { isContainer } from '../core/types';
 import { createStarterDocument, syncUrl } from '../core/document';
@@ -20,11 +19,15 @@ import {
   updateText,
 } from '../core/tree';
 import { normalizeAttrs } from '../core/attrs';
-import { cloneWithFreshIds } from '../core/ids';
+import { cloneWithFreshIds, newNodeId } from '../core/ids';
 
 const HISTORY_LIMIT = 100;
 
-export const useEditorStore = defineStore('editor', () => {
+/**
+ * 编辑器实例。刻意不做成 pinia store：
+ * 旧界面引擎需要在 Vue 应用之外拿到同一个实例，全局单例最省事。
+ */
+function buildEditor() {
   const doc = shallowRef<VccDocument>(createStarterDocument());
   const selectedId = ref<string | null>(null);
   const viewportWidth = ref(375);
@@ -128,8 +131,32 @@ export const useEditorStore = defineStore('editor', () => {
       node.kind === 'component'
         ? { library: node.library, tag: node.tag }
         : undefined;
-    const { props, warnings } = normalizeAttrs(attrs, context);
-    commit(updatePropsAt(doc.value, path, props));
+
+    // __text__ 在旧界面里是一个普通属性，在新模型里是文本子节点，得单独处理
+    const textEntry = attrs.find((item) => item.key.trim() === '__text__');
+    const rest = attrs.filter((item) => item.key.trim() !== '__text__');
+    const { props, warnings } = normalizeAttrs(rest, context);
+
+    let next = updatePropsAt(doc.value, path, props);
+
+    if (textEntry) {
+      const text = String(textEntry.value ?? '');
+      const textChild = node.children.find((child) => child.kind === 'text');
+      if (textChild) {
+        next = updateText(next, [...path, node.children.indexOf(textChild)], text);
+      } else if (text) {
+        next = insertNode(next, path, node.children.length, {
+          kind: 'text',
+          id: newNodeId(),
+          text,
+        });
+      }
+    }
+
+    // props 里残留的 __text__ 要清掉，避免被当成真实属性导出
+    if ('__text__' in props) delete props['__text__'];
+
+    commit(next);
     return warnings;
   }
 
@@ -168,7 +195,9 @@ export const useEditorStore = defineStore('editor', () => {
     commit({ ...doc.value, script });
   }
 
-  return {
+  // reactive 会自动解包里面的 ref / computed，
+  // 这样旧界面组件写 store.doc、store.selectedId 拿到的就是值，和原来 pinia 的行为一致
+  return reactive({
     doc,
     selectedId,
     selectedPath,
@@ -196,5 +225,24 @@ export const useEditorStore = defineStore('editor', () => {
     setViewportWidth,
     setDocumentName,
     setScript,
-  };
-});
+  });
+}
+
+export type Editor = ReturnType<typeof buildEditor>;
+
+export function createEditor(): Editor {
+  return buildEditor();
+}
+
+let singleton: Editor | null = null;
+
+/** 全局唯一编辑器实例 */
+export function useEditorStore(): Editor {
+  if (!singleton) singleton = createEditor();
+  return singleton;
+}
+
+/** 测试用：重置单例 */
+export function resetEditor(): void {
+  singleton = null;
+}

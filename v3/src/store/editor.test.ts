@@ -1,14 +1,13 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it } from 'vitest';
-import { createPinia, setActivePinia } from 'pinia';
-import { useEditorStore } from './editor';
+import { useEditorStore, resetEditor } from './editor';
 import { installBuiltinSpecs } from '../core/registry';
 import { createEmptyDocument, decodeDocument, DOC_QUERY_KEY } from '../core/document';
 import type { ElementNode } from '../core/types';
 
 beforeEach(() => {
   installBuiltinSpecs();
-  setActivePinia(createPinia());
+  resetEditor();
   window.history.replaceState(null, '', '/');
   // 这些用例针对空画布，先把初始欢迎内容清掉
   useEditorStore().reset(createEmptyDocument('test'));
