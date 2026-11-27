@@ -22,3 +22,13 @@ declare module '@/legacy/libs/store' {
     commit: (type: string, payload?: unknown) => void;
   };
 }
+
+declare module '@/legacy/libs/bundle-html2json-esm' {
+  export function html2Json(html: string): Promise<{ root: { __children: Record<string, unknown>[] } }>;
+}
+
+declare module '@/legacy/utils/common' {
+  export function ergodic(json: unknown): void;
+  export function getRawComponentKey(info: Record<string, unknown>): string;
+  export function getRawComponentContent(info: Record<string, unknown>): Record<string, unknown>;
+}

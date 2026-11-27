@@ -288,7 +288,9 @@ export default {
     },
 
     saveJSCode({ JSCodeInfo: code, JSCode }) {
-      this.mainPanelProvider.saveJSCode(code);
+      // 传给引擎的是原文而不是解析后的对象：导出要靠这段源码，
+      // 对象里没有函数体，序列化出来是坏的
+      this.mainPanelProvider.saveJSCode(JSCode);
       // 保留JS代码
       this.JSCode = JSCode;
       this.notifyParent();

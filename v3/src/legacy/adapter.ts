@@ -119,9 +119,24 @@ function isBareAttrsObject(value: unknown): boolean {
   return '__children' in value || 'lc_id' in value || '__text__' in value;
 }
 
-/** 旧 codeStructure（顶层包了一层 template）→ 新文档根节点 */
+/**
+ * 旧 codeStructure → 新文档根节点。
+ *
+ * 有两层包装要剥：
+ *  1. 有的一层 template 外壳
+ *  2. template 里常常只有一个 __children，那一项才是真正的根节点
+ */
 export function legacyStructureToRoot(structure: LegacyStructure): ElementNode | null {
-  const template = (structure as { template?: unknown }).template ?? structure;
+  const outer = (structure as { template?: unknown }).template ?? structure;
+
+  let template: unknown = outer;
+  if (isBareAttrsObject(template)) {
+    const children = (template as { __children?: unknown }).__children;
+    if (Array.isArray(children) && children.length === 1) {
+      template = children[0];
+    }
+  }
+
   const normalized = isBareAttrsObject(template) ? { div: template as Record<string, unknown> } : template;
   const root = legacyNodeToScene(normalized);
   if (!root || root.kind !== 'element') return null;
