@@ -32,3 +32,11 @@ declare module '@/legacy/utils/common' {
   export function getRawComponentKey(info: Record<string, unknown>): string;
   export function getRawComponentContent(info: Record<string, unknown>): Record<string, unknown>;
 }
+
+declare module '@/legacy/libs/singleIndexOutput' {
+  export default function singleIndexOutput(
+    vueCode: string,
+    dependenciesLibs: string[],
+    vue3?: boolean,
+  ): string;
+}
