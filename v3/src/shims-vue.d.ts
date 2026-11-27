@@ -40,3 +40,16 @@ declare module '@/legacy/libs/singleIndexOutput' {
     vue3?: boolean,
   ): string;
 }
+
+declare module 'vue-template-compiler/browser' {
+  export interface SfcBlock {
+    content: string;
+    attrs: Record<string, string>;
+  }
+  export function parseComponent(source: string): {
+    template: SfcBlock | null;
+    script: SfcBlock | null;
+    styles: SfcBlock[];
+    customBlocks: SfcBlock[];
+  };
+}
